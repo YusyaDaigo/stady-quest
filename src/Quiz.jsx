@@ -102,13 +102,14 @@ function Quiz({
           right: showQuestionList
             ? "230px"
             : "10px",
-          top: "180px",
+          top: "50%",
+          transform: "translateY(-50%)",
           width: "40px",
           height: "40px",
           borderRadius: "50%",
           fontSize: "18px",
           zIndex: 1001
-}}
+        }}
       >
         {showQuestionList ? "▶" : "◀"}
       </button>
@@ -196,8 +197,10 @@ function Quiz({
 )}
 
           <h2
+        
             style={{
               maxWidth: "820px",
+              width: "82%",
               margin: "40px auto 32px",
               lineHeight: "1.7",
               textAlign: "left"
