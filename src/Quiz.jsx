@@ -102,7 +102,7 @@ function Quiz({
           right: showQuestionList
             ? "230px"
             : "10px",
-          top: "50%",
+          top: "58%",
           transform: "translateY(-50%)",
           width: "40px",
           height: "40px",
