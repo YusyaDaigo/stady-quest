@@ -55,8 +55,23 @@ function Quiz({
                 style={{
                   display: "block",
                   width: "100%",
-                  marginBottom: "6px",
-                  textAlign: "left"
+                  marginBottom: "8px",
+                  textAlign: "left",
+
+                  backgroundColor:
+                    index === currentIndex
+                      ? "#4a6fa5"
+                      : "#2b2f3a",
+
+                  color: "#ffffff",
+
+                  border: "1px solid #444",
+
+                  borderRadius: "8px",
+
+                  padding: "8px 10px",
+
+                  cursor: "pointer"
                 }}
               >
                 {index === currentIndex
@@ -180,7 +195,14 @@ function Quiz({
           </button>
 )}
 
-          <h2>
+          <h2
+            style={{
+              maxWidth: "820px",
+              margin: "40px auto 32px",
+              lineHeight: "1.7",
+              textAlign: "left"
+            }}
+          >
             {currentQuestion.question}
           </h2>
 
@@ -199,11 +221,30 @@ function Quiz({
                       backgroundColor:
                         userAnswers[currentIndex] === index
                           ? "#4a6fa5"
-                          : undefined,
+                          : "#2b2f3a",
+
+                      color: "#ffffff",
+
                       border:
                         userAnswers[currentIndex] === index
                           ? "2px solid #ffffff"
-                          : undefined
+                          : "1px solid #444",
+
+                      borderRadius: "10px",
+
+                      fontSize: "1.15rem",
+
+                      padding: "16px 20px",
+
+                      marginBottom: "14px",
+
+                      maxWidth: "820px",
+
+                      width: "90%",
+
+                      lineHeight: "1.6",
+
+                      textAlign: "left"
                     }}
                   >
                     {userAnswers[currentIndex] === index

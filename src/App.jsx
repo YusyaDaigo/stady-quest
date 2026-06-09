@@ -476,8 +476,7 @@ useEffect(() => {
 
 )}
 
-      {/* クイズ画面 */}
-{screen === "quiz" && (
+  {screen === "quiz" && (
 
   <Quiz
     mode={mode}
