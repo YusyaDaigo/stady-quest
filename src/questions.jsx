@@ -1,5 +1,17 @@
+export const CATEGORIES = {
+  RULE: "規則",
+  SYSTEM: "システム",
+  RISK: "リスク管理",
+  CALC: "計算",
+  FIRST: "一等追加"
+};
+
 export const commonQuestions = [
+
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "無人航空機を飛行させる際の体調管理として、最も適切なものはどれか？",
     choices: [
@@ -13,6 +25,9 @@ export const commonQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "飛行前に行う現地調査として、適切なものはどれか？",
     choices: [
@@ -26,6 +41,9 @@ export const commonQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "飛行計画の作成について、最も適切なものはどれか？",
     choices: [
@@ -132,6 +150,9 @@ export const commonQuestions = [
 
 export const commonExtraQuestions = [
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "飛行中に天候が悪化しそうな場合、操縦者の対応として最も適切なものはどれか？",
     choices: [
@@ -145,6 +166,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "補助者を配置する場合の対応として、適切なものはどれか？",
     choices: [
@@ -158,6 +182,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "飛行前点検として、最も適切なものはどれか？",
     choices: [
@@ -171,6 +198,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "飛行日誌について、適切なものはどれか？",
     choices: [
@@ -184,6 +214,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "濃霧が発生している状況での飛行判断として、最も適切なものはどれか？",
     choices: [
@@ -197,6 +230,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "低温時のバッテリーについて、適切なものはどれか？",
     choices: [
@@ -210,6 +246,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "飛行中の周囲監視について、適切なものはどれか？",
     choices: [
@@ -223,6 +262,8 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
     question:
       "無人航空機の事故が発生した場合の責任について、正しいものはどれか？",
     choices: [
@@ -236,6 +277,8 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
     question:
       "地域情報の収集として、適切なものはどれか？",
     choices: [
@@ -249,6 +292,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "安全な飛行計画として、適切なものはどれか？",
     choices: [
@@ -263,6 +309,9 @@ export const commonExtraQuestions = [
 
 ,
 {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "無人航空機の操縦者が飛行前に行うべき事項として最も適切なものはどれか？",
     choices: [
@@ -276,6 +325,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "無人航空機を飛行させる際の気象確認について適切なものはどれか？",
     choices: [
@@ -289,6 +341,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "飛行中に異常振動が発生した場合の対応として最も適切なものはどれか？",
     choices: [
@@ -302,6 +357,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "操縦者の健康状態について適切なものはどれか？",
     choices: [
@@ -315,6 +373,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "飛行計画の作成目的として最も適切なものはどれか？",
     choices: [
@@ -328,6 +389,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "第三者との接触リスクを減らす方法として適切なものはどれか？",
     choices: [
@@ -341,6 +405,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "飛行中に通信品質が悪化した場合の対応として適切なものはどれか？",
     choices: [
@@ -354,6 +421,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "飛行日誌を作成する目的として最も適切なものはどれか？",
     choices: [
@@ -367,6 +437,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "飛行区域の確認として適切なものはどれか？",
     choices: [
@@ -380,6 +453,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "飛行前ブリーフィングの目的として最も適切なものはどれか？",
     choices: [
@@ -392,8 +468,11 @@ export const commonExtraQuestions = [
       "関係者間で飛行内容や緊急時対応を共有することが重要です。"
 }
 
-    ,
+,
 {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+    
     question:
       "無人航空機の飛行場所に関するルールとして、最も適切なものはどれか？",
     choices: [
@@ -2093,7 +2172,475 @@ export const commonExtraQuestions = [
     answer: 0,
     explanation:
       "インシデント報告は再発防止に活用されます。"
-}
+},
+
+{
+    question:
+      "第三者上空を飛行するカテゴリーⅢ飛行について、最も適切なものを選べ。",
+    choices: [
+      "一等無人航空機操縦士資格と第一種機体認証が必要である",
+      "二等無人航空機操縦士資格があれば飛行できる",
+      "機体認証は不要である"
+    ],
+    answer: 0,
+    explanation:
+      "カテゴリーⅢ飛行には一等無人航空機操縦士資格及び第一種機体認証機が必要である。"
+},
+
+{
+    question:
+      "カテゴリーⅡB飛行について正しいものを選べ。",
+    choices: [
+      "技能証明と機体認証があれば許可承認なしで飛行できる場合がある",
+      "必ずカテゴリーⅢ飛行として扱われる",
+      "飛行マニュアルは不要である"
+    ],
+    answer: 0,
+    explanation:
+      "カテゴリーⅡB飛行は技能証明者が認証機を使用し、飛行マニュアルを遵守することで許可承認不要となる場合がある。"
+},
+
+{
+    question:
+      "第三者上空を飛行しない特定飛行は、原則としてどのカテゴリーに分類されるか。",
+    choices: [
+      "カテゴリーⅡ",
+      "カテゴリーⅢ",
+      "カテゴリーⅠ"
+    ],
+    answer: 0,
+    explanation:
+      "第三者上空を飛行しない特定飛行はカテゴリーⅡに分類される。"
+},
+
+{
+    question:
+      "カテゴリーⅠ飛行として最も適切なものを選べ。",
+    choices: [
+      "特定飛行に該当しない飛行",
+      "第三者上空飛行",
+      "夜間の目視外飛行"
+    ],
+    answer: 0,
+    explanation:
+      "特定飛行に該当しない飛行はカテゴリーⅠ飛行である。"
+},
+
+{
+    question:
+      "カテゴリーⅡA飛行について正しいものを選べ。",
+    choices: [
+      "認証機と技能証明があっても許可承認が必要である",
+      "必ず許可承認不要である",
+      "第三者上空飛行のみを指す"
+    ],
+    answer: 0,
+    explanation:
+      "カテゴリーⅡA飛行は認証機及び技能証明があっても運航管理の審査と許可承認が必要である。"
+},
+
+{
+    question:
+      "技能証明の種類として正しいものを選べ。",
+    choices: [
+      "一等無人航空機操縦士と二等無人航空機操縦士",
+      "上級操縦士と一般操縦士",
+      "業務用操縦士と趣味用操縦士"
+    ],
+    answer: 0,
+    explanation:
+      "技能証明は一等無人航空機操縦士及び二等無人航空機操縦士に区分される。"
+},
+
+{
+    question:
+      "登録講習機関を修了した場合に免除されるものとして正しいものを選べ。",
+    choices: [
+      "実地試験",
+      "学科試験",
+      "身体検査"
+    ],
+    answer: 0,
+    explanation:
+      "登録講習機関修了者は指定試験機関の実地試験が免除される。"
+},
+
+{
+    question:
+      "技能証明を受けた者の義務として正しいものを選べ。",
+    choices: [
+      "限定された範囲内で特定飛行を行う",
+      "全ての特定飛行を自由に実施できる",
+      "許可承認が不要になる"
+    ],
+    answer: 0,
+    explanation:
+      "技能証明者は限定事項及び条件の範囲内で飛行しなければならない。"
+},
+
+{
+    question:
+      "技能証明の取消し又は効力停止の対象となる可能性があるものを選べ。",
+    choices: [
+      "航空法違反や重大な過失",
+      "機体の色を変更した",
+      "飛行記録を保存した"
+    ],
+    answer: 0,
+    explanation:
+      "航空法違反や重大な過失などは技能証明の取消し又は効力停止の対象となる。"
+},
+
+{
+    question:
+      "カテゴリーⅢ飛行に必要な機体認証はどれか。",
+    choices: [
+      "第一種機体認証",
+      "第二種機体認証",
+      "認証不要"
+    ],
+    answer: 0,
+    explanation:
+      "カテゴリーⅢ飛行には第一種機体認証が必要である。"
+},
+      
+{
+    question:
+      "機体認証制度の目的として最も適切なものを選べ。",
+    choices: [
+      "無人航空機の安全性を確認するため",
+      "操縦者の技能を評価するため",
+      "飛行時間を記録するため"
+    ],
+    answer: 0,
+    explanation:
+      "機体認証制度は無人航空機の安全性を確認する制度である。"
+},
+
+{
+    question:
+      "第二種機体認証について正しいものを選べ。",
+    choices: [
+      "カテゴリーⅡ飛行で活用される認証である",
+      "カテゴリーⅢ飛行専用である",
+      "模型航空機に必要である"
+    ],
+    answer: 0,
+    explanation:
+      "第二種機体認証は主にカテゴリーⅡ飛行において活用される。"
+},
+
+{
+    question:
+      "リモートIDにより発信される情報として正しいものを選べ。",
+    choices: [
+      "位置・速度・高度・時刻",
+      "所有者の住所",
+      "操縦者の電話番号"
+    ],
+    answer: 0,
+    explanation:
+      "リモートIDでは位置、速度、高度、時刻などの情報が発信されるが、所有者や使用者の個人情報は含まれない。"
+},
+
+{
+    question:
+      "リモートID機器について正しいものを選べ。",
+    choices: [
+      "内蔵型と外付型が存在する",
+      "必ず機体内部に組み込まれていなければならない",
+      "飛行中のみ発信される"
+    ],
+    answer: 0,
+    explanation:
+      "リモートID機器には内蔵型と外付型が存在する。"
+},
+
+{
+    question:
+      "高度150メートル以上の飛行禁止空域について正しいものを選べ。",
+    choices: [
+      "直下の地表又は水面から150m以上の高度差を指す",
+      "海抜150m以上を指す",
+      "標高150m以上の山は全て飛行禁止となる"
+    ],
+    answer: 0,
+    explanation:
+      "高度150mとは海抜ではなく、直下の地表又は水面からの高度差を指す。"
+},
+
+{
+    question:
+      "空港周辺空域について正しいものを選べ。",
+    choices: [
+      "制限表面や進入経路の安全確保のため規制されている",
+      "空港から5km以上離れていれば自由に飛行できる",
+      "夜間のみ規制される"
+    ],
+    answer: 0,
+    explanation:
+      "空港周辺空域は航空機の安全な離着陸のため規制されている。"
+},
+
+{
+    question:
+      "緊急用務空域について正しいものを選べ。",
+    choices: [
+      "災害等の状況に応じて国土交通省が指定する",
+      "全国で常時設定されている",
+      "100g未満の模型航空機は飛行可能である"
+    ],
+    answer: 0,
+    explanation:
+      "緊急用務空域は災害等に応じて指定され、模型航空機を含め飛行が制限される。"
+},
+
+{
+    question:
+      "小型無人機等飛行禁止法におけるイエローゾーンについて正しいものを選べ。",
+    choices: [
+      "対象施設周辺おおむね300mの範囲",
+      "対象施設周辺おおむね150mの範囲",
+      "対象施設内部のみ"
+    ],
+    answer: 0,
+    explanation:
+      "イエローゾーンは対象施設周辺おおむね300mの範囲を指す。"
+},
+
+{
+    question:
+      "小型無人機等飛行禁止法の対象施設として正しいものを選べ。",
+    choices: [
+      "国会議事堂",
+      "一般病院",
+      "市立図書館"
+    ],
+    answer: 0,
+    explanation:
+      "国会議事堂は対象施設であり、その周辺には飛行制限がある。"
+},
+
+{
+    question:
+      "対象施設上空のレッドゾーンで無許可飛行を行った場合について正しいものを選べ。",
+    choices: [
+      "罰則の対象となる可能性がある",
+      "注意のみで終了する",
+      "レクリエーション飛行なら問題ない"
+    ],
+    answer: 0,
+    explanation:
+      "レッドゾーンでの無許可飛行は懲役又は罰金の対象となる可能性がある。"
+},
+
+{
+    question:
+      "GNSSによる位置測位について正しいものを選べ。",
+    choices: [
+      "最低4個以上の衛星から同時に信号を受信する必要がある",
+      "最低2個以上の衛星から信号を受信すれば測位できる",
+      "衛星は1個でも測位可能である"
+    ],
+    answer: 0,
+    explanation:
+      "GNSSは最低4個以上の人工衛星から同時に信号を受信することで位置を算出する。"
+},
+
+{
+    question:
+      "GNSSの測位精度に影響を与える要因として適切なものを選べ。",
+    choices: [
+      "建物によるマルチパス",
+      "機体の色",
+      "送信機の重量"
+    ],
+    answer: 0,
+    explanation:
+      "建物などによる電波反射（マルチパス）はGNSS測位精度を低下させる。"
+},
+
+{
+    question:
+      "マルチパス現象について正しいものを選べ。",
+    choices: [
+      "電波が複数経路で到達する現象",
+      "バッテリー電圧が低下する現象",
+      "プロペラの振動現象"
+    ],
+    answer: 0,
+    explanation:
+      "マルチパスは電波が建物や地面で反射し複数経路で受信される現象である。"
+},
+
+{
+    question:
+      "マルチパスによる通信不安定が発生した場合の対応として適切なものを選べ。",
+    choices: [
+      "送信機を高い位置に持ちアンテナ方向を調整する",
+      "送信機の電源を切る",
+      "バッテリーを交換する"
+    ],
+    answer: 0,
+    explanation:
+      "マルチパス時は送信機を高い位置に移動しアンテナ方向を調整する。"
+},
+
+{
+    question:
+      "地磁気センサの役割として正しいものを選べ。",
+    choices: [
+      "機体の向いている方角を検出する",
+      "高度を測定する",
+      "気温を測定する"
+    ],
+    answer: 0,
+    explanation:
+      "地磁気センサは地球磁場を利用して方位を検出する。"
+},
+
+{
+    question:
+      "ジャイロセンサの役割として正しいものを選べ。",
+    choices: [
+      "機体の回転角速度を検出する",
+      "位置情報を取得する",
+      "バッテリー残量を計測する"
+    ],
+    answer: 0,
+    explanation:
+      "ジャイロセンサは機体の回転運動を検出する。"
+},
+
+{
+    question:
+      "加速度センサの役割として正しいものを選べ。",
+    choices: [
+      "速度変化や加速度を検出する",
+      "方位を測定する",
+      "通信距離を測定する"
+    ],
+    answer: 0,
+    explanation:
+      "加速度センサは機体の加速度や速度変化を検出する。"
+},
+
+{
+    question:
+      "LiDARの説明として正しいものを選べ。",
+    choices: [
+      "レーザー光の反射時間から距離を測定する",
+      "超音波の反射で方位を測定する",
+      "磁力線から高度を測定する"
+    ],
+    answer: 0,
+    explanation:
+      "LiDARはレーザー光の往復時間から距離や高度を測定する。"
+},
+
+{
+    question:
+      "マルチローターが上昇する条件として正しいものを選べ。",
+    choices: [
+      "全ローターの推力が機体重量を上回る",
+      "前方ローターのみ回転数を上げる",
+      "ラダー操作を行う"
+    ],
+    answer: 0,
+    explanation:
+      "総揚力が機体重量を上回ると機体は上昇する。"
+},
+
+{
+    question:
+      "マルチローターが前進する仕組みとして正しいものを選べ。",
+    choices: [
+      "機体を前方へ傾け推力の一部を前方成分にする",
+      "全ローターを同時停止する",
+      "ラダーのみ操作する"
+    ],
+    answer: 0,
+    explanation:
+      "機体を前傾させることで推力の一部が前方へ働く。"
+},
+
+{
+    question:
+      "マルチローターのヨー制御について正しいものを選べ。",
+    choices: [
+      "反トルクのバランスを崩して機体を回転させる",
+      "全ローターを停止する",
+      "機首を上下させる"
+    ],
+    answer: 0,
+    explanation:
+      "ヨーは反トルクのバランス変化により発生する。"
+},
+
+{
+    question:
+      "マルチローターのブレードについて正しいものを選べ。",
+    choices: [
+      "通常は固定ピッチで回転数制御を行う",
+      "飛行中に可変ピッチ制御を行う",
+      "揚力は発生しない"
+    ],
+    answer: 0,
+    explanation:
+      "一般的なマルチローターは固定ピッチで回転数を変化させて制御する。"
+},
+
+{
+    question:
+      "送信機アンテナについて正しいものを選べ。",
+    choices: [
+      "電波強度は方向によって異なる",
+      "どの方向でも同じ強度である",
+      "アンテナ角度は関係ない"
+    ],
+    answer: 0,
+    explanation:
+      "アンテナには指向性があり方向によって電波強度が異なる。"
+},
+
+{
+    question:
+      "通信状態を改善する方法として適切なものを選べ。",
+    choices: [
+      "アンテナ方向を調整する",
+      "プロペラを交換する",
+      "機体色を変更する"
+    ],
+    answer: 0,
+    explanation:
+      "通信不良時はアンテナ方向の調整が有効である。"
+},
+
+{
+    question:
+      "ESCの役割として正しいものを選べ。",
+    choices: [
+      "モーター回転数を制御する",
+      "GNSS信号を受信する",
+      "方位を検出する"
+    ],
+    answer: 0,
+    explanation:
+      "ESCはモーター回転数を制御する装置である。"
+},
+
+{
+    question:
+      "マルチローターの飛行制御におけるESCの働きとして正しいものを選べ。",
+    choices: [
+      "各モーター回転数を変化させ姿勢制御を行う",
+      "衛星信号を増幅する",
+      "バッテリー容量を増加させる"
+    ],
+    answer: 0,
+    explanation:
+      "ESCは各モーター回転数を個別制御し機体姿勢を安定させる。"
+},
 
 ];
 
