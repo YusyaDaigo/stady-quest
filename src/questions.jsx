@@ -1,4 +1,5 @@
 export const CATEGORIES = {
+  ALL: "全範囲",
   RULE: "規則",
   SYSTEM: "システム",
   RISK: "リスク管理",
@@ -57,6 +58,9 @@ export const commonQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "無人航空機と有人航空機の飛行経路が接近する場合、適切な対応はどれか？",
     choices: [
@@ -70,6 +74,9 @@ export const commonQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "飛行後の機体やバッテリーの保管として、適切なものはどれか？",
     choices: [
@@ -83,6 +90,9 @@ export const commonQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "リモートID機能により発信される情報として、正しいものはどれか？",
     choices: [
@@ -96,6 +106,9 @@ export const commonQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "高度150m以上の飛行禁止空域について、正しいものはどれか？",
     choices: [
@@ -109,6 +122,9 @@ export const commonQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "リチウムポリマーバッテリーの長期保管として、適切なものはどれか？",
     choices: [
@@ -122,6 +138,9 @@ export const commonQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "マルチローターの基本操作の説明として、正しいものはどれか？",
     choices: [
@@ -135,6 +154,9 @@ export const commonQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "リスク管理の考え方として、最も適切なものはどれか？",
     choices: [
@@ -199,7 +221,7 @@ export const commonExtraQuestions = [
 
   {
     subject: "drone",
-    category: CATEGORIES.RISK,
+    category: CATEGORIES.RULE,
     
     question:
       "飛行日誌について、適切なものはどれか？",
@@ -231,7 +253,7 @@ export const commonExtraQuestions = [
 
   {
     subject: "drone",
-    category: CATEGORIES.RISK,
+    category: CATEGORIES.SYSTEM,
     
     question:
       "低温時のバッテリーについて、適切なものはどれか？",
@@ -263,7 +285,8 @@ export const commonExtraQuestions = [
 
   {
     subject: "drone",
-    category: CATEGORIES.RISK,
+    category: CATEGORIES.RULE,
+
     question:
       "無人航空機の事故が発生した場合の責任について、正しいものはどれか？",
     choices: [
@@ -278,7 +301,8 @@ export const commonExtraQuestions = [
 
   {
     subject: "drone",
-    category: CATEGORIES.RISK,
+    category: CATEGORIES.RULE,
+
     question:
       "地域情報の収集として、適切なものはどれか？",
     choices: [
@@ -486,6 +510,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "無人航空機の騒音に関する配慮として、適切なものはどれか？",
     choices: [
@@ -499,6 +526,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "特定飛行を行う際に携行すべきものとして、適切なものはどれか？",
     choices: [
@@ -512,6 +542,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "無人航空機の飛行で、航空機と接近するおそれがある場合の対応として適切なものはどれか？",
     choices: [

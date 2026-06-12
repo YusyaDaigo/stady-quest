@@ -1,20 +1,21 @@
 import { useState, useEffect } from "react";
 import {
+  CATEGORIES,
   commonQuestions,
   secondExamQuestions,
   firstExamQuestions
 } from "./questions";
-const shuffleArray = (array) => {
 
-  return [...array].sort(
-    () => Math.random() - 0.5
-  );
-
-};
 import Menu from "./Menu";
 import Quiz from "./Quiz";
 import Result from "./Result";
 import Review from "./Review";
+
+const shuffleArray = (array) => {
+  return [...array].sort(
+    () => Math.random() - 0.5
+  );
+};
 
 function App() {
 
@@ -23,6 +24,9 @@ function App() {
 
   const [mode, setMode] = useState("practice");
   const [examType, setExamType] = useState(null);
+
+  const [selectedCategory, setSelectedCategory]
+    = useState(CATEGORIES.ALL);
 
   const [score, setScore] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
@@ -38,40 +42,35 @@ function App() {
   const [mistakeQuestions, setMistakeQuestions] = useState([]);
 
   const [remainingTimes, setRemainingTimes]
-  = useState([]);
+    = useState([]);
 
   const [bookmarkedIndexes, setBookmarkedIndexes]
-  = useState([]);
+    = useState([]);
 
   const [quizQuestions, setQuizQuestions]
-  = useState([]);
+    = useState([]);
 
-// localStorage 読み込み
-useEffect(() => {
+  useEffect(() => {
 
-  const savedMistakes =
-    localStorage.getItem("mistakeQuestions");
+    const savedMistakes =
+      localStorage.getItem("mistakeQuestions");
 
-  if (savedMistakes) {
+    if (savedMistakes) {
+      setMistakeQuestions(
+        JSON.parse(savedMistakes)
+      );
+    }
 
-    setMistakeQuestions(
-      JSON.parse(savedMistakes)
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem(
+      "mistakeQuestions",
+      JSON.stringify(mistakeQuestions)
     );
-  }
 
-}, []);
+  }, [mistakeQuestions]);
 
-// localStorage 保存
-
-useEffect(() => {
-  localStorage.setItem(
-    "mistakeQuestions",
-    JSON.stringify(mistakeQuestions)
-  );
-
-}, [mistakeQuestions]);
-
-  // 出題問題切り替え
   const currentQuestions =
     quizQuestions;
 
@@ -98,10 +97,13 @@ useEffect(() => {
     }
 
     return 30;
-};  
+  };
 
-  // クイズ開始
-  const startQuiz = (selectedMode, selectedExamType = null) => {
+  const startQuiz = (
+    selectedMode,
+    selectedExamType = null,
+    category = CATEGORIES.ALL
+  ) => {
 
     let selectedQuestions;
 
@@ -113,7 +115,7 @@ useEffect(() => {
     } else if (
       selectedMode === "mock" &&
       selectedExamType === "second"
-      ) {
+    ) {
 
       selectedQuestions =
         secondExamQuestions;
@@ -121,7 +123,7 @@ useEffect(() => {
     } else if (
       selectedMode === "mock" &&
       selectedExamType === "first"
-      ) {
+    ) {
 
       selectedQuestions =
         firstExamQuestions;
@@ -130,7 +132,15 @@ useEffect(() => {
 
       selectedQuestions =
         commonQuestions;
+
+      if (category !== CATEGORIES.ALL) {
+        selectedQuestions =
+          selectedQuestions.filter(
+            (question) =>
+              question.category === category
+          );
       }
+    }
 
     let shuffledQuestions =
       shuffleArray(selectedQuestions);
@@ -139,7 +149,6 @@ useEffect(() => {
       selectedMode === "mock" &&
       selectedExamType === "second"
     ) {
-
       shuffledQuestions =
         shuffledQuestions.slice(0, 50);
     }
@@ -148,7 +157,6 @@ useEffect(() => {
       selectedMode === "mock" &&
       selectedExamType === "first"
     ) {
-
       shuffledQuestions =
         shuffledQuestions.slice(0, 70);
     }
@@ -157,40 +165,33 @@ useEffect(() => {
 
     setMode(selectedMode);
     setExamType(selectedExamType);
+    setSelectedCategory(category);
 
     setCurrentIndex(0);
-
     setScore(0);
-
     setCorrectCount(0);
-
     setShowExplanation(false);
 
     setTime(
       getInitialTime(
         selectedMode,
         selectedExamType
-  )
-);
+      )
+    );
 
     setIsCorrect(null);
-
     setUserAnswers([]);
-
     setRemainingTimes([]);
-
     setBookmarkedIndexes([]);
 
     setScreen("quiz");
   };
 
-  // 回答処理
   const handleAnswer = (index) => {
 
     const correct =
       index === currentQuestion.answer;
 
-    // 回答保存
     const newAnswers = [...userAnswers];
 
     newAnswers[currentIndex] = index;
@@ -198,12 +199,12 @@ useEffect(() => {
     setUserAnswers(newAnswers);
 
     setIsCorrect(correct);
-    setRemainingTimes((prev) => [
-  ...prev,
-  time
-]);
 
-    // 正解
+    setRemainingTimes((prev) => [
+      ...prev,
+      time
+    ]);
+
     if (correct) {
 
       setScore((prev) => prev + time);
@@ -211,12 +212,10 @@ useEffect(() => {
       setCorrectCount((prev) => prev + 1);
     }
 
-    // 不正解
     if (!correct) {
 
       setMistakeQuestions((prev) => {
 
-        // 重複防止
         if (prev.includes(currentQuestion)) {
           return prev;
         }
@@ -225,7 +224,6 @@ useEffect(() => {
       });
     }
 
-    // 練習モード
     if (mode === "practice") {
 
       setShowExplanation(true);
@@ -233,10 +231,8 @@ useEffect(() => {
       return;
     }
 
-    // 模試モード
     if (mode === "mock") {
 
-      // 最後の問題なら自動終了しない
       if (
         currentIndex + 1 >=
         currentQuestions.length
@@ -249,7 +245,6 @@ useEffect(() => {
       return;
     }
 
-    // 復習モード
     if (
       currentIndex + 1 >=
       currentQuestions.length
@@ -263,19 +258,17 @@ useEffect(() => {
     setCurrentIndex((prev) => prev + 1);
 
     if (mode !== "mock") {
-  setTime(30);
-}
+      setTime(30);
+    }
+  };
 
-};
-
-  // 次の問題
   const nextQuestion = () => {
 
     setShowExplanation(false);
 
     if (mode !== "mock") {
       setTime(30);
-}
+    }
 
     setIsCorrect(null);
 
@@ -292,7 +285,6 @@ useEffect(() => {
     }
   };
 
-  // 前の問題
   const prevQuestion = () => {
 
     if (currentIndex > 0) {
@@ -302,10 +294,9 @@ useEffect(() => {
       setShowExplanation(false);
 
       setIsCorrect(null);
-  }
-};
+    }
+  };
 
-  // 指定した問題へ移動
   const jumpQuestion = (index) => {
 
     setCurrentIndex(index);
@@ -313,9 +304,8 @@ useEffect(() => {
     setShowExplanation(false);
 
     setIsCorrect(null);
-};
+  };
 
-  // 栞切り替え
   const toggleBookmark = () => {
 
     setBookmarkedIndexes((prev) => {
@@ -324,25 +314,27 @@ useEffect(() => {
 
         return prev.filter(
           (index) => index !== currentIndex
-      );
-    }
+        );
+      }
 
       return [
         ...prev,
         currentIndex
       ];
-  });
-};
+    });
+  };
 
-  // メニューへ戻る
   const goMenu = () => {
 
     if (screen === "quiz") {
 
+      const message =
+        mode === "mock"
+          ? "模試を終了してメニューに戻りますか？"
+          : "学習を終了してメニューに戻りますか？";
+
       const confirmExit =
-        window.confirm(
-          "模試を終了してメニューに戻りますか？"
-        );
+        window.confirm(message);
 
       if (!confirmExit) {
         return;
@@ -352,101 +344,94 @@ useEffect(() => {
     setScreen("menu");
   };
 
-  // 答案レビューへ
   const goReview = () => {
 
     setScreen("review");
   };
 
-  // 結果画面へ戻る
   const goResult = () => {
 
     setScreen("result");
   };
 
-  // 模試終了
   const finishExam = () => {
 
     setScreen("result");
   };
-  
-   // タイマー
-useEffect(() => {
 
-  if (screen !== "quiz") return;
+  useEffect(() => {
 
-  if (showExplanation) return;
+    if (screen !== "quiz") return;
 
-  if (!currentQuestion) return;
+    if (showExplanation) return;
 
-  if (time <= 0) {
+    if (!currentQuestion) return;
 
-    setMistakeQuestions((prev) => {
+    if (time <= 0) {
 
-      if (prev.includes(currentQuestion)) {
-        return prev;
-      }
+      setMistakeQuestions((prev) => {
 
-      return [...prev, currentQuestion];
-    });
+        if (prev.includes(currentQuestion)) {
+          return prev;
+        }
 
-    setIsCorrect(false);
+        return [...prev, currentQuestion];
+      });
 
-    setRemainingTimes((prev) => [
-      ...prev,
-      0
-    ]);
+      setIsCorrect(false);
 
-    // 練習モード
-    if (mode === "practice") {
+      setRemainingTimes((prev) => [
+        ...prev,
+        0
+      ]);
 
-      setShowExplanation(true);
+      if (mode === "practice") {
 
-    } else {
-
-      // 最後の問題
-      if (
-        currentIndex + 1 >=
-        currentQuestions.length
-      ) {
-
-        setScreen("result");
+        setShowExplanation(true);
 
       } else {
 
-        setCurrentIndex((prev) => prev + 1);
+        if (
+          currentIndex + 1 >=
+          currentQuestions.length
+        ) {
 
-        if (mode !== "mock") {
-          setTime(30);
+          setScreen("result");
+
+        } else {
+
+          setCurrentIndex((prev) => prev + 1);
+
+          if (mode !== "mock") {
+            setTime(30);
+          }
         }
       }
+
+      return;
     }
 
-    return;
-  }
+    const timer = setTimeout(() => {
 
-  const timer = setTimeout(() => {
+      setTime((prev) => prev - 1);
 
-    setTime((prev) => prev - 1);
+    }, 1000);
 
-  }, 1000);
+    return () => clearTimeout(timer);
 
-  return () => clearTimeout(timer);
-
-}, [
-  time,
-  screen,
-  showExplanation,
-  mode,
-  currentIndex,
-  currentQuestion,
-  currentQuestions.length
-]);
+  }, [
+    time,
+    screen,
+    showExplanation,
+    mode,
+    currentIndex,
+    currentQuestion,
+    currentQuestions.length
+  ]);
 
   return (
     <div>
 
-      {/* 固定メニューボタン */}
       <button
         onClick={goMenu}
         style={{
@@ -463,74 +448,72 @@ useEffect(() => {
 
       <h1>Study QUEST</h1>
 
-      {/* メニュー画面 */}
       {screen === "menu" && (
 
-  <Menu
-    startQuiz={startQuiz}
-    mistakeQuestions={mistakeQuestions}
-    setMistakeQuestions={
-      setMistakeQuestions
-    }
-  />
+        <Menu
+          startQuiz={startQuiz}
+          mistakeQuestions={mistakeQuestions}
+          setMistakeQuestions={
+            setMistakeQuestions
+          }
+        />
 
-)}
+      )}
 
-  {screen === "quiz" && (
+      {screen === "quiz" && (
 
-  <Quiz
-    mode={mode}
-    examType={examType}
-    time={time}
-    currentQuestion={currentQuestion}
-    showExplanation={showExplanation}
-    handleAnswer={handleAnswer}
-    isCorrect={isCorrect}
-    nextQuestion={nextQuestion}
-    jumpQuestion={jumpQuestion}
-    totalQuestions={currentQuestions.length}
-    bookmarkedIndexes={bookmarkedIndexes}
-    prevQuestion={prevQuestion}
-    currentIndex={currentIndex}
-    toggleBookmark={toggleBookmark}
-    isBookmarked={
-      bookmarkedIndexes.includes(currentIndex)
-  }
-    userAnswers={userAnswers}
-    finishExam={finishExam}
-/>
+        <Quiz
+          mode={mode}
+          examType={examType}
+          time={time}
+          currentQuestion={currentQuestion}
+          showExplanation={showExplanation}
+          handleAnswer={handleAnswer}
+          isCorrect={isCorrect}
+          nextQuestion={nextQuestion}
+          jumpQuestion={jumpQuestion}
+          totalQuestions={currentQuestions.length}
+          bookmarkedIndexes={bookmarkedIndexes}
+          prevQuestion={prevQuestion}
+          currentIndex={currentIndex}
+          toggleBookmark={toggleBookmark}
+          isBookmarked={
+            bookmarkedIndexes.includes(currentIndex)
+          }
+          userAnswers={userAnswers}
+          finishExam={finishExam}
+        />
 
-)}
+      )}
 
-{/* 結果画面 */}
-{screen === "result" && (
+      {screen === "result" && (
 
-  <Result
-    correctCount={correctCount}
-    totalQuestions={
-      currentQuestions.length
-    }
-    score={score}
-    remainingTimes={remainingTimes}
-    mode={mode}
-    examType={examType}
-    goMenu={goMenu}
-    bookmarkedCount={bookmarkedIndexes.length}
-    goReview={goReview}
-  />
+        <Result
+          correctCount={correctCount}
+          totalQuestions={
+            currentQuestions.length
+          }
+          score={score}
+          remainingTimes={remainingTimes}
+          mode={mode}
+          examType={examType}
+          goMenu={goMenu}
+          bookmarkedCount={bookmarkedIndexes.length}
+          goReview={goReview}
+        />
 
-)}
+      )}
 
-{screen === "review" && (
+      {screen === "review" && (
 
-  <Review
-    questions={currentQuestions}
-    userAnswers={userAnswers}
-    bookmarkedIndexes={bookmarkedIndexes}
-    goResult={goResult}
-  />
+        <Review
+          questions={currentQuestions}
+          userAnswers={userAnswers}
+          bookmarkedIndexes={bookmarkedIndexes}
+          goResult={goResult}
+        />
 
-)}
+      )}
 
     </div>
   );
