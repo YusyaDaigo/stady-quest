@@ -558,6 +558,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "飛行自粛要請空域が設定されている可能性がある場合、操縦者の対応として適切なものはどれか？",
     choices: [
@@ -571,6 +574,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "高度150m以上の飛行禁止空域について、最も適切な説明はどれか？",
     choices: [
@@ -584,6 +590,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "無人航空機の登録を受けられない可能性がある機体として、適切なものはどれか？",
     choices: [
@@ -597,6 +606,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "物件投下に関する説明として、適切なものはどれか？",
     choices: [
@@ -623,6 +635,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "技能証明と登録講習機関に関する説明として、適切なものはどれか？",
     choices: [
@@ -635,8 +650,11 @@ export const commonExtraQuestions = [
       "登録講習機関の講習を修了した場合、実地試験の免除対象になりますが、学科試験は原則として免除されません。"
   }
 
-    ,
+,
 {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "DIPS 2.0の主な目的として最も適切なものはどれか？",
     choices: [
@@ -650,6 +668,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "機体登録制度の目的として最も適切なものはどれか？",
     choices: [
@@ -663,6 +684,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "リモートIDの説明として適切なものはどれか？",
     choices: [
@@ -676,6 +700,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "飛行計画通報制度の目的として最も適切なものはどれか？",
     choices: [
@@ -689,6 +716,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "飛行ログを保存する理由として適切なものはどれか？",
     choices: [
@@ -702,6 +732,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "GNSSの役割として最も適切なものはどれか？",
     choices: [
@@ -715,6 +748,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "フェールセーフ機能の説明として適切なものはどれか？",
     choices: [
@@ -728,6 +764,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "RTH（Return To Home）の役割として適切なものはどれか？",
     choices: [
@@ -741,6 +780,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "飛行前にファームウェア更新を確認する理由として適切なものはどれか？",
     choices: [
@@ -754,6 +796,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "バッテリー管理で重要な事項として適切なものはどれか？",
     choices: [
@@ -766,8 +811,11 @@ export const commonExtraQuestions = [
       "飛行前後にバッテリー状態を確認することが重要です。"
 }
 
-    ,
+,
 {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "飛行計画通報を行う主な目的として適切なものはどれか？",
     choices: [
@@ -781,6 +829,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "リモートID機能が正常に動作しているか確認するタイミングとして適切なものはどれか？",
     choices: [
@@ -794,6 +845,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "GNSS信号の受信状態が悪化した場合のリスクとして適切なものはどれか？",
     choices: [
@@ -807,6 +861,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "通信リンクが途絶した場合に備える機能として適切なものはどれか？",
     choices: [
@@ -2675,6 +2732,29 @@ export const commonExtraQuestions = [
       "ESCは各モーター回転数を個別制御し機体姿勢を安定させる。"
 },
 
+  
+  {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
+    question:
+      "無人航空機を飛行させる前に、補助者と確認しておくべき事項として最も適切なものはどれか？",
+
+    choices: [
+      "監視範囲、合図、緊急時の連絡方法を確認する",
+      "補助者の好きな機体メーカーを確認する",
+      "飛行後の片付けだけ確認する"
+    ],
+
+    answer: 0,
+
+    explanation:
+      "補助者を配置する場合は、監視範囲、合図、緊急時の連絡方法などを事前に共有しておく必要があります。"
+  },
+
+  // AI_COMMON_EXTRA_INSERT_HERE
+
+
 ];
 
 export const secondExamQuestions = [
@@ -3534,8 +3614,11 @@ export const firstRiskQuestions = [
     answer: 0,
     explanation:
       "150m超空域では有人航空機との衝突防止が重要です。"
-}
+  },
 
+
+
+  // AI_QUESTIONS_INSERT_HERE
 ];
 
 export const firstExamQuestions = [
