@@ -877,6 +877,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "飛行ログの確認で把握できる内容として適切なものはどれか？",
     choices: [
@@ -890,6 +893,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "自動帰還機能を利用する際に事前設定が必要な項目として適切なものはどれか？",
     choices: [
@@ -903,6 +909,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "冗長化設計の目的として適切なものはどれか？",
     choices: [
@@ -916,6 +925,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "飛行前に確認するバッテリー情報として適切なものはどれか？",
     choices: [
@@ -929,6 +941,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.SYSTEM,
+
     question:
       "機体ソフトウェア更新後に行うべき事項として適切なものはどれか？",
     choices: [
@@ -942,6 +957,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "飛行中に異常警告が表示された場合の対応として適切なものはどれか？",
     choices: [
@@ -956,6 +974,9 @@ export const commonExtraQuestions = [
 
     ,
 {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "無人航空機を飛行させる前に、飛行場所の管理者がいる場合の対応として最も適切なものはどれか？",
     choices: [
@@ -969,6 +990,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "飛行中に第三者が飛行区域へ接近してきた場合の対応として最も適切なものはどれか？",
     choices: [
@@ -982,6 +1006,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "無人航空機の操縦者が飛行前に確認すべき周辺環境として適切なものはどれか？",
     choices: [
@@ -995,6 +1022,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "飛行中に強風が発生した場合の対応として最も適切なものはどれか？",
     choices: [
@@ -1008,6 +1038,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "無人航空機を飛行させる際のプライバシーへの配慮として適切なものはどれか？",
     choices: [
@@ -1021,6 +1054,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "飛行前に補助者と確認しておく事項として最も適切なものはどれか？",
     choices: [
@@ -1034,6 +1070,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "無人航空機の飛行における安全管理として最も適切なものはどれか？",
     choices: [
@@ -1047,6 +1086,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "無人航空機を人口が多い地域の近くで飛行させる場合の考え方として適切なものはどれか？",
     choices: [
@@ -1060,6 +1102,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "飛行中に機体を見失った場合の対応として最も適切なものはどれか？",
     choices: [
@@ -1073,6 +1118,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "飛行前に緊急着陸場所を確認する理由として最も適切なものはどれか？",
     choices: [
@@ -1087,6 +1135,9 @@ export const commonExtraQuestions = [
 
 ,
 {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "航空法において無人航空機とは、一般に何kg未満の機体を除くものとして定義されているか。",
     choices: [
@@ -1100,6 +1151,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "無人航空機を飛行させる際、飛行前に確認すべき事項として最も適切なものはどれか。",
     choices: [
@@ -1113,6 +1167,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "人口集中地区（DID）上空で飛行する場合に必要となるものはどれか。",
     choices: [
@@ -1126,6 +1183,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "夜間飛行を行う場合に必要となるものはどれか。",
     choices: [
@@ -1139,6 +1199,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "目視外飛行を行う場合に必要となるものはどれか。",
     choices: [
@@ -1152,6 +1215,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "第三者または第三者の物件から確保しなければならない距離はどれか。",
     choices: [
@@ -1165,6 +1231,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "催し場所上空で飛行する場合に必要となるものはどれか。",
     choices: [
@@ -1178,6 +1247,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "アルコールまたは薬物の影響下で無人航空機を飛行させてはならない。この規定の目的として最も適切なものはどれか。",
     choices: [
@@ -1191,6 +1263,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "飛行中に異常を認めた場合の対応として最も適切なものはどれか。",
     choices: [
@@ -1204,6 +1279,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "飛行前の気象確認として最も重要なものはどれか。",
     choices: [
@@ -1218,6 +1296,9 @@ export const commonExtraQuestions = [
 
 ,
 {
+    subject: "drone",
+    category: CATEGORIES.RULE,
+
     question:
       "航空法上、飛行の方法として禁止されているものはどれか。",
     choices: [
@@ -1231,6 +1312,9 @@ export const commonExtraQuestions = [
   },
 
   {
+    subject: "drone",
+    category: CATEGORIES.RISK,
+
     question:
       "無人航空機を飛行させる者が、飛行前に確認しなければならない事項として適切なものはどれか。",
     choices: [
