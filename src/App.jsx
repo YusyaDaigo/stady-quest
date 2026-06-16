@@ -4,7 +4,7 @@ import {
   commonQuestions,
   secondExamQuestions,
   firstExamQuestions
-} from "./questions";
+} from "./questions/index";
 
 import Menu from "./Menu";
 import Quiz from "./Quiz";
