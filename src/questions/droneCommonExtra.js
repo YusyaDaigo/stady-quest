@@ -403,23 +403,7 @@ export const commonExtraQuestions = [
         explanation:
           "飛行自粛要請空域は国土交通省のホームページ等で公示されるため、飛行前に確認し適切に対応します。"
       },
-    
-      {
-        subject: "drone",
-        category: CATEGORIES.RULE,
-    
-        question:
-          "高度150m以上の飛行禁止空域について、最も適切な説明はどれか？",
-        choices: [
-          "無人航空機の直下の地表または水面から150m以上の空域である",
-          "海抜150m以上のすべての空域である",
-          "山岳地では適用されない"
-        ],
-        answer: 0,
-        explanation:
-          "高度150m以上とは、海抜ではなく、直下の地表または水面からの高さで判断します。"
-      },
-    
+        
       {
         subject: "drone",
         category: CATEGORIES.RULE,
@@ -453,6 +437,9 @@ export const commonExtraQuestions = [
       },
     
       {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
         question:
           "小型無人機等飛行禁止法に関する説明として、適切なものはどれか？",
         choices: [
@@ -513,23 +500,7 @@ export const commonExtraQuestions = [
         explanation:
           "機体登録制度は所有者の把握や安全管理を目的としています。"
       },
-    
-      {
-        subject: "drone",
-        category: CATEGORIES.RULE,
-    
-        question:
-          "リモートIDの説明として適切なものはどれか？",
-        choices: [
-          "機体情報等を周囲へ発信する仕組み",
-          "GNSS受信機の一種",
-          "飛行ログを保存する装置"
-        ],
-        answer: 0,
-        explanation:
-          "リモートIDは機体識別情報などを送信する仕組みです。"
-      },
-    
+        
       {
         subject: "drone",
         category: CATEGORIES.RULE,
@@ -1333,23 +1304,7 @@ export const commonExtraQuestions = [
         explanation:
           "登録記号は機体へ表示しなければなりません。"
       },
-    
-      {
-        subject: "drone",
-        category: CATEGORIES.RULE,
         
-        question:
-          "リモートID機能に関する説明として適切なものはどれか。",
-        choices: [
-          "登録情報を遠隔から識別するための仕組みである",
-          "飛行速度を計測する装置である",
-          "バッテリー残量を監視する装置である"
-        ],
-        answer: 0,
-        explanation:
-          "リモートIDは登録情報を遠隔から識別するための仕組みです。"
-      },
-    
       {
         subject: "drone",
         category: CATEGORIES.RULE,
@@ -2604,21 +2559,6 @@ export const commonExtraQuestions = [
           "第二種機体認証は主にカテゴリーⅡ飛行において活用される。"
     },
     
-    {
-        subject: "drone",
-        category: CATEGORIES.RULE,
-    
-        question:
-          "リモートIDにより発信される情報として正しいものを選べ。",
-        choices: [
-          "位置・速度・高度・時刻",
-          "所有者の住所",
-          "操縦者の電話番号"
-        ],
-        answer: 0,
-        explanation:
-          "リモートIDでは位置、速度、高度、時刻などの情報が発信されるが、所有者や使用者の個人情報は含まれない。"
-    },
     
     {
         subject: "drone",
@@ -3392,9 +3332,786 @@ export const commonExtraQuestions = [
         "物件投下装置を使用する場合は、装置の特性、搭載位置、対象物の揺れ、投下前後の重心変化を考慮する必要があります。"
     },
 
+    {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "空港等周辺空域に関する説明として最も適切なものはどれか。",
+
+        choices: [
+            "航空機の離着陸の安全を確保するため飛行が制限される空域である",
+            "空港から5km以上離れていれば必ず飛行可能である",
+            "夜間のみ規制される空域である"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "空港等周辺空域は航空機の安全な離着陸を確保するために設定されている。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "カテゴリーⅡB飛行について最も適切なものはどれか。",
+
+        choices: [
+            "認証機と技能証明を前提に許可承認不要となる場合がある",
+            "常に国土交通大臣の承認が必要である",
+            "第三者上空飛行のみを指す"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "カテゴリーⅡB飛行は一定条件を満たすことで許可承認不要となる場合がある。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "登録講習機関を修了した者について正しいものはどれか。",
+
+        choices: [
+            "指定試験機関の実地試験が免除される",
+            "学科試験が免除される",
+            "身体検査が免除される"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "登録講習機関修了者は実地試験の免除対象となる。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "技能証明の効力停止処分を受ける可能性があるものはどれか。",
+
+        choices: [
+            "航空法違反や重大な過失",
+            "機体色の変更",
+            "飛行日誌の作成"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "航空法違反や重大な過失は行政処分対象となる。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "模型航空機について最も適切なものはどれか。",
+
+        choices: [
+            "100g未満であっても飛行場所によっては規制対象となる",
+            "航空法の適用を一切受けない",
+            "空港周辺空域でも自由に飛行できる"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "模型航空機であっても飛行場所によっては規制対象となる。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "飛行自粛要請空域について正しいものはどれか。",
+
+        choices: [
+            "国や自治体が公表する情報を飛行前に確認する必要がある",
+            "航空法に規定されていないため無視してよい",
+            "災害時のみ設定される"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "飛行自粛要請空域は飛行前に確認することが重要である。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "高度150m以上の飛行禁止空域に関する説明として最も適切なものはどれか。",
+
+        choices: [
+            "直下の地表又は水面から150m以上で判断する",
+            "海抜150m以上で判断する",
+            "標高150m以上の山は飛行禁止となる"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "高度150m以上とは海抜ではなく直下地表からの高度差である。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "小型無人機等飛行禁止法における対象施設として適切なものはどれか。",
+
+        choices: [
+            "国会議事堂",
+            "一般公園",
+            "市民体育館"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "国会議事堂は対象施設に指定されている。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.SYSTEM,
+
+        question:
+            "シングルローターヘリコプターにおいてテールローターが必要な主な理由はどれか。",
+
+        choices: [
+            "主回転翼による反トルクを打ち消すため",
+            "高度を測定するため",
+            "GNSS信号を受信するため"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "テールローターは主回転翼の反トルクを打ち消すために用いられる。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.SYSTEM,
+
+        question:
+            "スワッシュプレートの役割として最も適切なものはどれか。",
+
+        choices: [
+            "回転するローターブレードへ操縦入力を伝達する",
+            "バッテリー電圧を調整する",
+            "GNSS信号を増幅する"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "スワッシュプレートは回転翼機の操縦入力伝達装置である。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.SYSTEM,
+
+        question:
+            "固定翼機が飛行を維持するために必要なものとして最も適切なものはどれか。",
+
+        choices: [
+            "前進速度",
+            "GNSS信号",
+            "RTH機能"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "固定翼機は翼に気流を受けて揚力を発生させる。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.SYSTEM,
+
+        question:
+            "マルチローターと比較した固定翼機の特徴として適切なものはどれか。",
+
+        choices: [
+            "一般的に長距離飛行に適している",
+            "その場で静止しやすい",
+            "離着陸に広い場所を必要としない"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "固定翼機は効率が良く長距離飛行に適している。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.SYSTEM,
+
+        question:
+            "LiDARが利用される主な目的として最も適切なものはどれか。",
+
+        choices: [
+            "距離や地形情報の取得",
+            "バッテリー残量測定",
+            "映像圧縮"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "LiDARはレーザーを用いて距離を測定する。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.SYSTEM,
+
+        question:
+            "ATTIモード飛行中に強風を受けた場合に起こりやすい現象はどれか。",
+
+        choices: [
+            "機体が風に流される",
+            "GNSS精度が向上する",
+            "飛行時間が延びる"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "ATTIモードでは位置保持を行わないため風の影響を受けやすい。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.SYSTEM,
+
+        question:
+            "ビジョンセンサーが正常に機能しにくい環境として最も適切なものはどれか。",
+
+        choices: [
+            "暗所や模様の少ない地面",
+            "十分な照度がある場所",
+            "コントラストが高い地面"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "ビジョンセンサーは照度や地表模様の影響を受ける。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.SYSTEM,
+
+        question:
+            "ESC故障時に発生する可能性が高い事象はどれか。",
+
+        choices: [
+            "モーター回転制御異常",
+            "GNSS測位精度向上",
+            "バッテリー容量増加"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "ESCはモーター回転数を制御している。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RISK,
+
+        question:
+            "飛行計画を立案する際に最も重要な考え方はどれか。",
+
+        choices: [
+            "危険な状況にならないよう事前に回避する",
+            "異常発生後に対応すればよい",
+            "飛行時間を最優先する"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "リスク管理では危険発生前の予防が重要である。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RISK,
+
+        question:
+            "CRMの考え方として最も適切なものはどれか。",
+
+        choices: [
+            "利用可能な人的資源を活用して安全を高める",
+            "操縦者だけで全て判断する",
+            "補助者の意見は考慮しない"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "CRMはチーム全体で安全性を向上させる考え方である。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RISK,
+
+        question:
+            "飛行経験のある場所で飛行する場合について最も適切なものはどれか。",
+
+        choices: [
+            "経験の有無に関係なく飛行計画を作成する",
+            "経験があれば事前確認は不要である",
+            "経験があれば気象確認は不要である"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "教則では経験のある場所でも飛行計画作成を求めている。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RISK,
+
+        question:
+            "飛行中に天候悪化の兆候を確認した場合として最も適切な対応はどれか。",
+
+        choices: [
+            "帰還または緊急着陸を判断する",
+            "予定終了まで飛行を継続する",
+            "自動操縦に任せる"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "危険な状況になる前に飛行を終了する判断が重要である。"
+},
+
+{
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "空港等周辺空域に設定される『水平表面』について最も適切なものはどれか。",
+
+        choices: [
+            "空港周辺の一定高度以下の空域を保護するため設定される",
+            "空港滑走路上空のみを対象とする",
+            "夜間のみ適用される"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "水平表面は航空機の離着陸の安全確保を目的として設定される制限表面の一つである。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "転移表面の説明として最も適切なものはどれか。",
+
+        choices: [
+            "滑走路周辺の制限表面と水平表面をつなぐ傾斜した空域である",
+            "空港外周300mの区域である",
+            "航空機が駐機する区域である"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "転移表面は制限表面の一つであり、側方の安全確保を目的としている。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "円錐表面について正しいものはどれか。",
+
+        choices: [
+            "水平表面の外側に広がる上向きの傾斜面である",
+            "滑走路中心線のみを保護する",
+            "空港内地上部分のみを指す"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "円錐表面は水平表面外側に設けられる制限表面である。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "進入表面が設定される主な理由として最も適切なものはどれか。",
+
+        choices: [
+            "航空機の進入経路を保護するため",
+            "騒音を抑制するため",
+            "GNSS精度を向上させるため"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "進入表面は着陸進入経路の安全確保を目的として設定される。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "カテゴリーⅡA飛行について最も適切なものはどれか。",
+
+        choices: [
+            "技能証明や認証機があっても許可承認が必要となる飛行が含まれる",
+            "常に許可承認不要である",
+            "第三者上空飛行のみを指す"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "カテゴリーⅡA飛行は運航管理等について審査を受ける必要がある。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "カテゴリーⅡB飛行について最も適切なものはどれか。",
+
+        choices: [
+            "認証機及び技能証明により許可承認不要となる場合がある",
+            "必ずカテゴリーⅢ飛行である",
+            "飛行マニュアル遵守は不要である"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "カテゴリーⅡB飛行は一定条件を満たした場合に許可承認不要となる。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "第一種機体認証について正しいものはどれか。",
+
+        choices: [
+            "カテゴリーⅢ飛行で必要となる認証である",
+            "模型航空機専用認証である",
+            "技能証明の代替となる制度である"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "カテゴリーⅢ飛行では第一種機体認証機が必要となる。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "第三者上空飛行について最も適切なものはどれか。",
+
+        choices: [
+            "立入管理措置を講じていない第三者の上空を飛行すること",
+            "補助者の上空を飛行すること",
+            "操縦者の上空を飛行すること"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "第三者上空飛行はカテゴリーⅢ飛行に該当する。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "カテゴリーⅢ飛行を実施するために必要な組み合わせとして最も適切なものはどれか。",
+
+        choices: [
+            "一等無人航空機操縦士＋第一種機体認証",
+            "二等無人航空機操縦士＋第二種機体認証",
+            "機体登録のみ"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "カテゴリーⅢ飛行では一等資格及び第一種機体認証が必要である。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "技能証明の効力停止処分について最も適切なものはどれか。",
+
+        choices: [
+            "航空法違反等により行政処分として行われる場合がある",
+            "本人が希望すればいつでも停止される",
+            "機体故障のみで自動停止される"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "重大な法令違反等では技能証明の効力停止処分が行われる場合がある。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RISK,
+
+        question:
+            "第三者上空飛行が厳しく規制されている主な理由として最も適切なものはどれか。",
+
+        choices: [
+            "墜落時に第三者へ直接危害を及ぼす危険性が高いため",
+            "騒音が大きいため",
+            "飛行時間が短くなるため"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "第三者上空飛行は人的被害リスクが高いため厳格に規制されている。"
+},
+
+{
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "カテゴリーⅡB飛行に関する説明として、最も適切なものはどれか。",
+
+        choices: [
+            "技能証明を受けた操縦者が認証機を使用し、定められた飛行マニュアル等を遵守することで、許可・承認を要しない場合がある飛行である",
+            "技能証明を受けた操縦者が操縦する飛行であれば、機体認証の有無に関係なく常に許可・承認が不要となる飛行である",
+            "認証機を使用していれば、操縦者が技能証明を保有していなくても許可・承認が不要となる飛行である"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "カテゴリーⅡB飛行では技能証明、認証機、飛行マニュアル遵守等の条件を満たす必要があります。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "高度150m以上の空域について、最も適切な説明はどれか。",
+
+        choices: [
+            "無人航空機直下の地表又は水面から150m以上の高度差がある空域を指し、海抜高度とは異なる考え方で判断される",
+            "海抜150m以上の空域を指し、山岳地帯では地表からの高度差は考慮しない",
+            "標高150m以上の場所において飛行する場合は、高度に関係なく飛行禁止空域として扱われる"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "高度150m以上は海抜ではなく直下地表等からの高度差で判断します。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "登録講習機関を修了した者について、最も適切な説明はどれか。",
+
+        choices: [
+            "指定試験機関が実施する実地試験の全部又は一部が免除されるが、学科試験や身体検査は原則として免除されない",
+            "学科試験、実地試験及び身体検査の全てが免除されるため、そのまま技能証明を取得できる",
+            "登録講習機関を修了した場合は、技能証明を受けなくても特定飛行を自由に行うことができる"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "登録講習機関修了による主なメリットは実地試験の免除です。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "第三者上空飛行について、最も適切な説明はどれか。",
+
+        choices: [
+            "立入管理措置を講じていない第三者の上空を飛行するものであり、高い安全性が求められるカテゴリーⅢ飛行に該当する",
+            "操縦者及び補助者の上空を飛行するものであり、カテゴリーⅠ飛行に分類される",
+            "第三者から30m以上離れていれば上空飛行に該当せず、カテゴリー区分とは無関係である"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "第三者上空飛行はカテゴリーⅢ飛行に該当します。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.SYSTEM,
+
+        question:
+            "GNSSとIMUを併用する主な理由として、最も適切なものはどれか。",
+
+        choices: [
+            "GNSSによる位置情報とIMUによる姿勢・加速度情報を組み合わせることで、より安定した位置推定を行うため",
+            "GNSSだけでは位置測位ができないため、IMUが代わりに衛星信号を受信するため",
+            "IMUが取得した情報をGNSS衛星へ送信することで測位精度を向上させるため"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "GNSSとIMUは互いの弱点を補完する目的で使用されます。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.SYSTEM,
+
+        question:
+            "スワッシュプレートの役割として、最も適切なものはどれか。",
+
+        choices: [
+            "操縦者の入力を回転中のメインローターブレードへ伝達し、機体姿勢や進行方向を制御するために用いられる",
+            "モーター回転数を制御し、マルチローターの各ローターへ電力を供給するために用いられる",
+            "GNSS信号を受信し、機体位置を算出するために用いられる"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "スワッシュプレートは回転翼機特有の操縦機構です。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.SYSTEM,
+
+        question:
+            "ATTIモードに移行した場合の飛行特性として、最も適切なものはどれか。",
+
+        choices: [
+            "GNSSによる位置保持が行われなくなるため、風の影響を受けて機体が流されやすくなる",
+            "自動的にRTHが作動するため、操縦者による操作は一切不要となる",
+            "通常のGPSモードより位置保持性能が向上し、風の影響を受けにくくなる"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "ATTIモードでは位置保持が行われません。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RISK,
+
+        question:
+            "CRM（Crew Resource Management）の考え方として、最も適切なものはどれか。",
+
+        choices: [
+            "操縦者だけでなく補助者や関係者も含めた人的資源を有効活用し、安全性向上を図る考え方である",
+            "操縦者の経験を最優先とし、補助者からの助言は原則として受けない考え方である",
+            "機体性能を最大限発揮することを目的として飛行効率を高める考え方である"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "CRMは人的資源を活用して安全性向上を図る考え方です。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RISK,
+
+        question:
+            "飛行経験のある場所で飛行する場合の考え方として、最も適切なものはどれか。",
+
+        choices: [
+            "過去に飛行実績がある場所であっても、周辺環境や気象条件の変化を考慮して飛行前確認を実施する必要がある",
+            "飛行経験がある場所であれば周辺環境確認は不要であり、機体点検のみで飛行できる",
+            "飛行経験がある場所であれば飛行計画の作成やリスク評価は省略してよい"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "同じ場所でも環境は変化するため事前確認が必要です。"
+        },
+
+        {
+        subject: "drone",
+        category: CATEGORIES.RULE,
+
+        question:
+            "小型無人機等飛行禁止法の対象施設周辺で飛行する場合について、最も適切なものはどれか。",
+
+        choices: [
+            "対象施設及びその周辺空域では飛行が制限されており、無許可飛行は罰則の対象となる場合がある",
+            "航空法上の許可を受けていれば、小型無人機等飛行禁止法による制限は受けない",
+            "対象施設の敷地外であれば距離に関係なく自由に飛行することができる"
+        ],
+
+        answer: 0,
+
+        explanation:
+            "航空法とは別に小型無人機等飛行禁止法の規制を受けます。"
+},
+
+
   // AI_COMMON_EXTRA_INSERT_HERE
-
-
-
 
 ];
