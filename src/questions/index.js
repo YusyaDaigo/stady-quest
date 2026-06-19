@@ -12,20 +12,24 @@ from "./droneCommon";
 import { commonExtraQuestions }
 from "./droneCommonExtra";
 
+import { generateRandomCalculationQuestions } from "./randomCalculationQuestions";
+
+import {
+  firstNormalQuestions,
+  firstCalculationQuestions,
+  firstRiskQuestions
+} from "./droneFirst";
+
 export const secondExamQuestions = [
   ...commonQuestions,
   ...commonExtraQuestions
 ];
-
-// 一旦空配列
-export const firstNormalQuestions = [];
-export const firstCalculationQuestions = [];
-export const firstRiskQuestions = [];
 
 export const firstExamQuestions = [
   ...commonQuestions,
   ...commonExtraQuestions,
   ...firstNormalQuestions,
   ...firstCalculationQuestions,
+  ...generateRandomCalculationQuestions(),
   ...firstRiskQuestions
 ];

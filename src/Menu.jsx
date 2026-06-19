@@ -1,4 +1,4 @@
-import { CATEGORIES } from "./questions";
+import { CATEGORIES } from "./questions/index";
 
 function Menu({
   startQuiz,

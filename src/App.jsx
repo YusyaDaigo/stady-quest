@@ -17,6 +17,14 @@ const shuffleArray = (array) => {
   );
 };
 
+const getQuestionTimeLimit = (question) => {
+  if (question?.category === CATEGORIES.CALC) {
+    return 150;
+  }
+
+  return 30;
+};
+
 function App() {
 
   const [screen, setScreen] = useState("menu");
@@ -128,22 +136,60 @@ function App() {
       selectedQuestions =
         firstExamQuestions;
 
-    } else {
+      } else {
 
-      selectedQuestions =
-        commonQuestions;
+        if (category === CATEGORIES.ALL) {
 
-      if (category !== CATEGORIES.ALL) {
-        selectedQuestions =
-          selectedQuestions.filter(
-            (question) =>
-              question.category === category
-          );
+          selectedQuestions =
+            secondExamQuestions;
+
+        } else if (
+          category === CATEGORIES.CALC ||
+          category === CATEGORIES.FIRST
+        ) {
+
+          selectedQuestions =
+            firstExamQuestions.filter(
+              (question) =>
+                question.category === category
+            );
+
+        } else {
+
+          selectedQuestions =
+            secondExamQuestions.filter(
+              (question) =>
+                question.category === category
+            );
+      console.log("MODE:", selectedMode);
+      console.log("CATEGORY:", category);
+      console.log("SELECTED QUESTIONS:", selectedQuestions.length);
+      console.log(
+        "CATEGORY LIST:",
+        secondExamQuestions.map((q) => q.category).slice(0, 10)
+);
+
+console.log(
+  "CATEGORY",
+  category,
+  "COUNT",
+  selectedQuestions.length
+);
+        }
       }
-    }
 
     let shuffledQuestions =
       shuffleArray(selectedQuestions);
+
+    if (selectedMode === "practice") {
+      if (category === CATEGORIES.ALL) {
+        shuffledQuestions =
+          shuffledQuestions.slice(0, 30);
+      } else {
+        shuffledQuestions =
+          shuffledQuestions.slice(0, 10);
+      }
+    }
 
     if (
       selectedMode === "mock" &&
@@ -172,12 +218,23 @@ function App() {
     setCorrectCount(0);
     setShowExplanation(false);
 
+  if (selectedMode === "practice") {
+
+    setTime(
+      getQuestionTimeLimit(
+        shuffledQuestions[0]
+      )
+    );
+
+  } else {
+
     setTime(
       getInitialTime(
         selectedMode,
         selectedExamType
-      )
-    );
+    )
+  );
+}
 
     setIsCorrect(null);
     setUserAnswers([]);
@@ -255,20 +312,26 @@ function App() {
       return;
     }
 
-    setCurrentIndex((prev) => prev + 1);
+  const next =
+    currentQuestions[currentIndex + 1];
 
-    if (mode !== "mock") {
-      setTime(30);
-    }
+  setCurrentIndex((prev) => prev + 1);
+
+  if (mode !== "mock") {
+    setTime(getQuestionTimeLimit(next));
+}
   };
 
   const nextQuestion = () => {
 
     setShowExplanation(false);
 
+    const next =
+      currentQuestions[currentIndex + 1];
+
     if (mode !== "mock") {
-      setTime(30);
-    }
+      setTime(getQuestionTimeLimit(next));
+  }
 
     setIsCorrect(null);
 
