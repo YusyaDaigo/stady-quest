@@ -188,8 +188,8 @@ console.log(
       } else {
         shuffledQuestions =
           shuffledQuestions.slice(0, 10);
-      }
-    }
+  }
+}
 
     if (
       selectedMode === "mock" &&
