@@ -9,7 +9,7 @@ function Menu({
   return (
     <div>
 
-      <h2>メインメニュー</h2>
+      <h2>ジャンルメニュー</h2>
 
       <div
         style={{

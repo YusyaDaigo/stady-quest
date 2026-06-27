@@ -187,7 +187,7 @@ return (
       </button>
 
       <button onClick={goMenu}>
-        メインメニューへ戻る
+        ジャンルメニューへ戻る
       </button>
 
     </div>

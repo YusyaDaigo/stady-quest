@@ -10,6 +10,7 @@ import Menu from "./Menu";
 import Quiz from "./Quiz";
 import Result from "./Result";
 import Review from "./Review";
+import MainMenu from "./MainMenu";
 
 const shuffleArray = (array) => {
   return [...array].sort(
@@ -27,6 +28,7 @@ const getQuestionTimeLimit = (question) => {
 
 function App() {
 
+  const [selectedExam, setSelectedExam] = useState(null);
   const [screen, setScreen] = useState("menu");
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -393,8 +395,8 @@ console.log(
 
       const message =
         mode === "mock"
-          ? "模試を終了してメニューに戻りますか？"
-          : "学習を終了してメニューに戻りますか？";
+          ? "模試を終了してジャンルメニューへ戻りますか？"
+          : "学習を終了してジャンルメニューへ戻りますか？";
 
       const confirmExit =
         window.confirm(message);
@@ -405,7 +407,7 @@ console.log(
     }
 
     setScreen("menu");
-  };
+};
 
   const goReview = () => {
 
@@ -492,6 +494,14 @@ console.log(
     currentQuestions.length
   ]);
 
+  if (selectedExam === null) {
+    return (
+      <MainMenu
+        selectExam={setSelectedExam}
+      />
+    );
+}
+
   return (
     <div>
 
@@ -506,22 +516,45 @@ console.log(
           borderRadius: "10px"
         }}
       >
-        メニュー
+        ジャンルメニュー
       </button>
 
-      <h1>Study QUEST</h1>
+        <h1
+          onClick={() => {
+            setSelectedExam(null);
+            setScreen("menu");
+          }}
+          style={{
+            cursor: "pointer"
+          }}
+        >
+          Study QUEST
+        </h1>
 
-      {screen === "menu" && (
+      {selectedExam === "drone" &&
+        screen === "menu" && (
+          <Menu
+            startQuiz={startQuiz}
+            mistakeQuestions={mistakeQuestions}
+            setMistakeQuestions={
+              setMistakeQuestions
+            }
+          />
+)}
 
-        <Menu
-          startQuiz={startQuiz}
-          mistakeQuestions={mistakeQuestions}
-          setMistakeQuestions={
-            setMistakeQuestions
-          }
-        />
+      {selectedExam === "pharmacy" &&
+        screen === "menu" && (
+          <div
+            style={{
+              textAlign: "center",
+              marginTop: "80px"
+            }}
+          >
+            <h2>💊 薬剤師国家試験</h2>
 
-      )}
+            <p>現在準備中です。</p>
+          </div>
+)}
 
       {screen === "quiz" && (
 
