@@ -6,7 +6,7 @@ import {
   firstExamQuestions
 } from "./exams/drone/questions";
 
-import DroneMenu from "./exams/drone/Menu";
+import DroneMenu from "./exams/drone/DroneMenu";
 import Quiz from "./Quiz";
 import Result from "./Result";
 import Review from "./Review";
