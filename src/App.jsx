@@ -4,13 +4,14 @@ import {
   commonQuestions,
   secondExamQuestions,
   firstExamQuestions
-} from "./questions/index";
+} from "./exams/drone/questions";
 
-import Menu from "./Menu";
+import DroneMenu from "./exams/drone/Menu";
 import Quiz from "./Quiz";
 import Result from "./Result";
 import Review from "./Review";
 import MainMenu from "./MainMenu";
+import PharmacyMenu from "./exams/pharmacy/Menu";
 
 const shuffleArray = (array) => {
   return [...array].sort(
@@ -533,27 +534,16 @@ console.log(
 
       {selectedExam === "drone" &&
         screen === "menu" && (
-          <Menu
+          <DroneMenu
             startQuiz={startQuiz}
             mistakeQuestions={mistakeQuestions}
-            setMistakeQuestions={
-              setMistakeQuestions
-            }
+            setMistakeQuestions={setMistakeQuestions}
           />
 )}
 
       {selectedExam === "pharmacy" &&
         screen === "menu" && (
-          <div
-            style={{
-              textAlign: "center",
-              marginTop: "80px"
-            }}
-          >
-            <h2>💊 薬剤師国家試験</h2>
-
-            <p>現在準備中です。</p>
-          </div>
+          <PharmacyMenu />
 )}
 
       {screen === "quiz" && (
