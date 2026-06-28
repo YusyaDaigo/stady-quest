@@ -1,4 +1,4 @@
-import { CATEGORIES } from "./questions/index";
+import { CATEGORIES } from "./questions";
 
 function DroneMenu({
   startQuiz,
