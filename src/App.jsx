@@ -11,7 +11,7 @@ import Quiz from "./Quiz";
 import Result from "./Result";
 import Review from "./Review";
 import MainMenu from "./MainMenu";
-import PharmacyMenu from "./exams/pharmacy/Menu";
+import PharmacyMenu from "./exams/pharmacy/PharmacyMenu";
 
 const shuffleArray = (array) => {
   return [...array].sort(
