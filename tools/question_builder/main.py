@@ -1,3 +1,4 @@
+import argparse
 from pathlib import Path
 
 from config import (
@@ -44,8 +45,32 @@ def add_questions(target_file: Path, questions: list):
 
 
 def main():
-    exam = "pharmacy"
-    category = "required"
+    parser = argparse.ArgumentParser()
+
+    parser.add_argument(
+        "--exam",
+        required=True,
+        help="資格名"
+    )
+
+    parser.add_argument(
+        "--category",
+        required=True,
+        help="カテゴリ"
+    )
+
+    parser.add_argument(
+        "--count",
+        type=int,
+        default=1,
+        help="生成数"
+    )
+
+    args = parser.parse_args()
+
+    exam = args.exam
+    category = args.category
+    count = args.count
 
     target_file = get_target_file(exam, category)
 
@@ -57,7 +82,7 @@ def main():
     questions = generate_questions(
         exam=exam,
         category=category,
-        count=1,
+        count=count,
 )
 
     success = add_questions(target_file, questions)
