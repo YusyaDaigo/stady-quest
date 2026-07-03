@@ -12,7 +12,7 @@ from formatters.js_formatter import build_question_block
 from checkers.duplicate_checker import is_duplicate_question
 from exporters.file_exporter import backup_file, insert_question_blocks
 from validators.question_validator import validate_question
-from generators.static_generator import generate_questions
+from generators.generator_factory import get_generator
 
 
 def get_target_file(exam: str, category: str) -> Path:
@@ -66,6 +66,12 @@ def main():
         help="生成数"
     )
 
+    parser.add_argument(
+        "--generator",
+        default="static",
+        help="使用するGenerator"
+    )
+
     args = parser.parse_args()
 
     exam = args.exam
@@ -79,11 +85,13 @@ def main():
 
     backup_path = backup_file(target_file)
 
-    questions = generate_questions(
+    generator = get_generator(args.generator)
+
+    questions = generator(
         exam=exam,
         category=category,
         count=count,
-)
+    )
 
     success = add_questions(target_file, questions)
 

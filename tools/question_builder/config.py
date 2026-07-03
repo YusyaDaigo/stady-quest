@@ -18,3 +18,5 @@ QUESTION_FILES = {
 QUESTION_JSON_PATH = BASE_DIR / "tools/question_builder/generated_questions.json"
 
 INSERT_MARKER = "// AI_QUESTION_INSERT_HERE"
+
+SOURCE_MATERIALS_DIR = BASE_DIR / "source_materials"
