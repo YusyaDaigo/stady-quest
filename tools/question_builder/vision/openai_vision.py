@@ -3,7 +3,10 @@ import json
 import os
 from pathlib import Path
 
+from dotenv import load_dotenv
 from openai import OpenAI
+
+load_dotenv()
 
 from config import OPENAI_VISION_MODEL, PHARMACY_FIELD_ALIASES
 

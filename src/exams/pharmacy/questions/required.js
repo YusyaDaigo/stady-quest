@@ -1,53 +1,18 @@
 export const requiredQuestions = [
 
 // 既存問題
+  
+
 
   
   {
     subject: "pharmacy",
     category: CATEGORIES.REQUIRED,
 
-    question:
-      "薬剤師国家試験において、必須問題は主にどのような目的で出題されるか。",
-
-    choices: [
-    "薬剤師として必要な基本的知識を確認するため",
-    "研究論文の作成能力を評価するため",
-    "病院経営の能力を評価するため"
-    ],
-
-    answer: 0,
-
-    explanation:
-      "必須問題は、薬剤師として最低限必要な基本的知識を確認することを目的とする。"
-  },
-
-  
-  {
-    subject: "pharmacy",
-    category: CATEGORIES.REQUIRED,
-
-    question:
-      "画像から抽出された想定の問題文です。",
-
-    choices: [
-    "選択肢1",
-    "選択肢2",
-    "選択肢3",
-    "選択肢4",
-    "選択肢5"
-    ],
-
-    answer: 4,
-
-    explanation:
-      ""
-  },
-
-  
-  {
-    subject: "pharmacy",
-    category: CATEGORIES.REQUIRED,
+    sourceType: "past_exam",
+    examNumber: 111,
+    sourceNumber: 1,
+    field: "物理",
 
     question:
       "水100 mLに、ある有機溶媒100 mLを加えると二液相が形成され、上層が水相となった。この有機溶媒はどれか。1つ選べ。",
@@ -71,8 +36,13 @@ export const requiredQuestions = [
     subject: "pharmacy",
     category: CATEGORIES.REQUIRED,
 
+    sourceType: "past_exam",
+    examNumber: 111,
+    sourceNumber: 2,
+    field: "物理",
+
     question:
-      "イオン強度 I を求める式として正しいのはどれか。1つ選べ。ただし、ci はイオン種 i のモル濃度、zi はそのイオンの電荷である。",
+      "イオン強度 I を求める式として正しいのはどれか。1つ選べ。ただし、c_i はイオン種 i のモル濃度、z_i はそのイオンの電荷である。",
 
     choices: [
     "I = Σ c_i z_i",
