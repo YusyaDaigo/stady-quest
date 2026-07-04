@@ -29,3 +29,14 @@ def build_question_from_vision_result(
         "answer": answer_info["answer"],
         "explanation": "",
     }
+
+def escape_js(text: str) -> str:
+    if not text:
+        return ""
+
+    text = " ".join(text.split())
+    text = text.replace("\\", "\\\\")
+    text = text.replace('"', '\\"')
+    text = text.replace("/", "/")
+
+    return text

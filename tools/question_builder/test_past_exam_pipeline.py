@@ -11,5 +11,5 @@ run_past_exam_pipeline(
     answer_pdf_path=Path("source_materials/pharmacy/required/pdf/111_answers.pdf"),
     vision_engine_name="openai",
     start_page=2,
-    max_pages=9,
+    max_pages=37,
 )
