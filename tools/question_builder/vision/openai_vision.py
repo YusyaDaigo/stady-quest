@@ -61,9 +61,27 @@ fieldは次のいずれかに正規化してください:
         ],
     )
 
-    questions = json.loads(response.output_text)
+    data = json.loads(response.output_text)
+
+    if isinstance(data, dict):
+        if "questions" in data:
+            questions = data["questions"]
+        else:
+            questions = [data]
+    elif isinstance(data, list):
+        questions = data
+    else:
+        raise ValueError(f"OpenAI Visionの返答形式が不正です: {type(data)}")
+
+    normalized_questions = []
 
     for q in questions:
-        q["field"] = normalize_field(q["field"])
+        if not isinstance(q, dict):
+            print(f"⚠️ 不正な問題データをスキップ: {q}")
+            continue
 
-    return questions
+        q["field"] = normalize_field(q.get("field", ""))
+
+        normalized_questions.append(q)
+
+    return normalized_questions
