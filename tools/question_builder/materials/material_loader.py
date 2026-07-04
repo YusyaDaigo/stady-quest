@@ -42,5 +42,20 @@ def load_materials(source_dir: Path):
 
     materials.extend(load_json_materials(source_dir))
     materials.extend(load_txt_materials(source_dir))
+    materials.extend(load_pdf_materials(source_dir))
+
+    return materials
+
+def load_pdf_materials(source_dir: Path):
+    materials = []
+
+    pdf_files = sorted(source_dir.glob("pdf/*.pdf"))
+
+    for pdf_file in pdf_files:
+        materials.append({
+            "type": "pdf",
+            "path": pdf_file,
+            "content": pdf_file,
+        })
 
     return materials
