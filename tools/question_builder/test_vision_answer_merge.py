@@ -11,16 +11,30 @@ category = "required"
 image_path = Path("source_materials/pharmacy/required/images/111_required/page_2.png")
 answer_pdf_path = Path("source_materials/pharmacy/required/pdf/111_answers.pdf")
 
-vision_engine = get_vision_engine("mock")
-vision_result = vision_engine(image_path)
+vision_engine = get_vision_engine("openai")
+
+vision_results = vision_engine(image_path)
 
 answer_data = parse_required_answers_from_pdf(answer_pdf_path)
 
-question = build_question_from_vision_result(
-    vision_result=vision_result,
-    answer_data=answer_data,
-    exam=exam,
-    category=category,
-)
+questions = []
 
-print(question)
+for vision_result in vision_results:
+    question = build_question_from_vision_result(
+        vision_result=vision_result,
+        answer_data=answer_data,
+        exam=exam,
+        category=category,
+    )
+
+    questions.append(question)
+
+print(f"結合済み問題数: {len(questions)}")
+
+for question in questions:
+    print("-----")
+    print(f"問{question['sourceNumber']}")
+    print(f"科目: {question['field']}")
+    print(f"正答index: {question['answer']}")
+    print(question["question"])
+    print(question["choices"])

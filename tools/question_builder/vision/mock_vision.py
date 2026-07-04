@@ -1,12 +1,27 @@
-def analyze_question_image(image_path):
-    return {
-        "question_no": 1,
-        "question": "画像から抽出された想定の問題文です。",
-        "choices": [
-            "選択肢1",
-            "選択肢2",
-            "選択肢3",
-            "選択肢4",
-            "選択肢5",
-        ],
-    }
+def analyze_page(image_path):
+    return [
+        {
+            "question_no": 1,
+            "field": "物理",
+            "question": "Mock1",
+            "choices": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+            ],
+        },
+        {
+            "question_no": 2,
+            "field": "物理",
+            "question": "Mock2",
+            "choices": [
+                "A",
+                "B",
+                "C",
+                "D",
+                "E",
+            ],
+        },
+    ]
