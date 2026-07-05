@@ -12,6 +12,7 @@ import Result from "./Result";
 import Review from "./Review";
 import MainMenu from "./MainMenu";
 import PharmacyMenu from "./exams/pharmacy/PharmacyMenu";
+import { requiredQuestions } from "./exams/pharmacy/questions/required";
 
 const shuffleArray = (array) => {
   return [...array].sort(
@@ -114,9 +115,16 @@ function App() {
     selectedMode,
     selectedExamType = null,
     category = CATEGORIES.ALL
-  ) => {
+) => {
 
     let selectedQuestions;
+
+    // 薬剤師 必須問題
+    if (selectedExam === "pharmacy") {
+
+        selectedQuestions = requiredQuestions;
+
+    } else
 
     if (selectedMode === "review") {
 
@@ -248,6 +256,9 @@ console.log(
   };
 
   const handleAnswer = (index) => {
+    if (userAnswers[currentIndex] !== undefined) {
+      return;
+    }
 
     const correct =
       index === currentQuestion.answer;
@@ -451,6 +462,12 @@ console.log(
         0
       ]);
 
+      setUserAnswers((prev) => {
+        const newAnswers = [...prev];
+        newAnswers[currentIndex] = null;
+        return newAnswers;
+});
+
       if (mode === "practice") {
 
         setShowExplanation(true);
@@ -543,7 +560,15 @@ console.log(
 
       {selectedExam === "pharmacy" &&
         screen === "menu" && (
-          <PharmacyMenu />
+          <PharmacyMenu
+          onStartRequiredPractice={() =>
+            startQuiz("practice", "required")
+}
+          
+          onStartRequiredMock={() =>
+            startQuiz("mock", "required")
+}
+        />
 )}
 
       {screen === "quiz" && (

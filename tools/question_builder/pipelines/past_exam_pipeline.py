@@ -1,3 +1,4 @@
+import shutil
 from pathlib import Path
 
 from parsers.answer_pdf_parser import parse_required_answers_from_pdf
@@ -13,7 +14,33 @@ from config import EXAM_PATHS, QUESTION_FILES
 
 from explanations.openai_explanation_generator import generate_explanation
 from explanations.explanation_updater import update_explanation_by_source_number
+from images.question_image_cropper import crop_page_by_question_index
 
+def copy_question_image(
+    image_path: Path,
+    exam: str,
+    category: str,
+    exam_number: int,
+    source_number: int,
+    question_index: int,
+    question_count: int,
+):
+    output_dir = Path(
+        f"public/{exam}/{exam_number}/{category}"
+    )
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+
+    output_path = output_dir / f"q{source_number}.png"
+
+    crop_page_by_question_index(
+        page_image_path=image_path,
+        output_path=output_path,
+        question_index=question_index,
+        question_count=question_count,
+    )
+
+    return output_path
 
 def run_past_exam_pipeline(
     exam: str,
@@ -50,7 +77,7 @@ def run_past_exam_pipeline(
 
         vision_results = vision_engine(image_path)
 
-        for vision_result in vision_results:
+        for index, vision_result in enumerate(vision_results):
             question = build_question_from_vision_result(
                 vision_result=vision_result,
                 answer_data=answer_data,
@@ -58,6 +85,19 @@ def run_past_exam_pipeline(
                 category=category,
                 exam_number=exam_number,
             )
+
+            if question.get("hasImage"):
+                copied_path = copy_question_image(
+                    image_path=image_path,
+                    exam=exam,
+                    category=category,
+                    exam_number=exam_number,
+                    source_number=question["sourceNumber"],
+                    question_index=index + 1,
+                    question_count=len(vision_results),
+            )
+
+                print(f"🖼️ 画像コピー: {copied_path}")
 
             validate_question(question)
 

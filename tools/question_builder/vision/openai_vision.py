@@ -6,9 +6,9 @@ from pathlib import Path
 from dotenv import load_dotenv
 from openai import OpenAI
 
-load_dotenv()
-
 from config import OPENAI_VISION_MODEL, PHARMACY_FIELD_ALIASES
+
+load_dotenv()
 
 
 def normalize_field(field: str) -> str:
@@ -37,15 +37,29 @@ def analyze_page(image_path):
 必ずJSONのみで返してください。
 
 形式:
-{
-  "question_no": 1,
-  "field": "物理",
-  "question": "問題文",
-  "choices": ["選択肢1", "選択肢2", "選択肢3", "選択肢4", "選択肢5"]
-}
+[
+  {
+    "question_no": 1,
+    "field": "物理",
+    "question": "問題文",
+    "choices": [
+      "選択肢1",
+      "選択肢2",
+      "選択肢3",
+      "選択肢4",
+      "選択肢5"
+    ],
+    "has_image": false
+  }
+]
 
 fieldは次のいずれかに正規化してください:
 物理, 化学, 生物, 衛生, 薬理, 薬剤, 病態・薬物治療, 法規・制度・倫理, 実務
+
+has_image は、問題を解くために図、表、グラフ、写真、構造式、波形、模式図などの画像情報が必要な場合は true にしてください。
+問題文と選択肢だけで解ける場合は false にしてください。
+
+見えていない問題は作らないでください。
 """
 
     response = client.responses.create(
@@ -71,7 +85,9 @@ fieldは次のいずれかに正規化してください:
     elif isinstance(data, list):
         questions = data
     else:
-        raise ValueError(f"OpenAI Visionの返答形式が不正です: {type(data)}")
+        raise ValueError(
+            f"OpenAI Visionの返答形式が不正です: {type(data)}"
+        )
 
     normalized_questions = []
 
@@ -81,6 +97,7 @@ fieldは次のいずれかに正規化してください:
             continue
 
         q["field"] = normalize_field(q.get("field", ""))
+        q["has_image"] = bool(q.get("has_image", False))
 
         normalized_questions.append(q)
 

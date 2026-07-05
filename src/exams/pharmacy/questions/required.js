@@ -1,3 +1,5 @@
+import { CATEGORIES } from "./categories";
+
 export const requiredQuestions = [
 
 // 既存問題
@@ -256,6 +258,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 10,
     field: "化学",
+    hasImage: true,
+    image: "/pharmacy/111/required/q10.png",
 
     question:
       "下図に示した植物由来の化合物が含む部分構造はどれか。1つ選べ。",
@@ -283,6 +287,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 11,
     field: "生物",
+    hasImage: true,
+    image: "/pharmacy/111/required/q11.png",
 
     question:
       "下図は、ヒト男性の泌尿器及び生殖器を含む下腹部の正中矢状断面図である。前立腺はどれか。1つ選べ。",

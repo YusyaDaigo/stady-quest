@@ -209,14 +209,28 @@ function Quiz({
             {currentQuestion.question}
           </h2>
 
-          {!showExplanation &&
-            currentQuestion.choices.map(
+          {currentQuestion.image && (
+            <img
+              src={currentQuestion.image}
+              alt="問題図"
+              style={{
+                maxWidth: "100%",
+                margin: "20px 0",
+                borderRadius: "8px"
+              }}
+            />
+)}
+
+          {currentQuestion.choices.map(
               (choice, index) => (
 
                 <div key={index}>
 
                   <button
-                    disabled={showExplanation}
+                    disabled={
+                      showExplanation ||
+                      userAnswers[currentIndex] !== undefined
+                    }
                     onClick={() =>
                       handleAnswer(index)
                     }

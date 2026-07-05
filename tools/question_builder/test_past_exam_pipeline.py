@@ -10,6 +10,6 @@ run_past_exam_pipeline(
     question_pdf_path=Path("source_materials/pharmacy/required/pdf/111_required.pdf"),
     answer_pdf_path=Path("source_materials/pharmacy/required/pdf/111_answers.pdf"),
     vision_engine_name="openai",
-    start_page=11,
+    start_page=6,
     max_pages=1,
 )

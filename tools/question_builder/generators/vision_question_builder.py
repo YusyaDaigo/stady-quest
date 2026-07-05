@@ -14,7 +14,7 @@ def build_question_from_vision_result(
 
     answer_info = answer_data[question_no]
 
-    return {
+    question = {
         "subject": exam,
         "category": category.upper(),
 
@@ -30,13 +30,10 @@ def build_question_from_vision_result(
         "explanation": "",
     }
 
-def escape_js(text: str) -> str:
-    if not text:
-        return ""
+    if vision_result.get("has_image"):
+        question["hasImage"] = True
+        question["image"] = (
+            f"/pharmacy/{exam_number}/{category}/q{question_no}.png"
+        )
 
-    text = " ".join(text.split())
-    text = text.replace("\\", "\\\\")
-    text = text.replace('"', '\\"')
-    text = text.replace("/", "/")
-
-    return text
+    return question

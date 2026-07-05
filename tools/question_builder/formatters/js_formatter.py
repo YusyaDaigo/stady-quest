@@ -34,6 +34,8 @@ def build_question_block(question_data: dict) -> str:
     exam_number = question_data.get("examNumber")
     source_number = question_data.get("sourceNumber")
     field = escape_js_text(question_data.get("field", ""))
+    has_image = question_data.get("hasImage", False)
+    image = escape_js_text(question_data.get("image", ""))
 
     metadata_lines = f'''
     sourceType: "{source_type}",'''
@@ -49,6 +51,14 @@ def build_question_block(question_data: dict) -> str:
     if field:
         metadata_lines += f'''
     field: "{field}",'''
+        
+    if has_image:
+        metadata_lines += f'''
+    hasImage: true,'''
+
+    if image:
+        metadata_lines += f'''
+    image: "{image}",'''
 
     return f'''
   {{
