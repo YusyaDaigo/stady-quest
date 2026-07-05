@@ -11,6 +11,9 @@ from formatters.js_formatter import build_question_block
 from exporters.file_exporter import backup_file, insert_question_blocks
 from config import EXAM_PATHS, QUESTION_FILES
 
+from explanations.openai_explanation_generator import generate_explanation
+from explanations.explanation_updater import update_explanation_by_source_number
+
 
 def run_past_exam_pipeline(
     exam: str,
@@ -63,6 +66,11 @@ def run_past_exam_pipeline(
                     f"⚠️ 重複スキップ: 問{question['sourceNumber']}"
                 )
                 continue
+
+            print(f"🧠 解説生成中: 問{question['sourceNumber']}")
+
+            explanation = generate_explanation(question)
+            question["explanation"] = explanation
 
             blocks.append(build_question_block(question))
             print(f"✅ 追加予定: 問{question['sourceNumber']}")
