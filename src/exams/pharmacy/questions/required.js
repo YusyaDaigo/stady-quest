@@ -69,6 +69,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 3,
     field: "物理",
+    hasImage: true,
+    image: "/pharmacy/111/required/q3.png",
 
     question:
       "ある薬物の分解反応を異なる温度で行い、その反応速度定数 k の対数（ln k）を縦軸に、絶対温度 T の逆数（1/T）を横軸にとってプロットした場合、アレニウスの式に従っているのはどれか。1つ選べ。",
@@ -123,6 +125,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 5,
     field: "物理",
+    hasImage: true,
+    image: "/pharmacy/111/required/q5.png",
 
     question:
       "採取した1つの均質な検体から同じように調製した多数の試料を1回ずつ分析し、得られた測定値の分布を、真の値を100.0としてヒストグラムに表した。真度及び精度ともに高いのはどれか。1つ選べ。ただし、分析した試料数は同じである。",
@@ -150,6 +154,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 6,
     field: "化学",
+    hasImage: true,
+    image: "/pharmacy/111/required/q6.png",
 
     question:
       "薬物中の塩基性官能基を中和するベシル酸の化学構造（分子形）として、正しいのはどれか。1つ選べ。",
@@ -177,6 +183,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 7,
     field: "化学",
+    hasImage: true,
+    image: "/pharmacy/111/required/q7.png",
 
     question:
       "一酸化窒素はラジカル分子である。そのルイス構造式はどれか。1つ選べ。",
@@ -204,6 +212,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 8,
     field: "化学",
+    hasImage: true,
+    image: "/pharmacy/111/required/q8.png",
 
     question:
       "芳香環を除く二重結合が、E配置であるのはどれか。1つ選べ。",
@@ -231,6 +241,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 9,
     field: "化学",
+    hasImage: true,
+    image: "/pharmacy/111/required/q9.png",
 
     question:
       "芳香族性を示さないのはどれか。1つ選べ。",
@@ -478,6 +490,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 18,
     field: "衛生",
+    hasImage: true,
+    image: "/pharmacy/111/required/q18.png",
 
     question:
       "欠乏によりウェルニッケ脳症が引き起こされるビタミンはどれか。1つ選べ。",
@@ -1099,6 +1113,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 41,
     field: "薬剤",
+    hasImage: true,
+    image: "/pharmacy/111/required/q41.png",
 
     question:
       "以下の構造式で示される薬物の脳内への移行に、主として関与するトランスポーターはどれか。1つ選べ。",
@@ -1288,6 +1304,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 48,
     field: "薬剤",
+    hasImage: true,
+    image: "/pharmacy/111/required/q48.png",
 
     question:
       "下図は、ある結晶多形を有する薬物の粉末X線回折パターンである。非晶質はどれか。1つ選べ。",
@@ -1423,6 +1441,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 53,
     field: "薬剤",
+    hasImage: true,
+    image: "/pharmacy/111/required/q53.png",
 
     question:
       "日本薬局方の製剤に関する一般試験法のうち、下図の装置を用いるのはどれか。1つ選べ。",
@@ -1450,6 +1470,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 54,
     field: "薬剤",
+    hasImage: true,
+    image: "/pharmacy/111/required/q54.png",
 
     question:
       "テオフィリン徐放性製剤に代表されるスパスタブ型製剤の構造はどれか。1つ選べ。",
@@ -2098,6 +2120,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 78,
     field: "法規",
+    hasImage: true,
+    image: "/pharmacy/111/required/q78.png",
 
     question:
       "図は、医薬品供給の流れの一例を示している。薬価改定の基礎資料である市場実勢価格を調べるための調査の対象となる主たる取引はどれか。1つ選べ。図：製造業者→A→製造販売業者→B→卸売販売業者→C→保険薬局→E→患者、製造販売業者から保険薬局への取引D",
@@ -2125,6 +2149,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 79,
     field: "法規",
+    hasImage: true,
+    image: "/pharmacy/111/required/q79.png",
 
     question:
       "表は、財源別国民医療費の構成割合を示している。近年（2018～2021年度）のAに最も近いのはどれか。1つ選べ。 表：財源/構成割合：総数/100%、公費/A、保険料/B、その他（患者負担等）/C",
@@ -2314,6 +2340,8 @@ export const requiredQuestions = [
     examNumber: 111,
     sourceNumber: 86,
     field: "実務",
+    hasImage: true,
+    image: "/pharmacy/111/required/q86.png",
 
     question:
       "成人に対する胸骨圧迫において、最も適切な圧迫部位はどれか。1つ選べ。",
