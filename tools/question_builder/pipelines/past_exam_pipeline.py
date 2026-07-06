@@ -44,6 +44,38 @@ def copy_question_image(
 
     return output_path
 
+def is_same_exam_source_number_exists(
+    text: str,
+    exam_number: int,
+    source_number: int,
+) -> bool:
+    exam_pattern = f"examNumber: {exam_number},"
+    source_pattern = f"sourceNumber: {source_number},"
+
+    exam_index = text.find(exam_pattern)
+
+    while exam_index != -1:
+        next_exam_index = text.find(
+            "examNumber:",
+            exam_index + len(exam_pattern)
+        )
+
+        block = (
+            text[exam_index:next_exam_index]
+            if next_exam_index != -1
+            else text[exam_index:]
+        )
+
+        if source_pattern in block:
+            return True
+
+        exam_index = text.find(
+            exam_pattern,
+            exam_index + len(exam_pattern)
+        )
+
+    return False
+
 def run_past_exam_pipeline(
     exam: str,
     category: str,
@@ -110,9 +142,22 @@ def run_past_exam_pipeline(
 
             validate_question(question)
 
-            if is_duplicate_question(question, text):
+            # 過去問取り込みでは、年度違いの類似問題も正規データとして扱うため
+            # 問題文ベースの重複チェックは行わない。
+            # 類題生成時のみ duplicate_checker を使う。
+            # if is_duplicate_question(question, text):
+            #     print(
+            #         f"⚠️ 重複スキップ: 問{question['sourceNumber']}"
+            #     )
+            #     continue
+
+            if is_same_exam_source_number_exists(
+                text=text,
+                exam_number=exam_number,
+                source_number=question["sourceNumber"],
+            ):
                 print(
-                    f"⚠️ 重複スキップ: 問{question['sourceNumber']}"
+                    f"⚠️ 同一年度・同一問番号スキップ: 第{exam_number}回 問{question['sourceNumber']}"
                 )
                 continue
 

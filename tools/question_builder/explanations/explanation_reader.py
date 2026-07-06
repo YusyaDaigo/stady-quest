@@ -5,7 +5,7 @@ def extract_questions_from_js(text: str):
     pattern = re.compile(
         r'examNumber:\s*(\d+),.*?'
         r'sourceNumber:\s*(\d+),.*?'
-        r'field:\s*"([^"]*)",.*?'
+        r'(?:field:\s*"([^"]*)",.*?)?'
         r'question:\s*\n\s*"([^"]*)",.*?'
         r'choices:\s*\[(.*?)\].*?'
         r'answer:\s*(\d+),.*?'
@@ -27,7 +27,7 @@ def extract_questions_from_js(text: str):
             {
                 "examNumber": int(match.group(1)),
                 "sourceNumber": int(match.group(2)),
-                "field": match.group(3),
+                "field": match.group(3) or "",
                 "question": match.group(4),
                 "choices": choices,
                 "answer": int(match.group(6)),
