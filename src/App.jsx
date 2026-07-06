@@ -20,6 +20,61 @@ const shuffleArray = (array) => {
   );
 };
 
+const REQUIRED_MOCK_STRUCTURE = [
+  { field: "物理", count: 5 },
+  { field: "化学", count: 5 },
+  { field: "生物", count: 5 },
+  { field: "衛生", count: 10 },
+  { field: "薬理", count: 15 },
+  { field: "薬剤", count: 15 },
+  { field: "病態", count: 15 },
+  { field: "法規", count: 10 },
+  { field: "実務", count: 10 },
+];
+
+const FIELD_ALIAS = {
+  "物理": "物理",
+  "化学": "化学",
+  "生物": "生物",
+  "衛生": "衛生",
+  "薬理": "薬理",
+  "薬剤": "薬剤",
+  "実務": "実務",
+
+  "病態": "病態",
+  "病態・薬物治療": "病態",
+
+  "法規": "法規",
+  "法規・制度・倫理": "法規",
+};
+
+const normalizeField = (field) => {
+  if (!field) return "";
+
+  const normalized = field.trim();
+
+  if (FIELD_ALIAS[normalized]) {
+    return FIELD_ALIAS[normalized];
+  }
+
+  // 念のため部分一致も許可
+  if (normalized.includes("病態")) return "病態";
+  if (normalized.includes("法規")) return "法規";
+
+  return normalized;
+};
+
+const buildRequiredMockQuestions = (questions) => {
+  return REQUIRED_MOCK_STRUCTURE.flatMap((section) => {
+    const pool = questions.filter(
+      (question) =>
+        normalizeField(question.field) === section.field
+    );
+
+    return shuffleArray(pool).slice(0, section.count);
+  });
+};
+
 const getQuestionTimeLimit = (question) => {
   if (question?.category === CATEGORIES.CALC) {
     return 150;
@@ -95,6 +150,14 @@ function App() {
   ) => {
 
     if (
+      selectedExam === "pharmacy" &&
+      selectedMode === "mock" &&
+      selectedExamType === "required"
+    ) {
+      return 5400;
+    }
+
+    if (
       selectedMode === "mock" &&
       selectedExamType === "second"
     ) {
@@ -119,12 +182,24 @@ function App() {
 
     let selectedQuestions;
 
-    // 薬剤師 必須問題
-    if (selectedExam === "pharmacy") {
+      // 薬剤師 必須問題
+      if (selectedExam === "pharmacy") {
+        if (
+          selectedMode === "practice" &&
+          category !== "ALL"
+        ) {
+          selectedQuestions =
+            requiredQuestions.filter(
+              (question) =>
+                normalizeField(question.field) === category
+            );
+        } else {
+          selectedQuestions =
+            requiredQuestions;
+        }
 
-        selectedQuestions = requiredQuestions;
+      } else
 
-    } else
 
     if (selectedMode === "review") {
 
@@ -189,8 +264,19 @@ console.log(
         }
       }
 
-    let shuffledQuestions =
-      shuffleArray(selectedQuestions);
+    let shuffledQuestions;
+
+    if (
+      selectedExam === "pharmacy" &&
+      selectedMode === "mock" &&
+      selectedExamType === "required"
+    ) {
+      shuffledQuestions =
+        buildRequiredMockQuestions(selectedQuestions);
+    } else {
+      shuffledQuestions =
+        shuffleArray(selectedQuestions);
+    }
 
     if (selectedMode === "practice") {
       if (category === CATEGORIES.ALL) {
@@ -561,15 +647,19 @@ console.log(
       {selectedExam === "pharmacy" &&
         screen === "menu" && (
           <PharmacyMenu
-          onStartRequiredPractice={() =>
-            startQuiz("practice", "required")
-}
-          
-          onStartRequiredMock={() =>
-            startQuiz("mock", "required")
-}
-        />
-)}
+            onStartRequiredPractice={(field) =>
+              startQuiz(
+                "practice",
+                "required",
+                field
+              )
+            }
+            onStartRequiredMock={() =>
+              startQuiz("mock", "required")
+            }
+          />
+      )}
+  
 
       {screen === "quiz" && (
 

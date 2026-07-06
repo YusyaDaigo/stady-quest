@@ -119,6 +119,16 @@ def run_past_exam_pipeline(
         vision_results = vision_engine(image_path)
 
         for index, vision_result in enumerate(vision_results):
+            question_no = vision_result.get("question_no")
+
+            if not isinstance(question_no, int) or not (1 <= question_no <= 90):
+                print(f"⚠️ 問番号スキップ: {question_no}")
+                continue
+
+            if question_no not in answer_data:
+                print(f"⚠️ 解答データなしスキップ: 第{exam_number}回 問{question_no}")
+                continue
+
             question = build_question_from_vision_result(
                 vision_result=vision_result,
                 answer_data=answer_data,
@@ -140,7 +150,15 @@ def run_past_exam_pipeline(
 
                 print(f"🖼️ 画像コピー: {copied_path}")
 
-            validate_question(question)
+            try:
+                validate_question(question)
+            except Exception as e:
+                print(
+                    f"⚠️ 第{exam_number}回 "
+                    f"問{question['sourceNumber']} "
+                    f"スキップ: {e}"
+                )
+                continue
 
             # 過去問取り込みでは、年度違いの類似問題も正規データとして扱うため
             # 問題文ベースの重複チェックは行わない。
