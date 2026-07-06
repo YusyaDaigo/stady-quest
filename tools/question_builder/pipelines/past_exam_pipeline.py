@@ -15,6 +15,8 @@ from config import EXAM_PATHS, QUESTION_FILES
 from explanations.openai_explanation_generator import generate_explanation
 from explanations.explanation_updater import update_explanation_by_source_number
 from images.question_image_cropper import crop_page_by_question_index
+from parsers.answer_vision_parser import parse_required_answers_with_vision
+
 
 def copy_question_image(
     image_path: Path,
@@ -49,6 +51,7 @@ def run_past_exam_pipeline(
     question_pdf_path: Path,
     answer_pdf_path: Path,
     vision_engine_name: str = "openai",
+    answer_parser: str = "text",
     start_page: int = 2,
     max_pages: int = 2,
 ):
@@ -66,7 +69,13 @@ def run_past_exam_pipeline(
 
     target_image_paths = image_paths[start_page - 1:start_page - 1 + max_pages]
 
-    answer_data = parse_required_answers_from_pdf(answer_pdf_path)
+    if answer_parser == "vision":
+        answer_data = parse_required_answers_with_vision(
+            answer_pdf_path=answer_pdf_path,
+            exam_number=exam_number,
+        )
+    else:
+        answer_data = parse_required_answers_from_pdf(answer_pdf_path)
     vision_engine = get_vision_engine(vision_engine_name)
 
     text = target_file.read_text(encoding="utf-8")
