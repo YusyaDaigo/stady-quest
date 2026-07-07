@@ -1,3 +1,6 @@
+import { required99Questions } from "./required_99";
+import { required98Questions } from "./required_98";
+import { required97Questions } from "./required_97";
 import { required111Questions } from "./required_111";
 import { required110Questions } from "./required_110";
 import { required109Questions } from "./required_109";
@@ -12,6 +15,9 @@ import { required101Questions } from "./required_101";
 import { required100Questions } from "./required_100";
 
 export const requiredQuestions = [
+  ...required99Questions,
+  ...required98Questions,
+  ...required97Questions,
   ...required111Questions,
   ...required110Questions,
   ...required109Questions,
