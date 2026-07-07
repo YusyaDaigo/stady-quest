@@ -87,7 +87,19 @@ def run_past_exam_pipeline(
     start_page: int = 2,
     max_pages: int = 2,
 ):
-    target_file = EXAM_PATHS[exam] / QUESTION_FILES[category]
+    if exam == "pharmacy" and category == "required":
+        target_file = EXAM_PATHS[exam] / f"required_{exam_number}.js"
+
+        if not target_file.exists():
+            target_file.write_text(
+                f'import {{ CATEGORIES }} from "./categories";\n\n'
+                f'export const required{exam_number}Questions = [\n\n'
+                f'  // AI_QUESTION_INSERT_HERE\n'
+                f'];\n',
+                encoding="utf-8",
+            )
+    else:
+        target_file = EXAM_PATHS[exam] / QUESTION_FILES[category]
 
     image_output_dir = Path(
         f"source_materials/{exam}/{category}/images/{exam_number}"

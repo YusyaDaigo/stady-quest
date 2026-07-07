@@ -8,6 +8,37 @@ from config import EXAM_PATHS, QUESTION_FILES
 from validators.exam_import_validator import validate_exam_import
 
 
+def refresh_required_index():
+    base = Path("src/exams/pharmacy/questions")
+    yearly_files = sorted(
+        base.glob("required_*.js"),
+        reverse=True,
+    )
+
+    imports = []
+    spreads = []
+
+    for file in yearly_files:
+        exam_number = file.stem.replace("required_", "")
+        export_name = f"required{exam_number}Questions"
+
+        imports.append(
+            f'import {{ {export_name} }} from "./required_{exam_number}";'
+        )
+        spreads.append(f"  ...{export_name},")
+
+    index_file = base / "required.js"
+    index_file.write_text(
+        "\n".join(imports)
+        + "\n\nexport const requiredQuestions = [\n"
+        + "\n".join(spreads)
+        + "\n];\n",
+        encoding="utf-8",
+    )
+
+    print("🔄 required.js 更新完了")
+
+
 def run_build():
     print("🏗️ npm run build 実行中...")
     result = subprocess.run(["npm", "run", "build"])
@@ -59,11 +90,17 @@ def main():
 
     target_file = EXAM_PATHS[exam] / QUESTION_FILES[category]
 
+    yearly_file = Path(
+        f"src/exams/pharmacy/questions/required_{exam_number}.js"
+    )
+
     validate_exam_import(
-        target_file=target_file,
+        target_file=yearly_file if yearly_file.exists() else target_file,
         exam_number=exam_number,
         expected_count=90,
     )
+
+    refresh_required_index()
 
     if not args.skip_build:
         run_build()
