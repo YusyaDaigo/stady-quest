@@ -1,0 +1,28 @@
+[
+  {
+    "question_no": 6,
+    "field": "化学",
+    "question": "以下のアルドヘキソースAのアノマーはどれか。1つ選べ。",
+    "choices": [
+      "構造式1",
+      "構造式2",
+      "構造式3",
+      "構造式4",
+      "構造式5"
+    ],
+    "has_image": true
+  },
+  {
+    "question_no": 7,
+    "field": "化学",
+    "question": "以下の薬物に含まれる金属元素Mとして適切なのはどれか。1つ選べ。",
+    "choices": [
+      "Li",
+      "Mg",
+      "Al",
+      "Ca",
+      "Zn"
+    ],
+    "has_image": true
+  }
+]

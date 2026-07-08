@@ -1,0 +1,17 @@
+def generate_questions(exam: str, category: str, count: int = 1):
+    sample_questions = [
+        {
+            "subject": exam,
+            "category": "REQUIRED",
+            "question": "薬剤師国家試験において、必須問題は主にどのような目的で出題されるか。",
+            "choices": [
+                "薬剤師として必要な基本的知識を確認するため",
+                "研究論文の作成能力を評価するため",
+                "病院経営の能力を評価するため",
+            ],
+            "answer": 0,
+            "explanation": "必須問題は、薬剤師として最低限必要な基本的知識を確認することを目的とする。",
+        }
+    ]
+
+    return sample_questions[:count]
