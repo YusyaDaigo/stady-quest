@@ -1,4 +1,5 @@
 import argparse
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -52,8 +53,16 @@ def main():
     parser.add_argument("--start-page", type=int, default=2)
     parser.add_argument("--max-pages", type=int, default=999)
     parser.add_argument("--skip-build", action="store_true")
+    parser.add_argument(
+        "--no-api",
+        action="store_true",
+        help="キャッシュのみ使用し、OpenAI APIを呼ばない",
+)
 
     args = parser.parse_args()
+    if args.no_api:
+        os.environ["STUDY_QUEST_NO_API"] = "1"
+        print("🛡️ NO_APIモード: キャッシュのみ使用します")
 
     exam = "pharmacy"
     category = "required"

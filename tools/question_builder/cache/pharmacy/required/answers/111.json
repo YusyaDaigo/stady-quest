@@ -1,0 +1,362 @@
+{
+  "1": {
+    "field": "物理",
+    "answer": 4
+  },
+  "2": {
+    "field": "物理",
+    "answer": 4
+  },
+  "3": {
+    "field": "物理",
+    "answer": 0
+  },
+  "4": {
+    "field": "物理",
+    "answer": 1
+  },
+  "5": {
+    "field": "物理",
+    "answer": 3
+  },
+  "6": {
+    "field": "化学",
+    "answer": 1
+  },
+  "7": {
+    "field": "化学",
+    "answer": 0
+  },
+  "8": {
+    "field": "化学",
+    "answer": 2
+  },
+  "9": {
+    "field": "化学",
+    "answer": 2
+  },
+  "10": {
+    "field": "化学",
+    "answer": 2
+  },
+  "11": {
+    "field": "生物",
+    "answer": 3
+  },
+  "12": {
+    "field": "生物",
+    "answer": 1
+  },
+  "13": {
+    "field": "生物",
+    "answer": 2
+  },
+  "14": {
+    "field": "生物",
+    "answer": 3
+  },
+  "15": {
+    "field": "生物",
+    "answer": 3
+  },
+  "16": {
+    "field": "衛生",
+    "answer": 2
+  },
+  "17": {
+    "field": "衛生",
+    "answer": 0
+  },
+  "18": {
+    "field": "衛生",
+    "answer": 1
+  },
+  "19": {
+    "field": "衛生",
+    "answer": 2
+  },
+  "20": {
+    "field": "衛生",
+    "answer": 1
+  },
+  "21": {
+    "field": "衛生",
+    "answer": 4
+  },
+  "22": {
+    "field": "衛生",
+    "answer": 4
+  },
+  "23": {
+    "field": "衛生",
+    "answer": 3
+  },
+  "24": {
+    "field": "衛生",
+    "answer": 3
+  },
+  "25": {
+    "field": "衛生",
+    "answer": 1
+  },
+  "26": {
+    "field": "薬理",
+    "answer": 0
+  },
+  "27": {
+    "field": "薬理",
+    "answer": 0
+  },
+  "28": {
+    "field": "薬理",
+    "answer": 3
+  },
+  "29": {
+    "field": "薬理",
+    "answer": 3
+  },
+  "30": {
+    "field": "薬理",
+    "answer": 1
+  },
+  "31": {
+    "field": "薬理",
+    "answer": 4
+  },
+  "32": {
+    "field": "実務",
+    "answer": 2
+  },
+  "33": {
+    "field": "薬理",
+    "answer": 2
+  },
+  "34": {
+    "field": "薬理",
+    "answer": 3
+  },
+  "35": {
+    "field": "薬理",
+    "answer": 2
+  },
+  "36": {
+    "field": "薬理",
+    "answer": 2
+  },
+  "37": {
+    "field": "薬理",
+    "answer": 2
+  },
+  "38": {
+    "field": "薬理",
+    "answer": 3
+  },
+  "39": {
+    "field": "薬理",
+    "answer": 0
+  },
+  "40": {
+    "field": "薬理",
+    "answer": 1
+  },
+  "41": {
+    "field": "薬剤",
+    "answer": 3
+  },
+  "42": {
+    "field": "薬剤",
+    "answer": 4
+  },
+  "43": {
+    "field": "薬剤",
+    "answer": 3
+  },
+  "44": {
+    "field": "薬剤",
+    "answer": 4
+  },
+  "45": {
+    "field": "薬剤",
+    "answer": 2
+  },
+  "46": {
+    "field": "薬剤",
+    "answer": 2
+  },
+  "47": {
+    "field": "薬剤",
+    "answer": 3
+  },
+  "48": {
+    "field": "薬剤",
+    "answer": 4
+  },
+  "49": {
+    "field": "薬理",
+    "answer": 1
+  },
+  "50": {
+    "field": "薬剤",
+    "answer": 2
+  },
+  "51": {
+    "field": "薬剤",
+    "answer": 0
+  },
+  "52": {
+    "field": "薬剤",
+    "answer": 2
+  },
+  "53": {
+    "field": "薬剤",
+    "answer": 4
+  },
+  "54": {
+    "field": "薬剤",
+    "answer": 0
+  },
+  "55": {
+    "field": "薬剤",
+    "answer": 3
+  },
+  "56": {
+    "field": "病態",
+    "answer": 4
+  },
+  "57": {
+    "field": "病態",
+    "answer": 3
+  },
+  "58": {
+    "field": "病態",
+    "answer": 0
+  },
+  "59": {
+    "field": "病態",
+    "answer": 4
+  },
+  "60": {
+    "field": "病態",
+    "answer": 0
+  },
+  "61": {
+    "field": "病態",
+    "answer": 3
+  },
+  "62": {
+    "field": "病態",
+    "answer": 4
+  },
+  "63": {
+    "field": "病態",
+    "answer": 0
+  },
+  "64": {
+    "field": "病態",
+    "answer": 3
+  },
+  "65": {
+    "field": "病態",
+    "answer": 1
+  },
+  "66": {
+    "field": "病態",
+    "answer": 2
+  },
+  "67": {
+    "field": "病態",
+    "answer": 2
+  },
+  "68": {
+    "field": "病態",
+    "answer": 1
+  },
+  "69": {
+    "field": "病態",
+    "answer": 1
+  },
+  "70": {
+    "field": "病態",
+    "answer": 4
+  },
+  "71": {
+    "field": "法規",
+    "answer": 0
+  },
+  "72": {
+    "field": "法規",
+    "answer": 3
+  },
+  "73": {
+    "field": "法規",
+    "answer": 2
+  },
+  "74": {
+    "field": "法規",
+    "answer": 0
+  },
+  "75": {
+    "field": "法規",
+    "answer": 3
+  },
+  "76": {
+    "field": "法規",
+    "answer": 4
+  },
+  "77": {
+    "field": "法規",
+    "answer": 4
+  },
+  "78": {
+    "field": "法規",
+    "answer": 2
+  },
+  "79": {
+    "field": "法規",
+    "answer": 2
+  },
+  "80": {
+    "field": "法規",
+    "answer": 1
+  },
+  "81": {
+    "field": "実務",
+    "answer": 1
+  },
+  "82": {
+    "field": "実務",
+    "answer": 1
+  },
+  "83": {
+    "field": "実務",
+    "answer": 3
+  },
+  "84": {
+    "field": "実務",
+    "answer": 1
+  },
+  "85": {
+    "field": "実務",
+    "answer": 4
+  },
+  "86": {
+    "field": "実務",
+    "answer": 1
+  },
+  "87": {
+    "field": "実務",
+    "answer": 2
+  },
+  "88": {
+    "field": "実務",
+    "answer": 0
+  },
+  "89": {
+    "field": "実務",
+    "answer": 2
+  },
+  "90": {
+    "field": "実務",
+    "answer": 1
+  }
+}

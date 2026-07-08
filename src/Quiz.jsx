@@ -210,16 +210,30 @@ function Quiz({
           </h2>
 
           {currentQuestion.image && (
-            <img
-              src={currentQuestion.image}
-              alt="問題図"
+            <div
               style={{
-                maxWidth: "100%",
-                margin: "20px 0",
-                borderRadius: "8px"
+                width: "92%",
+                maxWidth: "920px",
+                maxHeight: "58vh",
+                overflow: "auto",
+                margin: "20px auto",
+                backgroundColor: "#ffffff",
+                borderRadius: "10px",
+                border: "1px solid #ddd"
               }}
-            />
-)}
+            >
+              <img
+                src={currentQuestion.image}
+                alt="問題図"
+                style={{
+                  display: "block",
+                  width: "100%",
+                  height: "auto",
+                  objectFit: "contain"
+                }}
+              />
+            </div>
+          )}
 
           {currentQuestion.choices.map(
               (choice, index) => (

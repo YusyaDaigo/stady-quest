@@ -1,5 +1,5 @@
 from vision.mock_vision import analyze_page as mock_analyze_page
-from vision.openai_vision import analyze_page as openai_analyze_page
+from vision.cached_openai_vision import analyze_page as openai_analyze_page
 
 
 def get_vision_engine(name: str):

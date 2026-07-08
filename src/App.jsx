@@ -64,11 +64,34 @@ const normalizeField = (field) => {
   return normalized;
 };
 
+const getRequiredFieldFromSourceNumber = (sourceNumber) => {
+  if (sourceNumber >= 1 && sourceNumber <= 5) return "物理";
+  if (sourceNumber >= 6 && sourceNumber <= 10) return "化学";
+  if (sourceNumber >= 11 && sourceNumber <= 15) return "生物";
+  if (sourceNumber >= 16 && sourceNumber <= 25) return "衛生";
+  if (sourceNumber >= 26 && sourceNumber <= 40) return "薬理";
+  if (sourceNumber >= 41 && sourceNumber <= 55) return "薬剤";
+  if (sourceNumber >= 56 && sourceNumber <= 70) return "病態";
+  if (sourceNumber >= 71 && sourceNumber <= 80) return "法規";
+  if (sourceNumber >= 81 && sourceNumber <= 90) return "実務";
+
+  return "";
+};
+
+const getQuestionField = (question) => {
+  if (!question) return "";
+
+  return normalizeField(
+    question.field ||
+    getRequiredFieldFromSourceNumber(question.sourceNumber)
+  );
+};
+
 const buildRequiredMockQuestions = (questions) => {
   return REQUIRED_MOCK_STRUCTURE.flatMap((section) => {
     const pool = questions.filter(
       (question) =>
-        normalizeField(question.field) === section.field
+        getQuestionField(question) === section.field
     );
 
     return shuffleArray(pool).slice(0, section.count);
@@ -184,18 +207,33 @@ function App() {
 
       // 薬剤師 必須問題
       if (selectedExam === "pharmacy") {
+        const selectedField =
+          category === "ALL" ? "ALL" : normalizeField(category);
+
         if (
           selectedMode === "practice" &&
-          category !== "ALL"
+          selectedField !== "ALL"
         ) {
-          selectedQuestions =
-            requiredQuestions.filter(
-              (question) =>
-                normalizeField(question.field) === category
+          selectedQuestions = requiredQuestions.filter((question) => {
+            if (!question) return false;
+
+            return (
+              getQuestionField(question) === selectedField
             );
+          });
         } else {
-          selectedQuestions =
-            requiredQuestions;
+          selectedQuestions = requiredQuestions;
+        }
+
+        console.log("PHARMACY MODE:", selectedMode);
+        console.log("PHARMACY FIELD:", selectedField);
+        console.log("PHARMACY QUESTIONS:", selectedQuestions.length);
+
+        if (selectedQuestions.length === 0) {
+          alert(
+            `${selectedField} の問題が見つかりません。field名を確認してください。`
+          );
+          return;
         }
 
       } else

@@ -11,6 +11,10 @@ from parsers.pdf_image_exporter import export_pdf_pages_to_images
 
 load_dotenv()
 
+ANSWER_CACHE_DIR = Path(
+    "tools/question_builder/cache/pharmacy/required/answers"
+)
+
 
 def image_to_data_url(image_path: Path) -> str:
     image_bytes = image_path.read_bytes()
@@ -18,10 +22,55 @@ def image_to_data_url(image_path: Path) -> str:
     return f"data:image/png;base64,{encoded}"
 
 
+def get_answer_cache_path(exam_number: int) -> Path:
+    return ANSWER_CACHE_DIR / f"{exam_number}.json"
+
+
+def normalize_answer_data(data):
+    if isinstance(data, dict) and "answers" in data:
+        data = data["answers"]
+
+    answers = {}
+
+    for item in data:
+        try:
+            question_no = int(item["question_no"])
+            value = item["answer"]
+
+            if isinstance(value, list):
+                value = value[0]
+
+            answer = int(value)
+
+        except Exception:
+            continue
+
+        if 1 <= question_no <= 90:
+            answers[question_no] = {
+                "field": "",
+                "answer": answer - 1,
+            }
+
+    return answers
+
+
 def parse_required_answers_with_vision(
     answer_pdf_path: Path,
     exam_number: int,
 ):
+    cache_path = get_answer_cache_path(exam_number)
+
+    if cache_path.exists():
+        print(f"📦 解答cache使用: {cache_path}")
+        cached_data = json.loads(
+            cache_path.read_text(encoding="utf-8")
+        )
+
+        return {
+            int(key): value
+            for key, value in cached_data.items()
+        }
+
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY が設定されていません")
 
@@ -69,7 +118,10 @@ def parse_required_answers_with_vision(
                     "role": "user",
                     "content": [
                         {"type": "input_text", "text": prompt},
-                        {"type": "input_image", "image_url": image_to_data_url(image_path)},
+                        {
+                            "type": "input_image",
+                            "image_url": image_to_data_url(image_path),
+                        },
                     ],
                 }
             ],
@@ -77,17 +129,16 @@ def parse_required_answers_with_vision(
 
         data = json.loads(response.output_text)
 
-        if isinstance(data, dict) and "answers" in data:
-            data = data["answers"]
+        answers.update(
+            normalize_answer_data(data)
+        )
 
-        for item in data:
-            question_no = int(item["question_no"])
-            answer = int(item["answer"])
+    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    cache_path.write_text(
+        json.dumps(answers, ensure_ascii=False, indent=2),
+        encoding="utf-8",
+    )
 
-            if 1 <= question_no <= 90:
-                answers[question_no] = {
-                    "field": "",
-                    "answer": answer - 1,
-                }
+    print(f"💾 解答cache保存: {cache_path}")
 
     return answers

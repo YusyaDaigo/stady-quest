@@ -15,6 +15,8 @@ from config import EXAM_PATHS, QUESTION_FILES
 from explanations.openai_explanation_generator import generate_explanation
 from explanations.explanation_updater import update_explanation_by_source_number
 from images.question_image_cropper import crop_page_by_question_index
+from images.vision_bbox_cropper import crop_by_bbox
+from vision.openai_bbox_detector import detect_question_bboxes
 from parsers.answer_vision_parser import parse_required_answers_with_vision
 
 
@@ -26,6 +28,7 @@ def copy_question_image(
     source_number: int,
     question_index: int,
     question_count: int,
+    figure_bbox=None,
 ):
     output_dir = Path(
         f"public/{exam}/{exam_number}/{category}"
@@ -34,6 +37,19 @@ def copy_question_image(
     output_dir.mkdir(parents=True, exist_ok=True)
 
     output_path = output_dir / f"q{source_number}.png"
+
+    if figure_bbox:
+        try:
+            crop_by_bbox(
+                page_image_path=image_path,
+                output_path=output_path,
+                bbox=figure_bbox,
+            )
+            return output_path
+        except Exception as e:
+            print(
+                f"⚠️ bbox crop失敗: 第{exam_number}回 問{source_number}: {e}"
+            )
 
     crop_page_by_question_index(
         page_image_path=image_path,
@@ -130,6 +146,12 @@ def run_past_exam_pipeline(
 
         vision_results = vision_engine(image_path)
 
+        try:
+            figure_bboxes = detect_question_bboxes(image_path)
+        except Exception as e:
+            print(f"⚠️ bbox検出失敗 fallback使用: {e}")
+            figure_bboxes = {}
+
         for index, vision_result in enumerate(vision_results):
             question_no = vision_result.get("question_no")
 
@@ -158,6 +180,7 @@ def run_past_exam_pipeline(
                     source_number=question["sourceNumber"],
                     question_index=index + 1,
                     question_count=len(vision_results),
+                    figure_bbox=figure_bboxes.get(question["sourceNumber"]),
             )
 
                 print(f"🖼️ 画像コピー: {copied_path}")
