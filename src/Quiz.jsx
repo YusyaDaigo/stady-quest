@@ -31,7 +31,7 @@ function Quiz({
           style={{
             position: "fixed",
             right: "10px",
-            top: "140px",
+            top: "150px",
             width: "200px",
             height: "70vh",
             overflowY: "scroll",
@@ -49,9 +49,9 @@ function Quiz({
             (_, index) => (
               <button
                 key={index}
-                onClick={() =>
-                  jumpQuestion(index)
-                }
+                onClick={() => {
+                  jumpQuestion(index);
+                }}
                 style={{
                   display: "block",
                   width: "100%",
@@ -101,15 +101,18 @@ function Quiz({
           position: "fixed",
           right: showQuestionList
             ? "230px"
-            : "10px",
-          top: "58%",
-          transform: "translateY(-50%)",
-          width: "40px",
-          height: "40px",
+            : "20px",
+
+          top: "85px",
+
+          width: "48px",
+          height: "48px",
+
           borderRadius: "50%",
-          fontSize: "18px",
+          fontSize: "22px",
+
           zIndex: 1001
-        }}
+}}
       >
         {showQuestionList ? "▶" : "◀"}
       </button>
@@ -140,26 +143,6 @@ function Quiz({
             残り時間：
             {time}秒
           </p>
-
-          {mode === "mock" && (
-            <button
-              onClick={prevQuestion}
-              disabled={currentIndex === 0}
-            >
-              前の問題へ
-            </button>
-          )}
-
-          {mode === "mock" && (
-            <button
-              onClick={nextQuestion}
-              disabled={
-                currentIndex + 1 >= totalQuestions
-              }
-            >
-              次の問題へ
-            </button>
-          )}
 
           <button onClick={toggleBookmark}>
             {isBookmarked
@@ -288,41 +271,77 @@ function Quiz({
               )
             )}
 
-          {showExplanation && (
+            {showExplanation && (
 
-            <div>
+              <div>
 
-              <h1>
-                {isCorrect
-                  ? "⭕ 正解！"
-                  : "❌ 不正解"}
-              </h1>
+                <h1>
+                  {isCorrect
+                    ? "⭕ 正解！"
+                    : "❌ 不正解"}
+                </h1>
 
-              <p>
-                正解：
-                {
-                  currentQuestion.choices[
-                    currentQuestion.answer
-                  ]
-                }
-              </p>
+                <p>
+                  正解：
+                  {
+                    currentQuestion.choices[
+                      currentQuestion.answer
+                    ]
+                  }
+                </p>
 
-              <p>
-                解説：
-                {
-                  currentQuestion.explanation
-                }
-              </p>
+                <details
+                  style={{
+                    margin: "18px auto",
+                    maxWidth: "820px",
+                    width: "90%",
+                    textAlign: "left",
+                    backgroundColor: "#20242f",
+                    border: "1px solid #444",
+                    borderRadius: "12px",
+                    padding: "14px 18px"
+                  }}
+                >
+                  <summary
+                    style={{
+                      cursor: "pointer",
+                      fontSize: "1.05rem",
+                      fontWeight: "bold"
+                    }}
+                  >
+                    解説を見る
+                  </summary>
 
-              <button
-                onClick={nextQuestion}
-              >
-                次へ
-              </button>
+                  <p
+                    style={{
+                      marginTop: "14px",
+                      lineHeight: "1.8",
+                      color: "#d8dce6"
+                    }}
+                  >
+                    {currentQuestion.explanation}
+                  </p>
+                </details>
 
-            </div>
-          )}
+                <button
+                  onClick={() => {
+                    nextQuestion();
+                  }}
+                  style={{
+                    marginTop: "20px",
+                    width: "180px",
+                    minHeight: "48px",
+                    fontSize: "1rem",
+                    borderRadius: "12px",
+                    padding: "10px 16px"
+                  }}
+                >
+                  次へ →
+                </button>
 
+              </div>
+
+            )}
         </>
       )}
 

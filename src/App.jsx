@@ -210,7 +210,9 @@ function App() {
         const selectedField =
           category === "ALL" ? "ALL" : normalizeField(category);
 
-        if (
+        if (selectedMode === "review") {
+          selectedQuestions = mistakeQuestions;
+        } else if (
           selectedMode === "practice" &&
           selectedField !== "ALL"
         ) {
@@ -550,6 +552,23 @@ console.log(
     setScreen("review");
   };
 
+  const clearMistakeQuestions = () => {
+
+    const confirmDelete = window.confirm(
+      "復習リストをすべて削除しますか？"
+    );
+
+    if (!confirmDelete) {
+      return;
+    }
+
+    setMistakeQuestions([]);
+
+    localStorage.removeItem("mistakeQuestions");
+
+    alert("復習リストを削除しました。");
+};
+
   const goResult = () => {
 
     setScreen("result");
@@ -695,8 +714,15 @@ console.log(
             onStartRequiredMock={() =>
               startQuiz("mock", "required")
             }
+            onStartReview={() =>
+              startQuiz("review", "required")
+            }
+            onClearReview={() =>
+              clearMistakeQuestions()
+            }
+            mistakeCount={mistakeQuestions.length}
           />
-      )}
+    )}
   
 
       {screen === "quiz" && (
