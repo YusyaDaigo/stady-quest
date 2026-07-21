@@ -18,9 +18,6 @@ from tools.question_builder.openai_drone_question_generator import (
 from tools.question_builder.prompt_builder import (
     build_rag_question_generation_prompt,
 )
-from tools.question_builder.validators.drone_validator import (
-    validate_drone_generated_question,
-)
 
 
 QUESTION_FILE_PATTERN = re.compile(
@@ -135,14 +132,88 @@ def validate_generated_question(
     index: int,
 ) -> None:
     """
-    後方互換用ラッパー。
-    実際の検証は共通Validator Engineへ委譲する。
+    API応答に対する最低限の構造検証。
+    本格的な品質検証は既存Validatorへ後で接続する。
     """
 
-    validate_drone_generated_question(
-        question,
-        index=index,
+    required_string_fields = [
+        "question",
+        "explanation",
+        "figureType",
+    ]
+
+    for field in required_string_fields:
+        value = question.get(field)
+
+        if not isinstance(value, str):
+            raise ValueError(
+                f"Question {index}: "
+                f"{field} must be a string"
+            )
+
+        if field != "figureType" and not value.strip():
+            raise ValueError(
+                f"Question {index}: "
+                f"{field} must not be empty"
+            )
+
+    choices = question.get("choices")
+
+    if not isinstance(choices, list):
+        raise ValueError(
+            f"Question {index}: "
+            "choices must be a list"
+        )
+
+    if len(choices) != 3:
+        raise ValueError(
+            f"Question {index}: "
+            "choices must contain exactly 3 items"
+        )
+
+    if not all(
+        isinstance(choice, str)
+        and choice.strip()
+        for choice in choices
+    ):
+        raise ValueError(
+            f"Question {index}: "
+            "every choice must be a non-empty string"
+        )
+
+    answer = question.get("answer")
+
+    if not isinstance(answer, int):
+        raise ValueError(
+            f"Question {index}: "
+            "answer must be an integer"
+        )
+
+    if answer not in range(3):
+        raise ValueError(
+            f"Question {index}: "
+            "answer must be between 0 and 2"
+        )
+
+    figure_type = question.get(
+        "figureType"
     )
+
+    if figure_type not in ALLOWED_FIGURE_TYPES:
+        raise ValueError(
+            f"Question {index}: "
+            f"unsupported figureType={figure_type}"
+        )
+
+    figure_data = question.get(
+        "figureData"
+    )
+
+    if not isinstance(figure_data, dict):
+        raise ValueError(
+            f"Question {index}: "
+            "figureData must be an object"
+        )
 
 
 def build_saved_question(

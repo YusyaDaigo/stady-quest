@@ -1,177 +1,18 @@
 from __future__ import annotations
 
-import hashlib
-import json
-import os
-import re
-from pathlib import Path
 from typing import Any
 
-from dotenv import load_dotenv
-from openai import OpenAI
-
-
-load_dotenv()
+from tools.question_builder.drone_question_response_parser import (
+    parse_drone_question_response,
+)
+from tools.question_builder.generators.drone_question_generator import (
+    DroneQuestionGenerator,
+)
 
 
 DRONE_QUESTION_MODEL = "gpt-5.5"
 
-DRONE_QUESTION_CACHE_DIR = Path(
-    "generated_questions/cache/drone_questions"
-)
-
-_API_CALL_COUNT = 0
-MAX_API_CALLS_PER_PROCESS = 1
-
-
-def _build_cache_key(
-    prompt: str,
-    model: str,
-) -> str:
-    """
-    プロンプトとモデルからキャッシュキーを作る。
-    """
-
-    payload = {
-        "prompt": prompt,
-        "model": model,
-    }
-
-    serialized = json.dumps(
-        payload,
-        ensure_ascii=False,
-        sort_keys=True,
-        separators=(",", ":"),
-    )
-
-    return hashlib.sha256(
-        serialized.encode("utf-8")
-    ).hexdigest()
-
-
-def _build_cache_path(
-    cache_key: str,
-) -> Path:
-    return (
-        DRONE_QUESTION_CACHE_DIR
-        / f"{cache_key}.json"
-    )
-
-
-def _strip_code_fence(
-    response_text: str,
-) -> str:
-    """
-    ```json ... ``` が付いていた場合に除去する。
-    """
-
-    cleaned = response_text.strip()
-
-    match = re.fullmatch(
-        r"```(?:json)?\s*(.*?)\s*```",
-        cleaned,
-        flags=re.DOTALL | re.IGNORECASE,
-    )
-
-    if match:
-        return match.group(1).strip()
-
-    return cleaned
-
-
-def parse_drone_question_response(
-    response_text: str,
-    expected_count: int,
-) -> list[dict[str, Any]]:
-    """
-    OpenAIの応答を問題オブジェクト配列として解析する。
-    """
-
-    cleaned = _strip_code_fence(
-        response_text
-    )
-
-    try:
-        data = json.loads(cleaned)
-    except json.JSONDecodeError as exc:
-        raise ValueError(
-            "OpenAI応答をJSONとして解析できませんでした: "
-            f"{exc}"
-        ) from exc
-
-    if not isinstance(data, list):
-        raise ValueError(
-            "OpenAI応答のJSONルートは配列である必要があります"
-        )
-
-    if len(data) != expected_count:
-        raise ValueError(
-            "生成問題数が要求数と一致しません。"
-            f" expected={expected_count}, actual={len(data)}"
-        )
-
-    if not all(
-        isinstance(item, dict)
-        for item in data
-    ):
-        raise ValueError(
-            "JSON配列には問題オブジェクトのみを含めてください"
-        )
-
-    return data
-
-
-def _load_cached_questions(
-    cache_path: Path,
-    expected_count: int,
-) -> list[dict[str, Any]]:
-    with cache_path.open(
-        "r",
-        encoding="utf-8",
-    ) as file:
-        data = json.load(file)
-
-    if not isinstance(data, list):
-        raise ValueError(
-            f"Invalid drone question cache: {cache_path}"
-        )
-
-    if len(data) != expected_count:
-        raise ValueError(
-            "キャッシュ内の問題数が要求数と一致しません。"
-            f" expected={expected_count}, actual={len(data)}"
-        )
-
-    if not all(
-        isinstance(item, dict)
-        for item in data
-    ):
-        raise ValueError(
-            f"Invalid drone question cache items: {cache_path}"
-        )
-
-    return data
-
-
-def _save_cached_questions(
-    cache_path: Path,
-    questions: list[dict[str, Any]],
-) -> None:
-    cache_path.parent.mkdir(
-        parents=True,
-        exist_ok=True,
-    )
-
-    with cache_path.open(
-        "w",
-        encoding="utf-8",
-    ) as file:
-        json.dump(
-            questions,
-            file,
-            ensure_ascii=False,
-            indent=2,
-        )
+_generator = DroneQuestionGenerator()
 
 
 def generate_drone_questions(
@@ -182,105 +23,30 @@ def generate_drone_questions(
     use_cache: bool = True,
 ) -> list[dict[str, Any]]:
     """
-    ドローン問題を1回のAPI呼び出しで一括生成する。
+    後方互換用ラッパー。
 
-    安全仕様:
-    - キャッシュがあればAPIを呼ばない
-    - allow_api=Falseがデフォルト
-    - 1プロセスにつきAPI呼び出しは最大1回
+    実際の生成処理はDroneQuestionGeneratorへ委譲する。
     """
 
-    global _API_CALL_COUNT
+    generated = _generator.generate(
+        input_data={
+            "prompt": prompt,
+            "expected_count": expected_count,
+        },
+        allow_api=allow_api,
+        use_cache=use_cache,
+    )
 
-    if not isinstance(prompt, str) or not prompt.strip():
+    if not isinstance(generated, list):
         raise ValueError(
-            "prompt must be a non-empty string"
+            "Drone generator result must be a list"
         )
 
-    if not isinstance(expected_count, int):
-        raise ValueError(
-            "expected_count must be an integer"
-        )
+    return generated
 
-    if not 1 <= expected_count <= 50:
-        raise ValueError(
-            "expected_count must be between 1 and 50"
-        )
 
-    cache_key = _build_cache_key(
-        prompt=prompt,
-        model=DRONE_QUESTION_MODEL,
-    )
-
-    cache_path = _build_cache_path(
-        cache_key
-    )
-
-    if use_cache and cache_path.exists():
-        print(
-            "[CACHE HIT] "
-            f"{cache_path}"
-        )
-
-        return _load_cached_questions(
-            cache_path=cache_path,
-            expected_count=expected_count,
-        )
-
-    if not allow_api:
-        raise RuntimeError(
-            "OpenAI API呼び出しは無効です。"
-            "実行する場合は --allow-api を"
-            "明示してください。"
-        )
-
-    if _API_CALL_COUNT >= MAX_API_CALLS_PER_PROCESS:
-        raise RuntimeError(
-            "このプロセスで許可されたOpenAI API呼び出し上限 "
-            f"({MAX_API_CALLS_PER_PROCESS}回) に達しました。"
-        )
-
-    if not os.getenv("OPENAI_API_KEY"):
-        raise RuntimeError(
-            "OPENAI_API_KEY が設定されていません"
-        )
-
-    _API_CALL_COUNT += 1
-
-    print(
-        "[API CALL] "
-        f"{_API_CALL_COUNT}/{MAX_API_CALLS_PER_PROCESS} "
-        f"model={DRONE_QUESTION_MODEL}"
-    )
-
-    client = OpenAI()
-
-    response = client.responses.create(
-        model=DRONE_QUESTION_MODEL,
-        input=prompt,
-    )
-
-    response_text = response.output_text
-
-    if not response_text:
-        raise ValueError(
-            "OpenAI APIから空のレスポンスが返されました"
-        )
-
-    questions = parse_drone_question_response(
-        response_text=response_text,
-        expected_count=expected_count,
-    )
-
-    if use_cache:
-        _save_cached_questions(
-            cache_path=cache_path,
-            questions=questions,
-        )
-
-        print(
-            "[CACHE SAVED] "
-            f"{cache_path}"
-        )
-
-    return questions
+__all__ = [
+    "DRONE_QUESTION_MODEL",
+    "generate_drone_questions",
+    "parse_drone_question_response",
+]
