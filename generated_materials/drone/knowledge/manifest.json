@@ -1,0 +1,38 @@
+{
+  "exam": "drone",
+  "edition": 5,
+  "settings": {
+    "minCharacters": 250,
+    "maxCharacters": 2200
+  },
+  "totalItems": 115,
+  "totalCharacters": 81934,
+  "sections": {
+    "mindset": {
+      "itemCount": 5,
+      "characterCount": 3893,
+      "outputFile": "generated_materials/drone/knowledge/mindset.json"
+    },
+    "rule": {
+      "itemCount": 47,
+      "characterCount": 29652,
+      "outputFile": "generated_materials/drone/knowledge/rule.json"
+    },
+    "system": {
+      "itemCount": 24,
+      "characterCount": 18570,
+      "outputFile": "generated_materials/drone/knowledge/system.json"
+    },
+    "operation": {
+      "itemCount": 17,
+      "characterCount": 11337,
+      "outputFile": "generated_materials/drone/knowledge/operation.json"
+    },
+    "risk": {
+      "itemCount": 22,
+      "characterCount": 18482,
+      "outputFile": "generated_materials/drone/knowledge/risk.json"
+    }
+  },
+  "knowledgeFile": "generated_materials/drone/knowledge/knowledge.json"
+}

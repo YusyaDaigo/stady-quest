@@ -2,6 +2,7 @@ export { CATEGORIES } from "./categories";
 
 export { commonQuestions } from "./droneCommon";
 export { commonExtraQuestions } from "./droneCommonExtra";
+export { generatedDroneQuestions } from "./droneGeneratedQuestions";
 
 export { requiredQuestions } from "./required";
 export { theoryQuestions } from "./theory";
@@ -9,6 +10,7 @@ export { practicalQuestions } from "./practical";
 
 import { commonQuestions } from "./droneCommon";
 import { commonExtraQuestions } from "./droneCommonExtra";
+import { generatedDroneQuestions } from "./droneGeneratedQuestions";
 
 import { requiredQuestions } from "./required";
 import { theoryQuestions } from "./theory";
@@ -25,6 +27,7 @@ import {
 export const secondExamQuestions = [
   ...commonQuestions,
   ...commonExtraQuestions,
+  ...generatedDroneQuestions,
   ...requiredQuestions,
   ...theoryQuestions,
   ...practicalQuestions
@@ -33,6 +36,7 @@ export const secondExamQuestions = [
 export const firstExamQuestions = [
   ...commonQuestions,
   ...commonExtraQuestions,
+  ...generatedDroneQuestions,
   ...requiredQuestions,
   ...theoryQuestions,
   ...practicalQuestions,

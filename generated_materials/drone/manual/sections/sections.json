@@ -1,0 +1,170 @@
+{
+  "exam": "drone",
+  "edition": 5,
+  "chunkSettings": {
+    "maxCharacters": 5000,
+    "overlapCharacters": 300
+  },
+  "sections": {
+    "mindset": {
+      "chapter": 2,
+      "title": "無人航空機操縦者の心得",
+      "startPage": 8,
+      "endPage": 12,
+      "sectionFile": "generated_materials/drone/manual/sections/mindset/section.txt",
+      "characterCount": 4005,
+      "chunkCount": 1,
+      "chunks": [
+        {
+          "index": 1,
+          "file": "generated_materials/drone/manual/sections/mindset/chunks/chunk_001.txt",
+          "characterCount": 4005
+        }
+      ]
+    },
+    "rule": {
+      "chapter": 3,
+      "title": "無人航空機に関する規則",
+      "startPage": 13,
+      "endPage": 39,
+      "sectionFile": "generated_materials/drone/manual/sections/rule/section.txt",
+      "characterCount": 30278,
+      "chunkCount": 7,
+      "chunks": [
+        {
+          "index": 1,
+          "file": "generated_materials/drone/manual/sections/rule/chunks/chunk_001.txt",
+          "characterCount": 4469
+        },
+        {
+          "index": 2,
+          "file": "generated_materials/drone/manual/sections/rule/chunks/chunk_002.txt",
+          "characterCount": 4756
+        },
+        {
+          "index": 3,
+          "file": "generated_materials/drone/manual/sections/rule/chunks/chunk_003.txt",
+          "characterCount": 4612
+        },
+        {
+          "index": 4,
+          "file": "generated_materials/drone/manual/sections/rule/chunks/chunk_004.txt",
+          "characterCount": 4363
+        },
+        {
+          "index": 5,
+          "file": "generated_materials/drone/manual/sections/rule/chunks/chunk_005.txt",
+          "characterCount": 4875
+        },
+        {
+          "index": 6,
+          "file": "generated_materials/drone/manual/sections/rule/chunks/chunk_006.txt",
+          "characterCount": 4477
+        },
+        {
+          "index": 7,
+          "file": "generated_materials/drone/manual/sections/rule/chunks/chunk_007.txt",
+          "characterCount": 4526
+        }
+      ]
+    },
+    "system": {
+      "chapter": 4,
+      "title": "無人航空機のシステム",
+      "startPage": 40,
+      "endPage": 57,
+      "sectionFile": "generated_materials/drone/manual/sections/system/section.txt",
+      "characterCount": 18984,
+      "chunkCount": 5,
+      "chunks": [
+        {
+          "index": 1,
+          "file": "generated_materials/drone/manual/sections/system/chunks/chunk_001.txt",
+          "characterCount": 4338
+        },
+        {
+          "index": 2,
+          "file": "generated_materials/drone/manual/sections/system/chunks/chunk_002.txt",
+          "characterCount": 4764
+        },
+        {
+          "index": 3,
+          "file": "generated_materials/drone/manual/sections/system/chunks/chunk_003.txt",
+          "characterCount": 4266
+        },
+        {
+          "index": 4,
+          "file": "generated_materials/drone/manual/sections/system/chunks/chunk_004.txt",
+          "characterCount": 4793
+        },
+        {
+          "index": 5,
+          "file": "generated_materials/drone/manual/sections/system/chunks/chunk_005.txt",
+          "characterCount": 2023
+        }
+      ]
+    },
+    "operation": {
+      "chapter": 5,
+      "title": "無人航空機の操縦者及び運航体制",
+      "startPage": 58,
+      "endPage": 68,
+      "sectionFile": "generated_materials/drone/manual/sections/operation/section.txt",
+      "characterCount": 11586,
+      "chunkCount": 3,
+      "chunks": [
+        {
+          "index": 1,
+          "file": "generated_materials/drone/manual/sections/operation/chunks/chunk_001.txt",
+          "characterCount": 4366
+        },
+        {
+          "index": 2,
+          "file": "generated_materials/drone/manual/sections/operation/chunks/chunk_002.txt",
+          "characterCount": 4280
+        },
+        {
+          "index": 3,
+          "file": "generated_materials/drone/manual/sections/operation/chunks/chunk_003.txt",
+          "characterCount": 3540
+        }
+      ]
+    },
+    "risk": {
+      "chapter": 6,
+      "title": "運航上のリスク管理",
+      "startPage": 69,
+      "endPage": 87,
+      "sectionFile": "generated_materials/drone/manual/sections/risk/section.txt",
+      "characterCount": 18891,
+      "chunkCount": 5,
+      "chunks": [
+        {
+          "index": 1,
+          "file": "generated_materials/drone/manual/sections/risk/chunks/chunk_001.txt",
+          "characterCount": 4744
+        },
+        {
+          "index": 2,
+          "file": "generated_materials/drone/manual/sections/risk/chunks/chunk_002.txt",
+          "characterCount": 4885
+        },
+        {
+          "index": 3,
+          "file": "generated_materials/drone/manual/sections/risk/chunks/chunk_003.txt",
+          "characterCount": 4190
+        },
+        {
+          "index": 4,
+          "file": "generated_materials/drone/manual/sections/risk/chunks/chunk_004.txt",
+          "characterCount": 4122
+        },
+        {
+          "index": 5,
+          "file": "generated_materials/drone/manual/sections/risk/chunks/chunk_005.txt",
+          "characterCount": 2150
+        }
+      ]
+    }
+  }
+}

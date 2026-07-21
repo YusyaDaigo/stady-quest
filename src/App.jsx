@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import "./App.css";
 import {
   CATEGORIES,
   commonQuestions,
@@ -98,11 +99,21 @@ const buildRequiredMockQuestions = (questions) => {
   });
 };
 
-const getQuestionTimeLimit = (question) => {
+const getQuestionTimeLimit = (
+  question,
+  selectedExam
+) => {
+  // 薬剤師国家試験の必須問題・練習系
+  if (selectedExam === "pharmacy") {
+    return 60;
+  }
+
+  // ドローン計算問題
   if (question?.category === CATEGORIES.CALC) {
     return 150;
   }
 
+  // ドローン通常問題
   return 30;
 };
 
@@ -205,12 +216,18 @@ function App() {
 
     let selectedQuestions;
 
-      // 薬剤師 必須問題
-      if (selectedExam === "pharmacy") {
+    const TEST_GENERATED_PHARMACY_QUESTION = false;
+
+    // 薬剤師 必須問題
+    if (selectedExam === "pharmacy") {
         const selectedField =
           category === "ALL" ? "ALL" : normalizeField(category);
 
-        if (selectedMode === "review") {
+          if (TEST_GENERATED_PHARMACY_QUESTION) {
+          selectedQuestions = requiredQuestions.filter((question) => {
+            return question?.sourceType === "generated";
+          });
+        } else if (selectedMode === "review") {
           selectedQuestions = mistakeQuestions;
         } else if (
           selectedMode === "practice" &&
@@ -359,7 +376,8 @@ console.log(
 
     setTime(
       getQuestionTimeLimit(
-        shuffledQuestions[0]
+        shuffledQuestions[0],
+        selectedExam
       )
     );
 
@@ -458,9 +476,14 @@ console.log(
   setCurrentIndex((prev) => prev + 1);
 
   if (mode !== "mock") {
-    setTime(getQuestionTimeLimit(next));
-}
-  };
+    setTime(
+      getQuestionTimeLimit(
+        next,
+        selectedExam
+      )
+    );
+  }
+};
 
   const nextQuestion = () => {
 
@@ -470,8 +493,13 @@ console.log(
       currentQuestions[currentIndex + 1];
 
     if (mode !== "mock") {
-      setTime(getQuestionTimeLimit(next));
-  }
+      setTime(
+        getQuestionTimeLimit(
+          next,
+          selectedExam
+        )
+      );
+    }
 
     setIsCorrect(null);
 
@@ -629,7 +657,15 @@ console.log(
           setCurrentIndex((prev) => prev + 1);
 
           if (mode !== "mock") {
-            setTime(30);
+            const next =
+              currentQuestions[currentIndex + 1];
+
+            setTime(
+              getQuestionTimeLimit(
+                next,
+                selectedExam
+              )
+            );
           }
         }
       }

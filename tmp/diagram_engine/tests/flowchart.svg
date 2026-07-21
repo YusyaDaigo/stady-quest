@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="496" viewBox="0 0 760 496">
+<style>
+text { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif; fill: #111; }
+.title { font-size: 24px; font-weight: 700; }
+.node-label { font-size: 18px; font-weight: 600; }
+</style>
+<rect width="760" height="496" fill="white"/>
+<defs>
+<marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth">
+<path d="M0,0 L0,6 L9,3 z" fill="#222"/>
+</marker>
+</defs>
+<text x="380.0" y="40" text-anchor="middle" class="title">薬物の代謝経路</text>
+<line x1="380.0" y1="162" x2="380.0" y2="224" stroke="#222" stroke-width="2.5" marker-end="url(#arrow)"/>
+<line x1="380.0" y1="304" x2="380.0" y2="366" stroke="#222" stroke-width="2.5" marker-end="url(#arrow)"/>
+<rect x="220.0" y="90" width="320" height="72" rx="12" ry="12" fill="#eeeeee" stroke="#222" stroke-width="2"/>
+<text x="380.0" y="132.0" text-anchor="middle" class="node-label">薬物A</text>
+<rect x="220.0" y="232" width="320" height="72" rx="12" ry="12" fill="#eeeeee" stroke="#222" stroke-width="2"/>
+<text x="380.0" y="274.0" text-anchor="middle" class="node-label">代謝物B</text>
+<rect x="220.0" y="374" width="320" height="72" rx="12" ry="12" fill="#eeeeee" stroke="#222" stroke-width="2"/>
+<text x="380.0" y="416.0" text-anchor="middle" class="node-label">尿中排泄</text>
+</svg>

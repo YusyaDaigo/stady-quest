@@ -1,3 +1,7 @@
+import MenuButton from "../../components/MenuButton";
+import MenuSection from "../../components/MenuSection";
+
+
 function PharmacyMenu({
   onStartRequiredPractice,
   onStartRequiredMock,
@@ -18,91 +22,89 @@ function PharmacyMenu({
     { label: "実務", value: "実務" },
   ];
 
-  const sectionStyle = {
-    maxWidth: "760px",
-    margin: "34px auto",
-    padding: "24px 18px",
-    borderTop: "1px solid #555",
-  };
-
-  const gridStyle = {
-    display: "grid",
-    gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
-    gap: "12px",
-    maxWidth: "620px",
-    margin: "0 auto",
-  };
-
-  const buttonStyle = {
-    minHeight: "52px",
-    padding: "14px 18px",
-    fontSize: "1.05rem",
-    borderRadius: "14px",
-    fontWeight: "bold",
-  };
-
-  const wideButtonStyle = {
-    ...buttonStyle,
-    width: "90%",
-    maxWidth: "420px",
-    marginTop: "12px",
-  };
+  const hasMistakes = mistakeCount > 0;
 
   return (
-    <div>
-      <h2>💊 薬剤師国家試験</h2>
+    <div className="menu-page">
+      <h2 className="menu-page__title">
+        💊 薬剤師国家試験
+      </h2>
 
-      <p>必須問題に対応中</p>
+      <p className="menu-page__description">
+        必須問題に対応中
+      </p>
 
-      <section style={sectionStyle}>
-        <h3>📖 必須問題 練習</h3>
+      <MenuSection
+        title="📖 必須問題 練習"
+        description="学習したい科目を選択してください"
+        grid
+      >
+        {fields.map((field) => (
+          <MenuButton
+            key={field.value}
+            onClick={() =>
+              onStartRequiredPractice(field.value)
+            }
+          >
+            {field.label}
+          </MenuButton>
+        ))}
+      </MenuSection>
 
-        <div style={gridStyle}>
-          {fields.map((field) => (
-            <button
-              key={field.value}
-              onClick={() =>
-                onStartRequiredPractice(field.value)
-              }
-              style={buttonStyle}
-            >
-              {field.label}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <section style={sectionStyle}>
-        <h3>📝 必須問題 模試</h3>
-
-        <button
+      <MenuSection
+        title="📝 必須問題 模試"
+        description="本番と同じ科目配分で90問を出題します"
+      >
+        <MenuButton
           onClick={onStartRequiredMock}
-          style={wideButtonStyle}
+          variant="primary"
+          wide
         >
           本番形式 90問
-        </button>
-      </section>
+        </MenuButton>
+      </MenuSection>
 
-      <section style={sectionStyle}>
-        <h3>🔁 復習モード</h3>
+      <MenuSection
+        title="🔁 復習モード"
+        description="間違えた問題を集中的に解き直します"
+      >
+        <div
+          className={
+            hasMistakes
+              ? "review-status-card review-status-card--active"
+              : "review-status-card"
+          }
+        >
+          <p className="review-status-card__count">
+            復習問題数：{mistakeCount}問
+          </p>
 
-        <button
+          <p className="review-status-card__message">
+            {hasMistakes
+              ? "復習できる問題があります"
+              : "現在、復習問題はありません"}
+          </p>
+        </div>
+
+        <MenuButton
           onClick={onStartReview}
-          disabled={mistakeCount === 0}
+          disabled={!hasMistakes}
+          variant="primary"
+          wide
         >
           間違えた問題を復習
           （{mistakeCount}問）
-        </button>
+        </MenuButton>
 
-        <br /><br />
-
-        <button
+        <MenuButton
           onClick={onClearReview}
-          disabled={mistakeCount === 0}
+          disabled={!hasMistakes}
+          variant="danger"
+          wide
         >
           🗑 復習リスト削除
-        </button>
-      </section>
+        </MenuButton>
+      </MenuSection>
     </div>
   );
 }

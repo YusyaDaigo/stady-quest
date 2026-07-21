@@ -1,0 +1,22 @@
+{
+  "exam": "drone",
+  "knowledgeItems": 115,
+  "indexes": {
+    "keywords": {
+      "entryCount": 525,
+      "outputFile": "generated_materials/drone/knowledge/keyword_index.json"
+    },
+    "sections": {
+      "entryCount": 5,
+      "outputFile": "generated_materials/drone/knowledge/section_index.json"
+    },
+    "pages": {
+      "entryCount": 80,
+      "outputFile": "generated_materials/drone/knowledge/page_index.json"
+    },
+    "titles": {
+      "entryCount": 112,
+      "outputFile": "generated_materials/drone/knowledge/title_index.json"
+    }
+  }
+}

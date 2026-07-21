@@ -1,0 +1,441 @@
+{
+  "source": "source_materials/drone/manuals/drone_manual_5th.pdf",
+  "pageCount": 87,
+  "pages": [
+    {
+      "page": 1,
+      "file": "generated_materials/drone/manual/pages/page_001.txt",
+      "characterCount": 114
+    },
+    {
+      "page": 2,
+      "file": "generated_materials/drone/manual/pages/page_002.txt",
+      "characterCount": 1011
+    },
+    {
+      "page": 3,
+      "file": "generated_materials/drone/manual/pages/page_003.txt",
+      "characterCount": 818
+    },
+    {
+      "page": 4,
+      "file": "generated_materials/drone/manual/pages/page_004.txt",
+      "characterCount": 931
+    },
+    {
+      "page": 5,
+      "file": "generated_materials/drone/manual/pages/page_005.txt",
+      "characterCount": 558
+    },
+    {
+      "page": 6,
+      "file": "generated_materials/drone/manual/pages/page_006.txt",
+      "characterCount": 9
+    },
+    {
+      "page": 7,
+      "file": "generated_materials/drone/manual/pages/page_007.txt",
+      "characterCount": 1014
+    },
+    {
+      "page": 8,
+      "file": "generated_materials/drone/manual/pages/page_008.txt",
+      "characterCount": 749
+    },
+    {
+      "page": 9,
+      "file": "generated_materials/drone/manual/pages/page_009.txt",
+      "characterCount": 714
+    },
+    {
+      "page": 10,
+      "file": "generated_materials/drone/manual/pages/page_010.txt",
+      "characterCount": 720
+    },
+    {
+      "page": 11,
+      "file": "generated_materials/drone/manual/pages/page_011.txt",
+      "characterCount": 852
+    },
+    {
+      "page": 12,
+      "file": "generated_materials/drone/manual/pages/page_012.txt",
+      "characterCount": 844
+    },
+    {
+      "page": 13,
+      "file": "generated_materials/drone/manual/pages/page_013.txt",
+      "characterCount": 1065
+    },
+    {
+      "page": 14,
+      "file": "generated_materials/drone/manual/pages/page_014.txt",
+      "characterCount": 833
+    },
+    {
+      "page": 15,
+      "file": "generated_materials/drone/manual/pages/page_015.txt",
+      "characterCount": 1180
+    },
+    {
+      "page": 16,
+      "file": "generated_materials/drone/manual/pages/page_016.txt",
+      "characterCount": 1289
+    },
+    {
+      "page": 17,
+      "file": "generated_materials/drone/manual/pages/page_017.txt",
+      "characterCount": 1241
+    },
+    {
+      "page": 18,
+      "file": "generated_materials/drone/manual/pages/page_018.txt",
+      "characterCount": 1135
+    },
+    {
+      "page": 19,
+      "file": "generated_materials/drone/manual/pages/page_019.txt",
+      "characterCount": 949
+    },
+    {
+      "page": 20,
+      "file": "generated_materials/drone/manual/pages/page_020.txt",
+      "characterCount": 1027
+    },
+    {
+      "page": 21,
+      "file": "generated_materials/drone/manual/pages/page_021.txt",
+      "characterCount": 1210
+    },
+    {
+      "page": 22,
+      "file": "generated_materials/drone/manual/pages/page_022.txt",
+      "characterCount": 1215
+    },
+    {
+      "page": 23,
+      "file": "generated_materials/drone/manual/pages/page_023.txt",
+      "characterCount": 1175
+    },
+    {
+      "page": 24,
+      "file": "generated_materials/drone/manual/pages/page_024.txt",
+      "characterCount": 1086
+    },
+    {
+      "page": 25,
+      "file": "generated_materials/drone/manual/pages/page_025.txt",
+      "characterCount": 1236
+    },
+    {
+      "page": 26,
+      "file": "generated_materials/drone/manual/pages/page_026.txt",
+      "characterCount": 1291
+    },
+    {
+      "page": 27,
+      "file": "generated_materials/drone/manual/pages/page_027.txt",
+      "characterCount": 980
+    },
+    {
+      "page": 28,
+      "file": "generated_materials/drone/manual/pages/page_028.txt",
+      "characterCount": 1103
+    },
+    {
+      "page": 29,
+      "file": "generated_materials/drone/manual/pages/page_029.txt",
+      "characterCount": 1084
+    },
+    {
+      "page": 30,
+      "file": "generated_materials/drone/manual/pages/page_030.txt",
+      "characterCount": 1169
+    },
+    {
+      "page": 31,
+      "file": "generated_materials/drone/manual/pages/page_031.txt",
+      "characterCount": 1253
+    },
+    {
+      "page": 32,
+      "file": "generated_materials/drone/manual/pages/page_032.txt",
+      "characterCount": 503
+    },
+    {
+      "page": 33,
+      "file": "generated_materials/drone/manual/pages/page_033.txt",
+      "characterCount": 1225
+    },
+    {
+      "page": 34,
+      "file": "generated_materials/drone/manual/pages/page_034.txt",
+      "characterCount": 1196
+    },
+    {
+      "page": 35,
+      "file": "generated_materials/drone/manual/pages/page_035.txt",
+      "characterCount": 1011
+    },
+    {
+      "page": 36,
+      "file": "generated_materials/drone/manual/pages/page_036.txt",
+      "characterCount": 901
+    },
+    {
+      "page": 37,
+      "file": "generated_materials/drone/manual/pages/page_037.txt",
+      "characterCount": 1251
+    },
+    {
+      "page": 38,
+      "file": "generated_materials/drone/manual/pages/page_038.txt",
+      "characterCount": 1020
+    },
+    {
+      "page": 39,
+      "file": "generated_materials/drone/manual/pages/page_039.txt",
+      "characterCount": 950
+    },
+    {
+      "page": 40,
+      "file": "generated_materials/drone/manual/pages/page_040.txt",
+      "characterCount": 1278
+    },
+    {
+      "page": 41,
+      "file": "generated_materials/drone/manual/pages/page_041.txt",
+      "characterCount": 1140
+    },
+    {
+      "page": 42,
+      "file": "generated_materials/drone/manual/pages/page_042.txt",
+      "characterCount": 814
+    },
+    {
+      "page": 43,
+      "file": "generated_materials/drone/manual/pages/page_043.txt",
+      "characterCount": 1004
+    },
+    {
+      "page": 44,
+      "file": "generated_materials/drone/manual/pages/page_044.txt",
+      "characterCount": 1542
+    },
+    {
+      "page": 45,
+      "file": "generated_materials/drone/manual/pages/page_045.txt",
+      "characterCount": 830
+    },
+    {
+      "page": 46,
+      "file": "generated_materials/drone/manual/pages/page_046.txt",
+      "characterCount": 1164
+    },
+    {
+      "page": 47,
+      "file": "generated_materials/drone/manual/pages/page_047.txt",
+      "characterCount": 796
+    },
+    {
+      "page": 48,
+      "file": "generated_materials/drone/manual/pages/page_048.txt",
+      "characterCount": 881
+    },
+    {
+      "page": 49,
+      "file": "generated_materials/drone/manual/pages/page_049.txt",
+      "characterCount": 977
+    },
+    {
+      "page": 50,
+      "file": "generated_materials/drone/manual/pages/page_050.txt",
+      "characterCount": 1040
+    },
+    {
+      "page": 51,
+      "file": "generated_materials/drone/manual/pages/page_051.txt",
+      "characterCount": 992
+    },
+    {
+      "page": 52,
+      "file": "generated_materials/drone/manual/pages/page_052.txt",
+      "characterCount": 905
+    },
+    {
+      "page": 53,
+      "file": "generated_materials/drone/manual/pages/page_053.txt",
+      "characterCount": 1333
+    },
+    {
+      "page": 54,
+      "file": "generated_materials/drone/manual/pages/page_054.txt",
+      "characterCount": 1181
+    },
+    {
+      "page": 55,
+      "file": "generated_materials/drone/manual/pages/page_055.txt",
+      "characterCount": 970
+    },
+    {
+      "page": 56,
+      "file": "generated_materials/drone/manual/pages/page_056.txt",
+      "characterCount": 1169
+    },
+    {
+      "page": 57,
+      "file": "generated_materials/drone/manual/pages/page_057.txt",
+      "characterCount": 502
+    },
+    {
+      "page": 58,
+      "file": "generated_materials/drone/manual/pages/page_058.txt",
+      "characterCount": 721
+    },
+    {
+      "page": 59,
+      "file": "generated_materials/drone/manual/pages/page_059.txt",
+      "characterCount": 1098
+    },
+    {
+      "page": 60,
+      "file": "generated_materials/drone/manual/pages/page_060.txt",
+      "characterCount": 1144
+    },
+    {
+      "page": 61,
+      "file": "generated_materials/drone/manual/pages/page_061.txt",
+      "characterCount": 1301
+    },
+    {
+      "page": 62,
+      "file": "generated_materials/drone/manual/pages/page_062.txt",
+      "characterCount": 945
+    },
+    {
+      "page": 63,
+      "file": "generated_materials/drone/manual/pages/page_063.txt",
+      "characterCount": 977
+    },
+    {
+      "page": 64,
+      "file": "generated_materials/drone/manual/pages/page_064.txt",
+      "characterCount": 943
+    },
+    {
+      "page": 65,
+      "file": "generated_materials/drone/manual/pages/page_065.txt",
+      "characterCount": 1011
+    },
+    {
+      "page": 66,
+      "file": "generated_materials/drone/manual/pages/page_066.txt",
+      "characterCount": 1110
+    },
+    {
+      "page": 67,
+      "file": "generated_materials/drone/manual/pages/page_067.txt",
+      "characterCount": 927
+    },
+    {
+      "page": 68,
+      "file": "generated_materials/drone/manual/pages/page_068.txt",
+      "characterCount": 1125
+    },
+    {
+      "page": 69,
+      "file": "generated_materials/drone/manual/pages/page_069.txt",
+      "characterCount": 863
+    },
+    {
+      "page": 70,
+      "file": "generated_materials/drone/manual/pages/page_070.txt",
+      "characterCount": 1140
+    },
+    {
+      "page": 71,
+      "file": "generated_materials/drone/manual/pages/page_071.txt",
+      "characterCount": 1232
+    },
+    {
+      "page": 72,
+      "file": "generated_materials/drone/manual/pages/page_072.txt",
+      "characterCount": 1051
+    },
+    {
+      "page": 73,
+      "file": "generated_materials/drone/manual/pages/page_073.txt",
+      "characterCount": 1203
+    },
+    {
+      "page": 74,
+      "file": "generated_materials/drone/manual/pages/page_074.txt",
+      "characterCount": 1136
+    },
+    {
+      "page": 75,
+      "file": "generated_materials/drone/manual/pages/page_075.txt",
+      "characterCount": 939
+    },
+    {
+      "page": 76,
+      "file": "generated_materials/drone/manual/pages/page_076.txt",
+      "characterCount": 717
+    },
+    {
+      "page": 77,
+      "file": "generated_materials/drone/manual/pages/page_077.txt",
+      "characterCount": 816
+    },
+    {
+      "page": 78,
+      "file": "generated_materials/drone/manual/pages/page_078.txt",
+      "characterCount": 857
+    },
+    {
+      "page": 79,
+      "file": "generated_materials/drone/manual/pages/page_079.txt",
+      "characterCount": 926
+    },
+    {
+      "page": 80,
+      "file": "generated_materials/drone/manual/pages/page_080.txt",
+      "characterCount": 1016
+    },
+    {
+      "page": 81,
+      "file": "generated_materials/drone/manual/pages/page_081.txt",
+      "characterCount": 987
+    },
+    {
+      "page": 82,
+      "file": "generated_materials/drone/manual/pages/page_082.txt",
+      "characterCount": 909
+    },
+    {
+      "page": 83,
+      "file": "generated_materials/drone/manual/pages/page_083.txt",
+      "characterCount": 904
+    },
+    {
+      "page": 84,
+      "file": "generated_materials/drone/manual/pages/page_084.txt",
+      "characterCount": 992
+    },
+    {
+      "page": 85,
+      "file": "generated_materials/drone/manual/pages/page_085.txt",
+      "characterCount": 913
+    },
+    {
+      "page": 86,
+      "file": "generated_materials/drone/manual/pages/page_086.txt",
+      "characterCount": 914
+    },
+    {
+      "page": 87,
+      "file": "generated_materials/drone/manual/pages/page_087.txt",
+      "characterCount": 884
+    }
+  ]
+}

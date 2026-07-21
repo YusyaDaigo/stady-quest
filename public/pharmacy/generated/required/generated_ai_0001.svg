@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="538" height="418" viewBox="0 0 538 418">
+<style>
+text { font-family: -apple-system, BlinkMacSystemFont, 'Hiragino Sans', 'Yu Gothic', sans-serif; fill: #111; }
+.title { font-size: 24px; font-weight: 700; }
+.header { font-size: 17px; font-weight: 700; }
+.cell { font-size: 17px; }
+</style>
+<rect width="538" height="418" fill="white"/>
+<text x="269.0" y="40" text-anchor="middle" class="title">各薬物の平衡時濃度</text>
+<rect x="20" y="70" width="498" height="68" fill="#eeeeee"/>
+<line x1="20" y1="70" x2="518" y2="70" stroke="#222" stroke-width="1.5"/>
+<line x1="20" y1="138" x2="518" y2="138" stroke="#222" stroke-width="1.5"/>
+<line x1="20" y1="138" x2="518" y2="138" stroke="#222" stroke-width="1.5"/>
+<line x1="20" y1="190" x2="518" y2="190" stroke="#222" stroke-width="1.5"/>
+<line x1="20" y1="242" x2="518" y2="242" stroke="#222" stroke-width="1.5"/>
+<line x1="20" y1="294" x2="518" y2="294" stroke="#222" stroke-width="1.5"/>
+<line x1="20" y1="346" x2="518" y2="346" stroke="#222" stroke-width="1.5"/>
+<line x1="20" y1="398" x2="518" y2="398" stroke="#222" stroke-width="1.5"/>
+<line x1="20" y1="70" x2="20" y2="398" stroke="#222" stroke-width="1.5"/>
+<line x1="150" y1="70" x2="150" y2="398" stroke="#222" stroke-width="1.5"/>
+<line x1="374" y1="70" x2="374" y2="398" stroke="#222" stroke-width="1.5"/>
+<line x1="518" y1="70" x2="518" y2="398" stroke="#222" stroke-width="1.5"/>
+<text x="85.0" y="112.0" text-anchor="middle" class="header">薬物</text>
+<text x="262.0" y="100.0" text-anchor="middle" class="header">1-オクタノール中濃度</text>
+<text x="262.0" y="124.0" text-anchor="middle" class="header">（mg/L）</text>
+<text x="446.0" y="100.0" text-anchor="middle" class="header">水中濃度</text>
+<text x="446.0" y="124.0" text-anchor="middle" class="header">（mg/L）</text>
+<text x="85.0" y="170.0" text-anchor="middle" class="cell">薬物A</text>
+<text x="262.0" y="170.0" text-anchor="middle" class="cell">8.0</text>
+<text x="446.0" y="170.0" text-anchor="middle" class="cell">2.0</text>
+<text x="85.0" y="222.0" text-anchor="middle" class="cell">薬物B</text>
+<text x="262.0" y="222.0" text-anchor="middle" class="cell">15.0</text>
+<text x="446.0" y="222.0" text-anchor="middle" class="cell">5.0</text>
+<text x="85.0" y="274.0" text-anchor="middle" class="cell">薬物C</text>
+<text x="262.0" y="274.0" text-anchor="middle" class="cell">6.0</text>
+<text x="446.0" y="274.0" text-anchor="middle" class="cell">1.0</text>
+<text x="85.0" y="326.0" text-anchor="middle" class="cell">薬物D</text>
+<text x="262.0" y="326.0" text-anchor="middle" class="cell">12.0</text>
+<text x="446.0" y="326.0" text-anchor="middle" class="cell">6.0</text>
+<text x="85.0" y="378.0" text-anchor="middle" class="cell">薬物E</text>
+<text x="262.0" y="378.0" text-anchor="middle" class="cell">9.0</text>
+<text x="446.0" y="378.0" text-anchor="middle" class="cell">3.0</text>
+</svg>

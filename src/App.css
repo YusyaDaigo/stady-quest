@@ -182,3 +182,206 @@
     border-right-color: var(--border);
   }
 }
+
+/* ==============================
+   Study QUEST 共通メニューUI
+============================== */
+
+.menu-page {
+  width: 100%;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 8px 16px 40px;
+  box-sizing: border-box;
+}
+
+.menu-page__title {
+  margin-bottom: 8px;
+}
+
+.menu-page__description {
+  margin-top: 0;
+  margin-bottom: 24px;
+  color: #b8bdc9;
+  line-height: 1.7;
+}
+
+.menu-section {
+  width: 100%;
+  max-width: 900px;
+  margin: 36px auto 0;
+  padding: 30px 20px;
+  box-sizing: border-box;
+  border-top: 1px solid #555;
+}
+
+.menu-section__title {
+  margin: 0 0 18px;
+  font-size: 1.3rem;
+}
+
+.menu-section__description {
+  margin: -8px 0 18px;
+  color: #b8bdc9;
+  line-height: 1.6;
+}
+
+.menu-section__content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+}
+
+.menu-section__content--grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(170px, 1fr)
+  );
+  gap: 14px;
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.menu-button {
+  width: 100%;
+  min-height: 82px;
+  padding: 20px 24px;
+
+  border: 2px solid #70727a;
+  border-radius: 16px;
+
+  background-color: #55565c;
+  color: #ffffff;
+
+  font-size: 1.22rem;
+  font-weight: 700;
+  line-height: 1.4;
+
+  cursor: pointer;
+  box-sizing: border-box;
+
+  transition:
+    transform 0.15s ease,
+    background-color 0.15s ease,
+    border-color 0.15s ease,
+    opacity 0.15s ease;
+}
+
+.menu-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+  background-color: #353b49;
+  border-color: #777;
+}
+
+.menu-button:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.menu-button:focus-visible {
+  outline: 3px solid rgba(120, 170, 255, 0.65);
+  outline-offset: 3px;
+}
+
+.menu-button:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.menu-button--wide {
+  width: min(100%, 760px);
+  min-height: 82px;
+}
+
+.menu-button--primary {
+  background-color: #395f91;
+  border-color: #5680b5;
+}
+
+.menu-button--primary:hover:not(:disabled) {
+  background-color: #4670a6;
+}
+
+.menu-button--danger {
+  background-color: #4a2528;
+  border-color: #805056;
+}
+
+.menu-button--danger:hover:not(:disabled) {
+  background-color: #603036;
+}
+
+.review-status-card {
+  width: min(100%, 420px);
+  margin: 20px auto 8px;
+  padding: 16px 18px;
+  box-sizing: border-box;
+  border: 1px solid #444;
+  border-radius: 14px;
+  background-color: #222;
+}
+
+.review-status-card--active {
+  border: 2px solid #d6a84f;
+  background-color: #3a2f1f;
+}
+
+.review-status-card__count {
+  margin: 0;
+  font-weight: 700;
+}
+
+.review-status-card__message {
+  margin: 8px 0 0;
+  color: #aaa;
+}
+
+.review-status-card--active
+.review-status-card__message {
+  color: #ffd98a;
+}
+
+/* スマホ最終調整 */
+@media (max-width: 640px) {
+  .menu-page {
+    padding: 4px 12px 32px;
+  }
+
+  .menu-section {
+    margin-top: 24px;
+    padding: 22px 8px;
+  }
+
+  .menu-section__title {
+    font-size: 1.2rem;
+  }
+
+  .menu-section__content--grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .menu-button {
+    width: 100%;
+    min-height: 74px;
+    padding: 16px 12px;
+    font-size: 1.12rem;
+    border-radius: 14px;
+  }
+
+  .menu-button--wide {
+    width: 100%;
+  }
+
+  .review-status-card {
+    width: 100%;
+  }
+}
+
+@media (max-width: 360px) {
+  .menu-section__content--grid {
+    grid-template-columns: 1fr;
+  }
+}
