@@ -58,14 +58,32 @@ class TestGenerator(BaseGenerator):
         self.parse_call_count = 0
         self.cache_validation_count = 0
 
-    def build_prompt(
+        self.template_path = (
+            cache_dir / "test_prompt.md"
+        )
+        self.template_path.write_text(
+            "{{PROMPT}}",
+            encoding="utf-8",
+        )
+
+        self.partial_paths = ()
+
+    def build_prompt_variables(
         self,
         input_data,
     ):
-        return input_data.get(
+        prompt = input_data.get(
             "prompt",
-            ""
+            "",
         )
+
+        if prompt is None:
+            prompt = ""
+
+        return {
+            "PROMPT": prompt,
+        }
+
 
     def parse_response(
         self,

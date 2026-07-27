@@ -1,14 +1,4 @@
-import json
 from typing import Any, Dict
-
-from tools.question_builder.prompt_loader import (
-    render_prompt_template,
-)
-
-
-PHARMACY_SIMILAR_TEMPLATE = (
-    "pharmacy_similar"
-)
 
 
 def validate_source_question(
@@ -74,33 +64,3 @@ def validate_source_question(
         raise ValueError(
             "'answer' is outside choices range"
         )
-
-
-def build_similar_question_prompt(
-    source_question: Dict[str, Any],
-) -> str:
-    """
-    元問題1問から薬剤師国家試験の
-    類題生成Promptを構築する。
-    """
-
-    validate_source_question(
-        source_question
-    )
-
-    source_json = json.dumps(
-        source_question,
-        ensure_ascii=False,
-        indent=2,
-    )
-
-    return render_prompt_template(
-        template_name=(
-            PHARMACY_SIMILAR_TEMPLATE
-        ),
-        variables={
-            "SOURCE_QUESTION_JSON": (
-                source_json
-            ),
-        },
-    )

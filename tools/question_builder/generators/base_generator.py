@@ -11,6 +11,10 @@ from tools.question_builder.core.cache import (
     JsonCache,
 )
 
+from tools.question_builder.templates.engine import (
+    compose_prompt,
+)
+
 
 GeneratedData = Union[
     dict[str, Any],
@@ -31,6 +35,9 @@ class BaseGenerator(ABC):
     6. キャッシュ保存
     """
 
+    template_path: Path
+    partial_paths: tuple[Path, ...] = ()
+
     def __init__(
         self,
         *,
@@ -50,13 +57,14 @@ class BaseGenerator(ABC):
         )
 
     @abstractmethod
-    def build_prompt(
+    def build_prompt_variables(
         self,
         input_data: dict[str, Any],
-    ) -> str:
+    ) -> dict[str, Any]:
         """
-        試験・生成方式固有のPromptを作る。
+        Prompt Engineへ渡すテンプレート変数を構築する。
         """
+        raise NotImplementedError
 
     @abstractmethod
     def parse_response(
@@ -105,8 +113,14 @@ class BaseGenerator(ABC):
                 "input_data must be a dictionary"
             )
 
-        prompt = self.build_prompt(
+        variables = self.build_prompt_variables(
             input_data
+        )
+
+        prompt = compose_prompt(
+            template_path=self.template_path,
+            partial_paths=self.partial_paths,
+            variables=variables,
         )
 
         if not isinstance(prompt, str) or not prompt.strip():

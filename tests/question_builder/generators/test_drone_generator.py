@@ -31,14 +31,16 @@ def build_question(
 def test_build_prompt_returns_prompt():
     generator = DroneQuestionGenerator()
 
-    result = generator.build_prompt(
+    result = generator.build_prompt_variables(
         {
             "prompt": "問題を2問生成",
             "expected_count": 2,
         }
     )
 
-    assert result == "問題を2問生成"
+    assert result == {
+    "PROMPT": "問題を2問生成",
+}
 
 
 @pytest.mark.parametrize(
@@ -58,7 +60,7 @@ def test_build_prompt_rejects_invalid_prompt(
         ValueError,
         match="prompt must be a non-empty string",
     ):
-        generator.build_prompt(
+        generator.build_prompt_variables(
             {
                 "prompt": prompt,
                 "expected_count": 2,
@@ -83,7 +85,7 @@ def test_build_prompt_rejects_out_of_range_count(
         ValueError,
         match="between 1 and 50",
     ):
-        generator.build_prompt(
+        generator.build_prompt_variables(
             {
                 "prompt": "Generate",
                 "expected_count": (
@@ -110,7 +112,7 @@ def test_build_prompt_rejects_non_integer_count(
         ValueError,
         match="must be an integer",
     ):
-        generator.build_prompt(
+        generator.build_prompt_variables(
             {
                 "prompt": "Generate",
                 "expected_count": (

@@ -22,6 +22,12 @@ class DroneQuestionGenerator(
     無人航空機問題を一括生成するGenerator。
     """
 
+    template_path = Path(
+    "tools/question_builder/templates/drone.md"
+    )
+
+    partial_paths: tuple[Path, ...] = ()
+
     def __init__(self) -> None:
         super().__init__(
             model="gpt-5.5",
@@ -32,7 +38,7 @@ class DroneQuestionGenerator(
             max_api_calls=1,
         )
 
-    def build_prompt(
+    def build_prompt_variables(
         self,
         input_data: dict[str, Any],
     ) -> str:
@@ -57,7 +63,9 @@ class DroneQuestionGenerator(
                 "expected_count must be between 1 and 50"
             )
 
-        return prompt
+        return {
+            "PROMPT": prompt,
+        }
 
     def build_cache_payload(
         self,
