@@ -37,6 +37,11 @@ def build_question_block(question_data: dict) -> str:
     has_image = question_data.get("hasImage", False)
     image = escape_js_text(question_data.get("image", ""))
 
+    case_id = question_data.get("caseId")
+    case_context = escape_js_text(
+        question_data.get("caseContext", "")
+    )
+
     metadata_lines = f'''
     sourceType: "{source_type}",'''
 
@@ -59,6 +64,15 @@ def build_question_block(question_data: dict) -> str:
     if image:
         metadata_lines += f'''
     image: "{image}",'''
+
+    if case_id is not None:
+        metadata_lines += f'''
+    caseId: "{case_id}",'''
+
+    if case_context:
+        metadata_lines += f'''
+    caseContext:
+      "{case_context}",'''
 
     return f'''
   {{

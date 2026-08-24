@@ -16,14 +16,27 @@ def generate_explanation(question: dict) -> str:
 
     client = OpenAI()
 
+    choices = question["choices"]
+    answer = question["answer"]
+
     choices_text = "\n".join(
         [
             f"{index + 1}. {choice}"
-            for index, choice in enumerate(question["choices"])
+            for index, choice in enumerate(choices)
         ]
     )
 
-    correct_choice = question["choices"][question["answer"]]
+    if isinstance(answer, list):
+        correct_answers = answer
+    else:
+        correct_answers = [answer]
+
+    correct_choices_text = "\n".join(
+        [
+            f"{index + 1}. {choices[index]}"
+            for index in correct_answers
+        ]
+    )
 
     prompt = f"""
 あなたは薬剤師国家試験対策の講師です。
@@ -33,6 +46,7 @@ def generate_explanation(question: dict) -> str:
 条件:
 - 正答の理由を説明する
 - 他の選択肢がなぜ違うかも軽く触れる
+- 複数正答の場合は、正答となる各選択肢について説明する
 - 文章は長すぎず、Study QUESTアプリ内で読める長さにする
 - 断定しすぎず、国家試験対策として自然な表現にする
 - JSONのみで返す
@@ -51,7 +65,7 @@ def generate_explanation(question: dict) -> str:
 {choices_text}
 
 正答:
-{question["answer"] + 1}. {correct_choice}
+{correct_choices_text}
 """
 
     response = client.responses.create(

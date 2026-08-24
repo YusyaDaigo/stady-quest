@@ -23,3 +23,21 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# ==================================
+# Study QUEST development artifacts
+# ==================================
+
+# Local source materials / extracted PDFs / page images
+source_materials/
+
+# Question Builder generated caches
+tools/question_builder/cache/
+
+# Local working backups
+backups/*.bak
+backups/practical_111.js.*
+backups/theory_111.js.*
+
+# Temporary pre-edit source snapshots
+tools/question_builder/**/*.before_*

@@ -1,7 +1,7 @@
 import shutil
 from pathlib import Path
 
-from parsers.answer_pdf_parser import parse_required_answers_from_pdf
+from parsers.answer_pdf_parser import parse_answers_from_pdf
 from parsers.pdf_image_exporter import export_pdf_pages_to_images
 from vision.vision_factory import get_vision_engine
 from generators.vision_question_builder import build_question_from_vision_result
@@ -17,6 +17,7 @@ from explanations.explanation_updater import update_explanation_by_source_number
 from images.question_image_cropper import crop_page_by_question_index
 from images.vision_bbox_cropper import crop_by_bbox
 from vision.openai_bbox_detector import detect_question_bboxes
+from vision.openai_vision import analyze_question_across_page_set
 from parsers.answer_vision_parser import parse_required_answers_with_vision
 
 
@@ -98,28 +99,58 @@ def run_past_exam_pipeline(
     exam_number: int,
     question_pdf_path: Path,
     answer_pdf_path: Path,
+    part: int = None,
     vision_engine_name: str = "openai",
     answer_parser: str = "text",
     start_page: int = 2,
     max_pages: int = 2,
 ):
-    if exam == "pharmacy" and category == "required":
-        target_file = EXAM_PATHS[exam] / f"required_{exam_number}.js"
+
+    question_ranges = {
+        "required": (1, 90),
+        "theory": (91, 195),
+        "practical": (196, 345),
+    }
+
+    min_question_no, max_question_no = question_ranges[category]
+
+    if exam == "pharmacy":
+        target_file = (
+            EXAM_PATHS[exam]
+            / f"{category}_{exam_number}.js"
+        )
+
+        export_names = {
+            "required": f"required{exam_number}Questions",
+            "theory": f"theory{exam_number}Questions",
+            "practical": f"practical{exam_number}Questions",
+        }
+
+        export_name = export_names[category]
 
         if not target_file.exists():
             target_file.write_text(
                 f'import {{ CATEGORIES }} from "./categories";\n\n'
-                f'export const required{exam_number}Questions = [\n\n'
+                f'export const {export_name} = [\n\n'
                 f'  // AI_QUESTION_INSERT_HERE\n'
                 f'];\n',
                 encoding="utf-8",
             )
     else:
-        target_file = EXAM_PATHS[exam] / QUESTION_FILES[category]
+        target_file = (
+            EXAM_PATHS[exam]
+            / QUESTION_FILES[category]
+        )
 
-    image_output_dir = Path(
-        f"source_materials/{exam}/{category}/images/{exam_number}"
-    )
+    if part is None:
+        image_output_dir = Path(
+            f"source_materials/{exam}/{category}/images/{exam_number}"
+        )
+    else:
+        image_output_dir = Path(
+            f"source_materials/{exam}/{category}/images/"
+            f"{exam_number}/part_{part}"
+        )
 
     image_paths = export_pdf_pages_to_images(
         pdf_path=question_pdf_path,
@@ -135,19 +166,31 @@ def run_past_exam_pipeline(
             exam_number=exam_number,
         )
     else:
-        answer_data = parse_required_answers_from_pdf(answer_pdf_path)
+        answer_data = parse_answers_from_pdf(
+            pdf_path=answer_pdf_path,
+            category=category,
+        )
     vision_engine = get_vision_engine(vision_engine_name)
 
     text = target_file.read_text(encoding="utf-8")
     blocks = []
 
-    for image_path in target_image_paths:
+    processed_questions = set()
+    case_context_candidates = {}
+
+    for page_index, image_path in enumerate(target_image_paths):
         print(f"📄 解析中: {image_path}")
 
-        vision_results = vision_engine(image_path)
+        vision_results = vision_engine(
+            image_path,
+            category=category,
+        )
 
         try:
-            figure_bboxes = detect_question_bboxes(image_path)
+            figure_bboxes = detect_question_bboxes(
+                image_path,
+                category=category,
+            )
         except Exception as e:
             print(f"⚠️ bbox検出失敗 fallback使用: {e}")
             figure_bboxes = {}
@@ -155,12 +198,128 @@ def run_past_exam_pipeline(
         for index, vision_result in enumerate(vision_results):
             question_no = vision_result.get("question_no")
 
-            if not isinstance(question_no, int) or not (1 <= question_no <= 90):
+            choices = vision_result.get("choices", [])
+            has_image = bool(
+                vision_result.get("has_image", False)
+            )
+
+            if category == "practical":
+                candidate_question = vision_result.get("question", "")
+
+                if (
+                    isinstance(question_no, int)
+                    and isinstance(choices, list)
+                    and len(choices) < 2
+                    and isinstance(candidate_question, str)
+                    and candidate_question.strip()
+                ):
+                    case_context_candidates[question_no] = (
+                        candidate_question.strip()
+                    )
+
+                    print(
+                        "📋 caseContext候補保存: "
+                        f"問{question_no}"
+                    )
+
+            if (
+                isinstance(question_no, int)
+                and (
+                    not isinstance(choices, list)
+                    or len(choices) < 2
+                )
+            ):
+                page_set = [image_path]
+
+                for offset in (1, 2):
+                    next_index = page_index + offset
+
+                    if next_index < len(target_image_paths):
+                        page_set.append(
+                            target_image_paths[next_index]
+                        )
+
+                if len(page_set) >= 2:
+                    try:
+                        merged_result = (
+                            analyze_question_across_page_set(
+                                image_paths=page_set,
+                                question_no=question_no,
+                                category=category,
+                            )
+                        )
+
+                        if merged_result is not None:
+                            merged_choices = merged_result.get(
+                                "choices",
+                                [],
+                            )
+
+                            if (
+                                isinstance(merged_choices, list)
+                                and len(merged_choices) >= 2
+                            ):
+                                print(
+                                    "🧩 複数ページ統合成功: "
+                                    f"問{question_no} "
+                                    f"({len(page_set)}ページ)"
+                                )
+
+                                vision_result = merged_result
+
+                    except Exception as e:
+                        print(
+                            "⚠️ 複数ページVision失敗: "
+                            f"問{question_no}: {e}"
+                        )
+
+            question_no = vision_result.get("question_no")
+
+            if category == "practical":
+                case_context = (
+                    case_context_candidates.get(question_no)
+                )
+
+                if (
+                    isinstance(question_no, int)
+                    and case_context
+                ):
+                    pair_start = (
+                        196
+                        + ((question_no - 196) // 2) * 2
+                    )
+
+                    vision_result = dict(vision_result)
+                    vision_result['case_id'] = (
+                        f"{exam_number}-"
+                        f"{pair_start}-"
+                        f"{pair_start + 1}"
+                    )
+                    vision_result['case_context'] = (
+                        case_context
+                    )
+
+                    print(
+                        "🧩 caseContext付与: "
+                        f"問{question_no} → "
+                        f"{vision_result['case_id']}"
+                    )
+
+            if (
+                not isinstance(question_no, int)
+                or not (min_question_no <= question_no <= max_question_no)
+            ):
                 print(f"⚠️ 問番号スキップ: {question_no}")
                 continue
 
             if question_no not in answer_data:
                 print(f"⚠️ 解答データなしスキップ: 第{exam_number}回 問{question_no}")
+                continue
+
+            if question_no in processed_questions:
+                print(
+                    f"⏭️ 同一実行内スキップ: 問{question_no}"
+                )
                 continue
 
             question = build_question_from_vision_result(
@@ -209,6 +368,8 @@ def run_past_exam_pipeline(
                 exam_number=exam_number,
                 source_number=question["sourceNumber"],
             ):
+                processed_questions.add(question_no)
+
                 print(
                     f"⚠️ 同一年度・同一問番号スキップ: 第{exam_number}回 問{question['sourceNumber']}"
                 )
@@ -221,6 +382,8 @@ def run_past_exam_pipeline(
 
             blocks.append(build_question_block(question))
             print(f"✅ 追加予定: 問{question['sourceNumber']}")
+
+            processed_questions.add(question_no)
 
     if not blocks:
         print("⏭️ 追加する問題がありません")

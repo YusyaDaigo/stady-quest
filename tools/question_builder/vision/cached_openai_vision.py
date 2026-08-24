@@ -5,24 +5,49 @@ from pathlib import Path
 from vision.openai_vision import analyze_page as openai_analyze_page
 
 
-VISION_CACHE_DIR = Path(
-    "tools/question_builder/cache/pharmacy/required/vision"
-)
-
-
-def get_vision_cache_path(image_path: Path) -> Path:
+def get_vision_cache_path(
+    image_path: Path,
+    category: str,
+) -> Path:
     parts = image_path.parts
 
     try:
-        exam_number = parts[parts.index("images") + 1]
+        images_index = parts.index("images")
+        exam_number = parts[images_index + 1]
     except Exception:
         exam_number = "unknown"
 
-    return VISION_CACHE_DIR / exam_number / f"{image_path.stem}.json"
+    part_name = None
+
+    try:
+        candidate = parts[images_index + 2]
+
+        if candidate.startswith("part_"):
+            part_name = candidate
+    except Exception:
+        part_name = None
+
+    cache_dir = (
+        Path("tools/question_builder/cache/pharmacy")
+        / category
+        / "vision"
+        / exam_number
+    )
+
+    if part_name is not None:
+        cache_dir = cache_dir / part_name
+
+    return cache_dir / f"{image_path.stem}.json"
 
 
-def analyze_page(image_path: Path):
-    cache_path = get_vision_cache_path(image_path)
+def analyze_page(
+    image_path: Path,
+    category: str = "required",
+):
+    cache_path = get_vision_cache_path(
+        image_path=image_path,
+        category=category,
+    )
 
     if cache_path.exists():
         print(f"📦 vision cache使用: {cache_path}")
@@ -34,14 +59,26 @@ def analyze_page(image_path: Path):
 
     if no_api:
         raise RuntimeError(
-            f"vision cacheがありません。NO_APIモードのためOpenAIを呼びません: {cache_path}"
+            "vision cacheがありません。"
+            f"NO_APIモードのためOpenAIを呼びません: {cache_path}"
         )
 
-    result = openai_analyze_page(image_path)
+    result = openai_analyze_page(
+        image_path,
+        category=category,
+    )
 
-    cache_path.parent.mkdir(parents=True, exist_ok=True)
+    cache_path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
     cache_path.write_text(
-        json.dumps(result, ensure_ascii=False, indent=2),
+        json.dumps(
+            result,
+            ensure_ascii=False,
+            indent=2,
+        ),
         encoding="utf-8",
     )
 

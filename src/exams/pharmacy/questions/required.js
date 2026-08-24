@@ -1,4 +1,3 @@
-import { generatedRequiredQuestions } from "./generated_required";
 import { required99Questions } from "./required_99";
 import { required98Questions } from "./required_98";
 import { required97Questions } from "./required_97";
@@ -16,7 +15,6 @@ import { required101Questions } from "./required_101";
 import { required100Questions } from "./required_100";
 
 export const requiredQuestions = [
-  ...generatedRequiredQuestions,
   ...required99Questions,
   ...required98Questions,
   ...required97Questions,

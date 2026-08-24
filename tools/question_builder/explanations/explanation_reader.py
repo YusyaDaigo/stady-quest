@@ -1,3 +1,4 @@
+import json
 import re
 
 
@@ -8,7 +9,7 @@ def extract_questions_from_js(text: str):
         r'(?:field:\s*"([^"]*)",.*?)?'
         r'question:\s*\n\s*"([^"]*)",.*?'
         r'choices:\s*\[(.*?)\].*?'
-        r'answer:\s*(\d+),.*?'
+        r'answer:\s*(\d+|\[\s*\d+(?:\s*,\s*\d+)*\s*\])\s*,.*?'
         r'explanation:\s*\n\s*"([^"]*)"',
         re.DOTALL,
     )
@@ -20,8 +21,11 @@ def extract_questions_from_js(text: str):
 
         choices = re.findall(
             r'"([^"]*)"',
-            choices_block
+            choices_block,
         )
+
+        answer_text = match.group(6)
+        answer = json.loads(answer_text)
 
         questions.append(
             {
@@ -30,7 +34,7 @@ def extract_questions_from_js(text: str):
                 "field": match.group(3) or "",
                 "question": match.group(4),
                 "choices": choices,
-                "answer": int(match.group(6)),
+                "answer": answer,
                 "explanation": match.group(7),
             }
         )

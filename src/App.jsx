@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
+
 import {
   CATEGORIES,
   commonQuestions,
@@ -14,6 +15,8 @@ import Review from "./Review";
 import MainMenu from "./MainMenu";
 import PharmacyMenu from "./exams/pharmacy/PharmacyMenu";
 import { requiredQuestions } from "./exams/pharmacy/questions/required";
+import { theoryQuestions } from "./exams/pharmacy/questions/theory";
+import { practicalQuestions } from "./exams/pharmacy/questions/practical";
 
 const shuffleArray = (array) => {
   return [...array].sort(
@@ -31,6 +34,46 @@ const REQUIRED_MOCK_STRUCTURE = [
   { field: "病態", count: 15 },
   { field: "法規", count: 10 },
   { field: "実務", count: 10 },
+];
+
+const THEORY_PART1_STRUCTURE = [
+  {
+    startNumber: 91,
+    endNumber: 150,
+    count: 60,
+  },
+];
+
+const THEORY_PART2_STRUCTURE = [
+  {
+    startNumber: 151,
+    endNumber: 195,
+    count: 45,
+  },
+];
+
+const PRACTICAL_PART1_STRUCTURE = [
+  {
+    startNumber: 196,
+    endNumber: 245,
+    count: 49,
+  },
+];
+
+const PRACTICAL_PART2_STRUCTURE = [
+  {
+    startNumber: 246,
+    endNumber: 285,
+    count: 40,
+  },
+];
+
+const PRACTICAL_PART3_STRUCTURE = [
+  {
+    startNumber: 286,
+    endNumber: 345,
+    count: 59,
+  },
 ];
 
 const FIELD_ALIAS = {
@@ -88,16 +131,137 @@ const getQuestionField = (question) => {
   );
 };
 
-const buildRequiredMockQuestions = (questions) => {
-  return REQUIRED_MOCK_STRUCTURE.flatMap((section) => {
-    const pool = questions.filter(
-      (question) =>
-        getQuestionField(question) === section.field
-    );
+const buildMockQuestions = (
+  questions,
+  structure
+) => {
+  return structure.flatMap((section) => {
+    const pool = questions.filter((question) => {
+      if (section.field) {
+        return (
+          getQuestionField(question) === section.field
+        );
+      }
+
+      if (
+        Number.isInteger(section.startNumber) &&
+        Number.isInteger(section.endNumber)
+      ) {
+        return (
+          question.sourceNumber >= section.startNumber &&
+          question.sourceNumber <= section.endNumber
+        );
+      }
+
+      return false;
+    });
 
     return shuffleArray(pool).slice(0, section.count);
   });
 };
+
+const buildPracticalMockQuestions = (
+  questions,
+  structure
+) => {
+  const targetCount = structure.reduce(
+    (total, section) => total + section.count,
+    0
+  );
+
+  const targetQuestions = questions.filter((question) => {
+    if (!question) return false;
+
+    return structure.some((section) => {
+      if (
+        !Number.isInteger(section.startNumber) ||
+        !Number.isInteger(section.endNumber)
+      ) {
+        return false;
+      }
+
+      return (
+        question.sourceNumber >= section.startNumber &&
+        question.sourceNumber <= section.endNumber
+      );
+    });
+  });
+
+  const caseQuestions = targetQuestions
+    .filter(
+      (question) =>
+        Number.isInteger(question.sourceNumber) &&
+        question.sourceNumber >= 196 &&
+        question.sourceNumber <= 325
+    )
+    .sort(
+      (a, b) =>
+        a.sourceNumber - b.sourceNumber
+    );
+
+  const singleQuestions = targetQuestions
+    .filter(
+      (question) =>
+        Number.isInteger(question.sourceNumber) &&
+        question.sourceNumber >= 326 &&
+        question.sourceNumber <= 345
+    );
+
+  const selectedQuestions = [];
+
+  /*
+   * 196〜325:
+   * ケース領域。
+   * 原典の並びを維持して選択する。
+   */
+  for (const question of caseQuestions) {
+    if (
+      selectedQuestions.length >= targetCount
+    ) {
+      break;
+    }
+
+    selectedQuestions.push(question);
+  }
+
+  /*
+   * 326〜345:
+   * 単問領域。
+   * 理論問題と同じようにシャッフルして補充。
+   */
+  if (selectedQuestions.length < targetCount) {
+    const shuffledSingles =
+      shuffleArray(singleQuestions);
+
+    for (const question of shuffledSingles) {
+      if (
+        selectedQuestions.length >= targetCount
+      ) {
+        break;
+      }
+
+      selectedQuestions.push(question);
+    }
+  }
+
+  if (selectedQuestions.length < targetCount) {
+    console.warn(
+      "実践模試の問題数が不足しています。",
+      {
+        requestedQuestions: targetCount,
+        selectedQuestions:
+          selectedQuestions.length,
+        availableCaseQuestions:
+          caseQuestions.length,
+        availableSingleQuestions:
+          singleQuestions.length,
+      }
+    );
+  }
+
+  return selectedQuestions;
+};
+
 
 const getQuestionTimeLimit = (
   question,
@@ -192,6 +356,31 @@ function App() {
     }
 
     if (
+      selectedExam === "pharmacy" &&
+      selectedMode === "mock"
+    ) {
+      switch (selectedExamType) {
+        case "theory_part1":
+          return 9000;
+
+        case "theory_part2":
+          return 6900;
+
+        case "practical_part1":
+          return 7500;
+
+        case "practical_part2":
+          return 6000;
+
+        case "practical_part3":
+          return 9000;
+
+        default:
+          break;
+      }
+    }
+
+    if (
       selectedMode === "mock" &&
       selectedExamType === "second"
     ) {
@@ -218,13 +407,28 @@ function App() {
 
     const TEST_GENERATED_PHARMACY_QUESTION = false;
 
-    // 薬剤師 必須問題
+    // 薬剤師国家試験
     if (selectedExam === "pharmacy") {
         const selectedField =
           category === "ALL" ? "ALL" : normalizeField(category);
 
-          if (TEST_GENERATED_PHARMACY_QUESTION) {
-          selectedQuestions = requiredQuestions.filter((question) => {
+        let pharmacyQuestionPool = requiredQuestions;
+
+        if (
+          selectedExamType === "theory_part1" ||
+          selectedExamType === "theory_part2"
+        ) {
+          pharmacyQuestionPool = theoryQuestions;
+        } else if (
+          selectedExamType === "practical_part1" ||
+          selectedExamType === "practical_part2" ||
+          selectedExamType === "practical_part3"
+        ) {
+          pharmacyQuestionPool = practicalQuestions;
+        }
+
+        if (TEST_GENERATED_PHARMACY_QUESTION) {
+          selectedQuestions = pharmacyQuestionPool.filter((question) => {
             return question?.sourceType === "generated";
           });
         } else if (selectedMode === "review") {
@@ -233,7 +437,7 @@ function App() {
           selectedMode === "practice" &&
           selectedField !== "ALL"
         ) {
-          selectedQuestions = requiredQuestions.filter((question) => {
+          selectedQuestions = pharmacyQuestionPool.filter((question) => {
             if (!question) return false;
 
             return (
@@ -241,7 +445,7 @@ function App() {
             );
           });
         } else {
-          selectedQuestions = requiredQuestions;
+          selectedQuestions = pharmacyQuestionPool;
         }
 
         console.log("PHARMACY MODE:", selectedMode);
@@ -325,11 +529,60 @@ console.log(
 
     if (
       selectedExam === "pharmacy" &&
-      selectedMode === "mock" &&
-      selectedExamType === "required"
+      selectedMode === "mock"
     ) {
-      shuffledQuestions =
-        buildRequiredMockQuestions(selectedQuestions);
+      let mockStructure = null;
+
+      switch (selectedExamType) {
+        case "required":
+          mockStructure = REQUIRED_MOCK_STRUCTURE;
+          break;
+
+        case "theory_part1":
+          mockStructure = THEORY_PART1_STRUCTURE;
+          break;
+
+        case "theory_part2":
+          mockStructure = THEORY_PART2_STRUCTURE;
+          break;
+
+        case "practical_part1":
+          mockStructure = PRACTICAL_PART1_STRUCTURE;
+          break;
+
+        case "practical_part2":
+          mockStructure = PRACTICAL_PART2_STRUCTURE;
+          break;
+
+        case "practical_part3":
+          mockStructure = PRACTICAL_PART3_STRUCTURE;
+          break;
+
+        default:
+          mockStructure = null;
+      }
+
+      const isPracticalMock =
+        selectedExamType === "practical_part1" ||
+        selectedExamType === "practical_part2" ||
+        selectedExamType === "practical_part3";
+
+      if (!mockStructure) {
+        shuffledQuestions =
+          shuffleArray(selectedQuestions);
+      } else if (isPracticalMock) {
+        shuffledQuestions =
+          buildPracticalMockQuestions(
+            selectedQuestions,
+            mockStructure
+          );
+      } else {
+        shuffledQuestions =
+          buildMockQuestions(
+            selectedQuestions,
+            mockStructure
+          );
+      }
     } else {
       shuffledQuestions =
         shuffleArray(selectedQuestions);
@@ -399,17 +652,50 @@ console.log(
     setScreen("quiz");
   };
 
-  const handleAnswer = (index) => {
+  const handleAnswer = (answer) => {
     if (userAnswers[currentIndex] !== undefined) {
       return;
     }
 
-    const correct =
-      index === currentQuestion.answer;
+    const normalizeAnswer = (value) => {
+      if (Array.isArray(value)) {
+        return [...value].sort(
+          (a, b) => a - b
+        );
+      }
+
+      return value;
+    };
+
+    const normalizedUserAnswer =
+      normalizeAnswer(answer);
+
+    const normalizedCorrectAnswer =
+      normalizeAnswer(currentQuestion.answer);
+
+    let correct;
+
+    if (
+      Array.isArray(normalizedUserAnswer) &&
+      Array.isArray(normalizedCorrectAnswer)
+    ) {
+      correct =
+        normalizedUserAnswer.length ===
+          normalizedCorrectAnswer.length &&
+        normalizedUserAnswer.every(
+          (value, index) =>
+            value === normalizedCorrectAnswer[index]
+        );
+    } else {
+      correct =
+        normalizedUserAnswer ===
+        normalizedCorrectAnswer;
+    }
 
     const newAnswers = [...userAnswers];
 
-    newAnswers[currentIndex] = index;
+    newAnswers[currentIndex] =
+      normalizedUserAnswer;
 
     setUserAnswers(newAnswers);
 
@@ -421,16 +707,12 @@ console.log(
     ]);
 
     if (correct) {
-
       setScore((prev) => prev + time);
-
       setCorrectCount((prev) => prev + 1);
     }
 
     if (!correct) {
-
       setMistakeQuestions((prev) => {
-
         if (prev.includes(currentQuestion)) {
           return prev;
         }
@@ -440,14 +722,11 @@ console.log(
     }
 
     if (mode === "practice") {
-
       setShowExplanation(true);
-
       return;
     }
 
     if (mode === "mock") {
-
       if (
         currentIndex + 1 >=
         currentQuestions.length
@@ -456,7 +735,6 @@ console.log(
       }
 
       setCurrentIndex((prev) => prev + 1);
-
       return;
     }
 
@@ -464,26 +742,24 @@ console.log(
       currentIndex + 1 >=
       currentQuestions.length
     ) {
-
       setScreen("result");
-
       return;
     }
 
-  const next =
-    currentQuestions[currentIndex + 1];
+    const next =
+      currentQuestions[currentIndex + 1];
 
-  setCurrentIndex((prev) => prev + 1);
+    setCurrentIndex((prev) => prev + 1);
 
-  if (mode !== "mock") {
-    setTime(
-      getQuestionTimeLimit(
-        next,
-        selectedExam
-      )
-    );
-  }
-};
+    if (mode !== "mock") {
+      setTime(
+        getQuestionTimeLimit(
+          next,
+          selectedExam
+        )
+      );
+    }
+  };
 
   const nextQuestion = () => {
 
@@ -757,9 +1033,29 @@ console.log(
               clearMistakeQuestions()
             }
             mistakeCount={mistakeQuestions.length}
+
+            onStartTheoryPart1Mock={() =>
+              startQuiz("mock", "theory_part1")
+            }
+
+            onStartTheoryPart2Mock={() =>
+              startQuiz("mock", "theory_part2")
+            }
+
+            onStartPracticalPart1Mock={() =>
+              startQuiz("mock", "practical_part1")
+            }
+
+            onStartPracticalPart2Mock={() =>
+              startQuiz("mock", "practical_part2")
+            }
+
+            onStartPracticalPart3Mock={() =>
+              startQuiz("mock", "practical_part3")
+            }
           />
     )}
-  
+
 
       {screen === "quiz" && (
 
@@ -768,6 +1064,7 @@ console.log(
           examType={examType}
           time={time}
           currentQuestion={currentQuestion}
+          questions={currentQuestions}
           showExplanation={showExplanation}
           handleAnswer={handleAnswer}
           isCorrect={isCorrect}

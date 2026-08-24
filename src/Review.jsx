@@ -14,8 +14,53 @@ function Review({
         const userAnswer =
           userAnswers[index];
 
+        const normalizeAnswer = (value) => {
+          if (Array.isArray(value)) {
+            return [...value].sort(
+              (a, b) => a - b
+            );
+          }
+
+          return value;
+        };
+
+        const normalizedUserAnswer =
+          normalizeAnswer(userAnswer);
+
+        const normalizedCorrectAnswer =
+          normalizeAnswer(question.answer);
+
         const isCorrect =
-          userAnswer === question.answer;
+          Array.isArray(normalizedUserAnswer) &&
+          Array.isArray(normalizedCorrectAnswer)
+            ? (
+                normalizedUserAnswer.length ===
+                  normalizedCorrectAnswer.length &&
+                normalizedUserAnswer.every(
+                  (value, answerIndex) =>
+                    value ===
+                    normalizedCorrectAnswer[answerIndex]
+                )
+              )
+            : normalizedUserAnswer ===
+              normalizedCorrectAnswer;
+
+        const formatAnswer = (answer) => {
+          if (answer === undefined) {
+            return "未回答";
+          }
+
+          if (Array.isArray(answer)) {
+            return answer
+              .map(
+                (choiceIndex) =>
+                  question.choices[choiceIndex]
+              )
+              .join(" / ");
+          }
+
+          return question.choices[answer];
+        };
 
         return (
           <div
@@ -40,14 +85,12 @@ function Review({
 
             <p>
               あなたの回答：
-              {userAnswer === undefined
-                ? "未回答"
-                : question.choices[userAnswer]}
+              {formatAnswer(userAnswer)}
             </p>
 
             <p>
               正解：
-              {question.choices[question.answer]}
+              {formatAnswer(question.answer)}
             </p>
 
             <h3>

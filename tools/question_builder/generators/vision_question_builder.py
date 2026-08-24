@@ -30,6 +30,15 @@ def build_question_from_vision_result(
         "explanation": "",
     }
 
+    case_id = vision_result.get("case_id")
+    case_context = vision_result.get("case_context")
+
+    if case_id:
+        question["caseId"] = case_id
+
+    if case_context:
+        question["caseContext"] = case_context
+
     if vision_result.get("has_image"):
         question["hasImage"] = True
         question["image"] = (

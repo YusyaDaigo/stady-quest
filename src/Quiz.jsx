@@ -5,6 +5,7 @@ function Quiz({
   examType,
   time,
   currentQuestion,
+  questions,
   showExplanation,
   handleAnswer,
   isCorrect,
@@ -21,6 +22,131 @@ function Quiz({
 }) {
   const [showQuestionList, setShowQuestionList]
     = useState(false);
+
+  const [pendingAnswers, setPendingAnswers]
+    = useState([]);
+
+  const isPracticalMock =
+    mode === "mock" &&
+    (
+      examType === "practical_part1" ||
+      examType === "practical_part2" ||
+      examType === "practical_part3"
+    );
+
+  const isPracticalCaseQuestion =
+    isPracticalMock &&
+    Number.isInteger(currentQuestion?.sourceNumber) &&
+    currentQuestion.sourceNumber >= 196 &&
+    currentQuestion.sourceNumber <= 325;
+
+  const currentCaseId =
+    isPracticalCaseQuestion
+      ? currentQuestion?.caseId || null
+      : null;
+
+  const caseGroups = [];
+
+  if (isPracticalMock && Array.isArray(questions)) {
+    const groupMap = new Map();
+
+    questions.forEach((question, index) => {
+      if (!question) return;
+
+      const sourceNumber =
+        question.sourceNumber;
+
+      /*
+       * 実践問題 196〜325 は、
+       * 問題番号2問を1ケースとして固定する。
+       *
+       * 196-197 -> 111-196-197
+       * 198-199 -> 111-198-199
+       * ...
+       * 324-325 -> 111-324-325
+       */
+      if (
+        Number.isInteger(sourceNumber) &&
+        sourceNumber >= 196 &&
+        sourceNumber <= 325
+      ) {
+        const firstNumber =
+          sourceNumber % 2 === 0
+            ? sourceNumber
+            : sourceNumber - 1;
+
+        const secondNumber =
+          firstNumber + 1;
+
+        const caseKey =
+          `111-${firstNumber}-${secondNumber}`;
+
+        if (!groupMap.has(caseKey)) {
+          groupMap.set(caseKey, {
+            key: caseKey,
+            indexes: [],
+            isCase: true,
+          });
+        }
+
+        groupMap
+          .get(caseKey)
+          .indexes
+          .push(index);
+
+        return;
+      }
+
+      /*
+       * 326以降は通常の単問。
+       */
+      const singleKey =
+        `single-${sourceNumber ?? index}`;
+
+      groupMap.set(singleKey, {
+        key: singleKey,
+        indexes: [index],
+        isCase: false,
+      });
+    });
+
+    caseGroups.push(
+      ...groupMap.values()
+    );
+  }
+
+  const currentGroupIndex =
+    isPracticalMock
+      ? caseGroups.findIndex(
+          (group) =>
+            group.indexes.includes(currentIndex)
+        )
+      : -1;
+
+  const currentGroup =
+    currentGroupIndex >= 0
+      ? caseGroups[currentGroupIndex]
+      : null;
+
+  const caseNumber =
+    currentGroupIndex >= 0
+      ? currentGroupIndex + 1
+      : null;
+
+  const totalCases =
+    caseGroups.length;
+
+  const casePosition =
+    currentCaseId && currentGroup
+      ? currentGroup.indexes.indexOf(
+          currentIndex
+        ) + 1
+      : null;
+
+  const caseQuestionCount =
+    currentCaseId && currentGroup
+      ? currentGroup.indexes.length
+      : null;
 
   return (
     <div>
@@ -130,14 +256,50 @@ function Quiz({
         <>
 
           <h2>
-            {mode === "practice"
-              ? "練習モード"
+            {mode === "practice" && examType === "required"
+              ? "必須問題 練習"
+              : mode === "mock" && examType === "required"
+              ? "必須問題 模試"
+              : mode === "mock" && examType === "theory_part1"
+              ? "理論問題 Part1 模試"
+              : mode === "mock" && examType === "theory_part2"
+              ? "理論問題 Part2 模試"
+              : mode === "mock" && examType === "practical_part1"
+              ? "実践問題 Part1 模試"
+              : mode === "mock" && examType === "practical_part2"
+              ? "実践問題 Part2 模試"
+              : mode === "mock" && examType === "practical_part3"
+              ? "実践問題 Part3 模試"
               : mode === "mock" && examType === "second"
               ? "二等操縦士 模試"
               : mode === "mock" && examType === "first"
               ? "一等操縦士 模試"
-              : "復習モード"}
+              : mode === "review"
+              ? "復習モード"
+              : "練習モード"}
           </h2>
+
+          {isPracticalCaseQuestion && currentCaseId && (
+            <p>
+              ケース {caseNumber} / {totalCases}
+              {"　"}
+              ケース内 問 {casePosition} / {caseQuestionCount}
+            </p>
+          )}
+
+          {isPracticalCaseQuestion && !currentCaseId && (
+            <p>
+              ケース問題
+              {"　"}
+              問題 {currentIndex + 1} / {totalQuestions}
+            </p>
+          )}
+
+          {isPracticalMock && !isPracticalCaseQuestion && (
+            <p>
+              問題 {currentIndex + 1} / {totalQuestions}
+            </p>
+          )}
 
           <p>
             残り時間：
@@ -179,6 +341,36 @@ function Quiz({
           </button>
 )}
 
+          {isPracticalCaseQuestion &&
+            currentQuestion.caseContext && (
+              <div
+                style={{
+                  maxWidth: "820px",
+                  width: "82%",
+                  margin: "30px auto",
+                  padding: "20px",
+                  textAlign: "left",
+                  lineHeight: "1.7",
+                  backgroundColor: "#222631",
+                  border: "1px solid #555",
+                  borderRadius: "10px",
+                }}
+              >
+                <h3>
+                  📋 症例
+                </h3>
+
+                <p
+                  style={{
+                    whiteSpace: "pre-wrap",
+                    marginBottom: 0,
+                  }}
+                >
+                  {currentQuestion.caseContext}
+                </p>
+              </div>
+            )}
+
           <h2
         
             style={{
@@ -219,28 +411,57 @@ function Quiz({
           )}
 
           {currentQuestion.choices.map(
-              (choice, index) => (
+            (choice, index) => {
+              const isMultipleAnswer =
+                Array.isArray(
+                  currentQuestion.answer
+                );
 
+              const storedAnswer =
+                userAnswers[currentIndex];
+
+              const isSelected =
+                isMultipleAnswer
+                  ? pendingAnswers.includes(index)
+                  : storedAnswer === index;
+
+              return (
                 <div key={index}>
-
                   <button
                     disabled={
                       showExplanation ||
-                      userAnswers[currentIndex] !== undefined
+                      storedAnswer !== undefined
                     }
-                    onClick={() =>
-                      handleAnswer(index)
-                    }
+                    onClick={() => {
+                      if (!isMultipleAnswer) {
+                        handleAnswer(index);
+                        return;
+                      }
+
+                      setPendingAnswers((prev) => {
+                        if (prev.includes(index)) {
+                          return prev.filter(
+                            (value) =>
+                              value !== index
+                          );
+                        }
+
+                        return [
+                          ...prev,
+                          index,
+                        ];
+                      });
+                    }}
                     style={{
                       backgroundColor:
-                        userAnswers[currentIndex] === index
+                        isSelected
                           ? "#4a6fa5"
                           : "#2b2f3a",
 
                       color: "#ffffff",
 
                       border:
-                        userAnswers[currentIndex] === index
+                        isSelected
                           ? "2px solid #ffffff"
                           : "1px solid #444",
 
@@ -261,14 +482,52 @@ function Quiz({
                       textAlign: "left"
                     }}
                   >
-                    {userAnswers[currentIndex] === index
+                    {isSelected
                       ? "▶ "
                       : ""}
                     {choice}
                   </button>
-
                 </div>
-              )
+              );
+            }
+          )}
+
+          {Array.isArray(
+            currentQuestion.answer
+          ) &&
+            userAnswers[currentIndex] === undefined && (
+              <button
+                disabled={
+                  pendingAnswers.length !==
+                  currentQuestion.answer.length
+                }
+                onClick={() => {
+                  handleAnswer(
+                    pendingAnswers
+                  );
+
+                  setPendingAnswers([]);
+                }}
+                style={{
+                  marginTop: "10px",
+                  marginBottom: "24px",
+                  padding: "14px 24px",
+                  fontSize: "1.1rem",
+                  borderRadius: "10px",
+                  cursor:
+                    pendingAnswers.length ===
+                    currentQuestion.answer.length
+                      ? "pointer"
+                      : "not-allowed",
+                }}
+              >
+                回答する
+                （
+                {pendingAnswers.length}
+                /
+                {currentQuestion.answer.length}
+                ）
+              </button>
             )}
 
             {showExplanation && (

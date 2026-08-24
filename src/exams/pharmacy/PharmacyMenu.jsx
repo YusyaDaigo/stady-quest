@@ -5,6 +5,11 @@ import MenuSection from "../../components/MenuSection";
 function PharmacyMenu({
   onStartRequiredPractice,
   onStartRequiredMock,
+  onStartTheoryPart1Mock,
+  onStartTheoryPart2Mock,
+  onStartPracticalPart1Mock,
+  onStartPracticalPart2Mock,
+  onStartPracticalPart3Mock,
   onStartReview,
   onClearReview,
   mistakeCount,
@@ -61,6 +66,56 @@ function PharmacyMenu({
           wide
         >
           本番形式 90問
+        </MenuButton>
+      </MenuSection>
+
+      <MenuSection
+        title="🧠 理論問題 模試"
+        description="本番形式のPart構成で出題します"
+      >
+        <MenuButton
+          onClick={onStartTheoryPart1Mock}
+          variant="primary"
+          wide
+        >
+          Part1 60問・150分
+        </MenuButton>
+
+        <MenuButton
+          onClick={onStartTheoryPart2Mock}
+          variant="primary"
+          wide
+        >
+          Part2 45問・115分
+        </MenuButton>
+      </MenuSection>
+
+      <MenuSection
+        title="🩺 実践問題 模試"
+        description="本番形式のPart構成で出題します"
+      >
+        <MenuButton
+          onClick={onStartPracticalPart1Mock}
+          variant="primary"
+          wide
+        >
+          Part1 50問・125分
+        </MenuButton>
+
+        <MenuButton
+          onClick={onStartPracticalPart2Mock}
+          variant="primary"
+          wide
+        >
+          Part2 40問・100分
+        </MenuButton>
+
+        <MenuButton
+          onClick={onStartPracticalPart3Mock}
+          variant="primary"
+          wide
+        >
+          Part3 60問・150分
         </MenuButton>
       </MenuSection>
 
