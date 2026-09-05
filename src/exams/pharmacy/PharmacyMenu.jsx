@@ -4,6 +4,7 @@ import MenuSection from "../../components/MenuSection";
 
 function PharmacyMenu({
   onStartRequiredPractice,
+  onStartTheoryPractice,
   onStartRequiredMock,
   onStartTheoryPart1Mock,
   onStartTheoryPart2Mock,
@@ -27,6 +28,10 @@ function PharmacyMenu({
     { label: "実務", value: "実務" },
   ];
 
+  const theoryFields = fields.filter(
+    (field) => field.value !== "実務"
+  );
+
   const hasMistakes = mistakeCount > 0;
 
   return (
@@ -49,6 +54,23 @@ function PharmacyMenu({
             key={field.value}
             onClick={() =>
               onStartRequiredPractice(field.value)
+            }
+          >
+            {field.label}
+          </MenuButton>
+        ))}
+      </MenuSection>
+
+      <MenuSection
+        title="📘 理論問題 練習"
+        description="学習したい科目を選択してください"
+        grid
+      >
+        {theoryFields.map((field) => (
+          <MenuButton
+            key={field.value}
+            onClick={() =>
+              onStartTheoryPractice(field.value)
             }
           >
             {field.label}

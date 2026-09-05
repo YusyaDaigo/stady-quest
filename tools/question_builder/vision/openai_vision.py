@@ -18,8 +18,84 @@ CATEGORY_LABELS = {
 }
 
 
+EXAM_MARKUP_INSTRUCTIONS = """
+問題文中の下線・空欄について:
+- 元画像で、ア・イ・ウ・エ・オなどのラベルに対応する
+  下線が実際に引かれている場合、その範囲を次の専用記法で
+  question に記録してください。
+
+  [[ラベル|下線部分]]
+
+  例:
+  [[ア|0.5 mol/L硫酸]]
+  [[イ|液の赤色が消えたとき]]
+  [[ウ|A（mL）]]
+
+- ラベル付きの空欄が実際に存在する場合は、
+  次のように内容を空にしてください。
+
+  [[ラベル|]]
+
+  例:
+  [[オ|]]
+
+- ラベルは元画像に表示されている文字をそのまま使用してください。
+- 下線の範囲は、元画像で実際に下線が引かれている文字だけにしてください。
+- 下線の前後にある通常の文章まで記法の中へ含めないでください。
+- 元画像に下線・空欄が存在しない箇所へ、
+  文脈や選択肢から推測してこの記法を追加してはいけません。
+- 選択肢に「下線部ア」「空欄オ」などと書かれているだけでは、
+  対応する下線・空欄が画像上で確認できない限り、
+  推測で記法を作ってはいけません。
+- 「下線部ア：○○」のような説明文へ置き換えず、
+  元の問題文の位置に [[ア|○○]] を埋め込んでください。
+- choices 内の「下線部ア」「空欄オ」などの参照表現は、
+  原文どおり保持してください。
+- HTMLタグは使用しないでください。
+- [[...|...]] の内部へ別の [[...|...]] を入れないでください。
+"""
+
+
 def normalize_field(field: str) -> str:
     return PHARMACY_FIELD_ALIASES.get(field, field)
+
+
+def validate_exam_markup(text: str) -> bool:
+    """
+    [[ラベル|内容]] 形式の試験用マークアップが
+    壊れていないか確認する。
+    """
+
+    if not isinstance(text, str):
+        return False
+
+    open_count = text.count("[[")
+    close_count = text.count("]]")
+
+    if open_count != close_count:
+        return False
+
+    if open_count == 0:
+        return True
+
+    import re
+
+    pattern = re.compile(
+        r"\[\[([^|\[\]]+)\|([^\[\]]*)\]\]"
+    )
+
+    matches = list(pattern.finditer(text))
+
+    if len(matches) != open_count:
+        return False
+
+    for match in matches:
+        label = match.group(1).strip()
+
+        if not label:
+            return False
+
+    return True
 
 
 def image_to_data_url(image_path: Path) -> str:
@@ -106,6 +182,8 @@ def analyze_page(
 薬剤師国家試験の{category_label}ページ画像です。
 
 画像内に見えている問題をすべて抽出してください。
+
+{EXAM_MARKUP_INSTRUCTIONS}
 
 必ずJSONのみで返してください。
 
@@ -233,6 +311,24 @@ has_image は、問題を解くために図、表、グラフ、写真、構造�
 
         question["choices"] = choices
 
+        question_text = question.get(
+            "question",
+            "",
+        )
+
+        if not validate_exam_markup(
+            question_text
+        ):
+            question_no = question.get(
+                "question_no",
+                "?",
+            )
+
+            raise ValueError(
+                "試験マークアップ形式が不正です: "
+                f"問{question_no}"
+            )
+
         normalized_questions.append(question)
 
     return normalized_questions
@@ -289,6 +385,8 @@ def analyze_question_across_pages(
 1枚目で始まった問{question_no}が2枚目へ続いている可能性があります。
 2ページを合わせて読み、問{question_no}を1つの完全な問題として抽出してください。
 
+{EXAM_MARKUP_INSTRUCTIONS}
+
 必ずJSONのみで返してください。
 
 形式:
@@ -310,6 +408,18 @@ def analyze_question_across_pages(
 - 問{question_no}以外の問題は返さないでください。
 - 1枚目と2枚目の内容を時系列どおり統合してください。
 - 問題文が2ページ目へ続いている場合は、その文章もquestionへ含めてください。
+- 対象問題が「前問」「前の問題」「前ページ」「上記」など、
+  他の問題やページを参照している場合は、
+  問題を単独で理解して解答するために必要な前提本文を
+  周辺ページからquestionへ統合してください。
+- 必要な前提をquestionへ統合した場合は、
+  「前問の定量法において」のような参照表現をそのまま残さず、
+  「この定量法において」など、
+  統合後の文章だけで意味が通る自然な表現へ置き換えてください。
+- 参照表現を書き換える場合も、
+  元問題の意味・数値・条件・問い方を変更してはいけません。
+- 問題を解くために不要な前問の設問文や選択肢は
+  questionへ追加しないでください。
 - 選択肢が2ページ目にある場合は、必ずchoicesへ含めてください。
 - 選択肢本文は省略せず、画像から読み取れる内容を入れてください。
 - 選択肢に構造式・グラフ・図などが含まれる場合、
@@ -388,6 +498,19 @@ fieldは次のいずれかに正規化してください:
 
     data["choices"] = choices
 
+    question_text = data.get(
+        "question",
+        "",
+    )
+
+    if not validate_exam_markup(
+        question_text
+    ):
+        raise ValueError(
+            "試験マークアップ形式が不正です: "
+            f"問{question_no}"
+        )
+
     return data
 
 
@@ -433,6 +556,8 @@ def analyze_question_across_page_set(
 すべてのページを合わせて読み、
 問{question_no}を1つの完全な問題として抽出してください。
 
+{EXAM_MARKUP_INSTRUCTIONS}
+
 必ずJSONのみで返してください。
 
 形式:
@@ -454,6 +579,27 @@ def analyze_question_across_page_set(
 - 問{question_no}以外の問題は返さないでください。
 - ページ順に内容を統合してください。
 - 問題文の続きもquestionへ含めてください。
+- 対象問題の設問が「この定量法」「この方法」「この操作」
+  「この反応」「この実験」「この図」「この表」「前問」
+  「前の問題」「前ページ」「上記」など、
+  前ページや周辺ページの内容を前提としている場合は、
+  問題を単独で理解して解答するために必要な前提本文も
+  questionへ統合してください。
+- 必要な前提をquestionへ統合した場合は、
+  「前問の定量法において」のような参照表現をそのまま残さず、
+  「この定量法において」など、
+  統合後の文章だけで意味が通る自然な表現へ置き換えてください。
+- 参照表現を書き換える場合も、
+  元問題の意味・数値・条件・問い方を変更してはいけません。
+- 問題を解くために不要な前問の設問文や選択肢は
+  questionへ追加しないでください。
+- 選択肢中に「下線部ア」「下線部イ」「下線部ウ」
+  「下線部エ」「空欄オ」などの参照表現がある場合は、
+  それらが何を指しているか理解できるよう、
+  対応する本文・式・操作・条件をquestionへ含めてください。
+- ただし、対象問題と無関係な前問や次問の本文は
+  questionへ混入させないでください。
+- 元画像に存在しない説明や情報を補完・推測してはいけません。
 - 選択肢が後続ページにある場合は必ずchoicesへ含めてください。
 - 選択肢本文は省略しないでください。
 - 構造式・図・グラフなど文字だけで完全に表現できない選択肢でも、
@@ -529,6 +675,19 @@ fieldは次のいずれかに正規化してください:
         choices = []
 
     data["choices"] = choices
+
+    question_text = data.get(
+        "question",
+        "",
+    )
+
+    if not validate_exam_markup(
+        question_text
+    ):
+        raise ValueError(
+            "試験マークアップ形式が不正です: "
+            f"問{question_no}"
+        )
 
     return data
 

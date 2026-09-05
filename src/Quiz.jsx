@@ -1,5 +1,66 @@
 import { useState } from "react";
 
+
+const renderExamText = (text) => {
+  if (typeof text !== "string") {
+    return text;
+  }
+
+  const pattern = /\[\[([^|\]]+)\|([^\]]*)\]\]/g;
+
+  const parts = [];
+  let lastIndex = 0;
+  let match;
+  let key = 0;
+
+  while ((match = pattern.exec(text)) !== null) {
+    if (match.index > lastIndex) {
+      parts.push(
+        text.slice(lastIndex, match.index)
+      );
+    }
+
+    const label = match[1];
+    const content = match[2];
+
+    parts.push(
+      <span
+        key={`exam-mark-${key}`}
+        style={{
+          display: "inline-block",
+          borderBottom: "2px solid currentColor",
+          padding: "0 0.18em 0.05em",
+          margin: "0 0.12em",
+          whiteSpace: "nowrap",
+        }}
+      >
+        <span
+          style={{
+            fontSize: "0.72em",
+            fontWeight: 700,
+            marginRight: content ? "0.35em" : 0,
+          }}
+        >
+          {label}
+        </span>
+
+        {content || "\u3000\u3000\u3000"}
+      </span>
+    );
+
+    key += 1;
+    lastIndex = pattern.lastIndex;
+  }
+
+  if (lastIndex < text.length) {
+    parts.push(text.slice(lastIndex));
+  }
+
+  return parts.length > 0
+    ? parts
+    : text;
+};
+
 function Quiz({
   mode,
   examType,
@@ -378,10 +439,11 @@ function Quiz({
               width: "82%",
               margin: "40px auto 32px",
               lineHeight: "1.7",
-              textAlign: "left"
+              textAlign: "left",
+              whiteSpace: "pre-wrap"
             }}
           >
-            {currentQuestion.question}
+            {renderExamText(currentQuestion.question)}
           </h2>
 
           {currentQuestion.image && (

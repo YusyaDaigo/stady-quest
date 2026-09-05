@@ -4,11 +4,32 @@ def escape_js_text(text: str) -> str:
 
     text = str(text)
 
-    # 改行・タブ・余分な空白を1行にまとめる
-    text = " ".join(text.split())
+    # 改行コードを統一
+    text = text.replace("\r\n", "\n")
+    text = text.replace("\r", "\n")
 
-    # JavaScript文字列で壊れやすい文字をエスケープ
+    # 各行内のタブ・連続空白を整理しつつ、
+    # 問題文の段落改行は保持する
+    lines = []
+
+    for line in text.split("\n"):
+        normalized_line = " ".join(
+            line.split()
+        )
+        lines.append(normalized_line)
+
+    text = "\n".join(lines)
+
+    # 3行以上の連続改行は2行へまとめる
+    while "\n\n\n" in text:
+        text = text.replace(
+            "\n\n\n",
+            "\n\n",
+        )
+
+    # JavaScript文字列内で改行を保持する
     text = text.replace("\\", "\\\\")
+    text = text.replace("\n", "\\n")
     text = text.replace('"', '\\"')
 
     # OCRで混ざりやすい全角スラッシュを半角へ

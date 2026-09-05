@@ -61,6 +61,69 @@ def copy_question_image(
 
     return output_path
 
+
+def needs_multi_page_analysis(
+    vision_result: dict,
+) -> bool:
+    """
+    単ページVision結果だけでは問題が完結していない
+    可能性がある場合にTrueを返す。
+
+    対象:
+    - 選択肢が不足している問題
+    - 前問・前ページの情報を参照する問題
+    - 下線部や空欄など、単ページ内に対応箇所が
+      存在しない可能性がある問題
+    """
+    choices = vision_result.get("choices", [])
+    question = vision_result.get("question", "")
+
+    if (
+        not isinstance(choices, list)
+        or len(choices) < 2
+    ):
+        return True
+
+    if not isinstance(question, str):
+        return False
+
+    reference_markers = (
+        "前問",
+        "前の問題",
+        "前ページ",
+        "この定量法",
+        "この方法",
+        "この操作",
+        "この反応",
+        "この実験",
+        "この図",
+        "この表",
+    )
+
+    if any(
+        marker in question
+        for marker in reference_markers
+    ):
+        return True
+
+    choices_text = "\n".join(
+        str(choice)
+        for choice in choices
+    )
+
+    dependent_markers = (
+        "下線部",
+        "空欄",
+    )
+
+    if any(
+        marker in choices_text
+        for marker in dependent_markers
+    ):
+        return True
+
+    return False
+
 def is_same_exam_source_number_exists(
     text: str,
     exam_number: int,
@@ -224,20 +287,27 @@ def run_past_exam_pipeline(
 
             if (
                 isinstance(question_no, int)
-                and (
-                    not isinstance(choices, list)
-                    or len(choices) < 2
+                and needs_multi_page_analysis(
+                    vision_result
                 )
             ):
-                page_set = [image_path]
+                page_set = []
 
-                for offset in (1, 2):
-                    next_index = page_index + offset
+                previous_index = page_index - 1
 
-                    if next_index < len(target_image_paths):
-                        page_set.append(
-                            target_image_paths[next_index]
-                        )
+                if previous_index >= 0:
+                    page_set.append(
+                        target_image_paths[previous_index]
+                    )
+
+                page_set.append(image_path)
+
+                next_index = page_index + 1
+
+                if next_index < len(target_image_paths):
+                    page_set.append(
+                        target_image_paths[next_index]
+                    )
 
                 if len(page_set) >= 2:
                     try:

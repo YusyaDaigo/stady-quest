@@ -265,9 +265,26 @@ const buildPracticalMockQuestions = (
 
 const getQuestionTimeLimit = (
   question,
-  selectedExam
+  selectedExam,
+  selectedExamType
 ) => {
-  // 薬剤師国家試験の必須問題・練習系
+  // 薬剤師国家試験・理論 / 実践
+  if (
+    selectedExam === "pharmacy" &&
+    (
+      selectedExamType === "theory" ||
+      selectedExamType === "theory_part1" ||
+      selectedExamType === "theory_part2" ||
+      selectedExamType === "practical" ||
+      selectedExamType === "practical_part1" ||
+      selectedExamType === "practical_part2" ||
+      selectedExamType === "practical_part3"
+    )
+  ) {
+    return 150;
+  }
+
+  // 薬剤師国家試験・必須問題
   if (selectedExam === "pharmacy") {
     return 60;
   }
@@ -415,11 +432,13 @@ function App() {
         let pharmacyQuestionPool = requiredQuestions;
 
         if (
+          selectedExamType === "theory" ||
           selectedExamType === "theory_part1" ||
           selectedExamType === "theory_part2"
         ) {
           pharmacyQuestionPool = theoryQuestions;
         } else if (
+          selectedExamType === "practical" ||
           selectedExamType === "practical_part1" ||
           selectedExamType === "practical_part2" ||
           selectedExamType === "practical_part3"
@@ -630,7 +649,8 @@ console.log(
     setTime(
       getQuestionTimeLimit(
         shuffledQuestions[0],
-        selectedExam
+        selectedExam,
+        selectedExamType
       )
     );
 
@@ -755,7 +775,8 @@ console.log(
       setTime(
         getQuestionTimeLimit(
           next,
-          selectedExam
+          selectedExam,
+          examType
         )
       );
     }
@@ -772,7 +793,8 @@ console.log(
       setTime(
         getQuestionTimeLimit(
           next,
-          selectedExam
+          selectedExam,
+          examType
         )
       );
     }
@@ -939,7 +961,8 @@ console.log(
             setTime(
               getQuestionTimeLimit(
                 next,
-                selectedExam
+                selectedExam,
+                examType
               )
             );
           }
@@ -1020,6 +1043,13 @@ console.log(
               startQuiz(
                 "practice",
                 "required",
+                field
+              )
+            }
+            onStartTheoryPractice={(field) =>
+              startQuiz(
+                "practice",
+                "theory",
                 field
               )
             }
