@@ -72,7 +72,14 @@ def main():
         "--use-api",
         action="store_true",
         help="OpenAI APIを使用してキャッシュを生成する",
-)
+    )
+
+    parser.add_argument(
+        "--answer-parser",
+        choices=["text", "vision"],
+        default="text",
+        help="公式解答PDFの解析方法",
+    )
 
     args = parser.parse_args()
 
@@ -127,7 +134,7 @@ def main():
         answer_pdf_path=answer_pdf_path,
         part=part,
         vision_engine_name="openai",
-        answer_parser="text",
+        answer_parser=args.answer_parser,
         start_page=args.start_page,
         max_pages=args.max_pages,
     )

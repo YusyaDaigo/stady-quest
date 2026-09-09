@@ -699,12 +699,15 @@ console.log(
       Array.isArray(normalizedUserAnswer) &&
       Array.isArray(normalizedCorrectAnswer)
     ) {
+      const requiredSelections =
+        currentQuestion.requiredSelections ??
+        normalizedCorrectAnswer.length;
+
       correct =
         normalizedUserAnswer.length ===
-          normalizedCorrectAnswer.length &&
-        normalizedUserAnswer.every(
-          (value, index) =>
-            value === normalizedCorrectAnswer[index]
+          requiredSelections &&
+        normalizedUserAnswer.every((value) =>
+          normalizedCorrectAnswer.includes(value)
         );
     } else {
       correct =

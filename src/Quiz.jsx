@@ -557,40 +557,46 @@ function Quiz({
           {Array.isArray(
             currentQuestion.answer
           ) &&
-            userAnswers[currentIndex] === undefined && (
-              <button
-                disabled={
-                  pendingAnswers.length !==
-                  currentQuestion.answer.length
-                }
-                onClick={() => {
-                  handleAnswer(
-                    pendingAnswers
-                  );
+            userAnswers[currentIndex] === undefined && (() => {
+              const requiredSelections =
+                currentQuestion.requiredSelections ??
+                currentQuestion.answer.length;
 
-                  setPendingAnswers([]);
-                }}
-                style={{
-                  marginTop: "10px",
-                  marginBottom: "24px",
-                  padding: "14px 24px",
-                  fontSize: "1.1rem",
-                  borderRadius: "10px",
-                  cursor:
-                    pendingAnswers.length ===
-                    currentQuestion.answer.length
-                      ? "pointer"
-                      : "not-allowed",
-                }}
-              >
-                回答する
-                （
-                {pendingAnswers.length}
-                /
-                {currentQuestion.answer.length}
-                ）
-              </button>
-            )}
+              return (
+                <button
+                  disabled={
+                    pendingAnswers.length !==
+                    requiredSelections
+                  }
+                  onClick={() => {
+                    handleAnswer(
+                      pendingAnswers
+                    );
+
+                    setPendingAnswers([]);
+                  }}
+                  style={{
+                    marginTop: "10px",
+                    marginBottom: "24px",
+                    padding: "14px 24px",
+                    fontSize: "1.1rem",
+                    borderRadius: "10px",
+                    cursor:
+                      pendingAnswers.length ===
+                      requiredSelections
+                        ? "pointer"
+                        : "not-allowed",
+                  }}
+                >
+                  回答する
+                  （
+                  {pendingAnswers.length}
+                  /
+                  {requiredSelections}
+                  ）
+                </button>
+              );
+            })()}
 
             {showExplanation && (
 
@@ -603,12 +609,19 @@ function Quiz({
                 </h1>
 
                 <p>
-                  正解：
-                  {
-                    currentQuestion.choices[
-                      currentQuestion.answer
-                    ]
-                  }
+                  {currentQuestion.requiredSelections != null
+                    ? `正答候補（このうち${currentQuestion.requiredSelections}つ選択）：`
+                    : "正解："}
+                  {Array.isArray(currentQuestion.answer)
+                    ? currentQuestion.answer
+                        .map(
+                          (index) =>
+                            currentQuestion.choices[index]
+                        )
+                        .join(" / ")
+                    : currentQuestion.choices[
+                        currentQuestion.answer
+                      ]}
                 </p>
 
                 <details

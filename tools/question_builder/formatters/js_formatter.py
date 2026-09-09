@@ -55,6 +55,9 @@ def build_question_block(question_data: dict) -> str:
     exam_number = question_data.get("examNumber")
     source_number = question_data.get("sourceNumber")
     field = escape_js_text(question_data.get("field", ""))
+    required_selections = question_data.get(
+        "requiredSelections"
+    )
     has_image = question_data.get("hasImage", False)
     image = escape_js_text(question_data.get("image", ""))
 
@@ -95,6 +98,12 @@ def build_question_block(question_data: dict) -> str:
     caseContext:
       "{case_context}",'''
 
+    required_selections_line = ""
+
+    if required_selections is not None:
+        required_selections_line = f'''
+    requiredSelections: {required_selections},'''
+
     return f'''
   {{
     subject: "{question_data["subject"]}",
@@ -109,6 +118,7 @@ def build_question_block(question_data: dict) -> str:
     ],
 
     answer: {question_data["answer"]},
+{required_selections_line}
 
     explanation:
       "{escaped_explanation}"

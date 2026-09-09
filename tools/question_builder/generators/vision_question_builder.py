@@ -30,6 +30,15 @@ def build_question_from_vision_result(
         "explanation": "",
     }
 
+    required_selections = answer_info.get(
+        "requiredSelections"
+    )
+
+    if required_selections is not None:
+        question[
+            "requiredSelections"
+        ] = required_selections
+
     case_id = vision_result.get("case_id")
     case_context = vision_result.get("case_context")
 

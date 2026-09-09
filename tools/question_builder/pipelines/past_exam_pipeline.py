@@ -18,7 +18,7 @@ from images.question_image_cropper import crop_page_by_question_index
 from images.vision_bbox_cropper import crop_by_bbox
 from vision.openai_bbox_detector import detect_question_bboxes
 from vision.openai_vision import analyze_question_across_page_set
-from parsers.answer_vision_parser import parse_required_answers_with_vision
+from parsers.answer_vision_parser import parse_answers_with_vision
 
 
 def copy_question_image(
@@ -224,9 +224,10 @@ def run_past_exam_pipeline(
     target_image_paths = image_paths[start_page - 1:start_page - 1 + max_pages]
 
     if answer_parser == "vision":
-        answer_data = parse_required_answers_with_vision(
+        answer_data = parse_answers_with_vision(
             answer_pdf_path=answer_pdf_path,
             exam_number=exam_number,
+            category=category,
         )
     else:
         answer_data = parse_answers_from_pdf(
