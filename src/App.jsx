@@ -56,7 +56,7 @@ const PRACTICAL_PART1_STRUCTURE = [
   {
     startNumber: 196,
     endNumber: 245,
-    count: 49,
+    count: 50,
   },
 ];
 
@@ -72,7 +72,7 @@ const PRACTICAL_PART3_STRUCTURE = [
   {
     startNumber: 286,
     endNumber: 345,
-    count: 59,
+    count: 60,
   },
 ];
 
@@ -164,98 +164,215 @@ const buildPracticalMockQuestions = (
   questions,
   structure
 ) => {
-  const targetCount = structure.reduce(
-    (total, section) => total + section.count,
-    0
-  );
-
-  const targetQuestions = questions.filter((question) => {
-    if (!question) return false;
-
-    return structure.some((section) => {
-      if (
-        !Number.isInteger(section.startNumber) ||
-        !Number.isInteger(section.endNumber)
-      ) {
-        return false;
-      }
-
-      return (
-        question.sourceNumber >= section.startNumber &&
-        question.sourceNumber <= section.endNumber
-      );
-    });
-  });
-
-  const caseQuestions = targetQuestions
-    .filter(
-      (question) =>
-        Number.isInteger(question.sourceNumber) &&
-        question.sourceNumber >= 196 &&
-        question.sourceNumber <= 325
-    )
-    .sort(
-      (a, b) =>
-        a.sourceNumber - b.sourceNumber
-    );
-
-  const singleQuestions = targetQuestions
-    .filter(
-      (question) =>
-        Number.isInteger(question.sourceNumber) &&
-        question.sourceNumber >= 326 &&
-        question.sourceNumber <= 345
-    );
-
   const selectedQuestions = [];
 
-  /*
-   * 196〜325:
-   * ケース領域。
-   * 原典の並びを維持して選択する。
-   */
-  for (const question of caseQuestions) {
+  for (const section of structure) {
+    const {
+      startNumber,
+      endNumber,
+      count,
+    } = section;
+
     if (
-      selectedQuestions.length >= targetCount
+      !Number.isInteger(startNumber) ||
+      !Number.isInteger(endNumber) ||
+      !Number.isInteger(count)
     ) {
-      break;
+      continue;
     }
 
-    selectedQuestions.push(question);
-  }
+    const sectionQuestions =
+      questions.filter((question) => {
+        if (
+          !question ||
+          !Number.isInteger(
+            question.sourceNumber
+          )
+        ) {
+          return false;
+        }
 
-  /*
-   * 326〜345:
-   * 単問領域。
-   * 理論問題と同じようにシャッフルして補充。
-   */
-  if (selectedQuestions.length < targetCount) {
-    const shuffledSingles =
-      shuffleArray(singleQuestions);
+        return (
+          question.sourceNumber >=
+            startNumber &&
+          question.sourceNumber <=
+            endNumber
+        );
+      });
 
-    for (const question of shuffledSingles) {
-      if (
-        selectedQuestions.length >= targetCount
-      ) {
+    /*
+     * caseId を持つ問題は同じケース単位で
+     * 1ユニットにまとめる。
+     *
+     * caseId を持たない問題は1問1ユニット。
+     */
+    const unitMap = new Map();
+
+    sectionQuestions.forEach(
+      (question, index) => {
+        const unitKey =
+          question.caseId
+            ? `case-${question.caseId}`
+            : (
+              `single-` +
+              `${question.examNumber ?? "unknown"}-` +
+              `${question.sourceNumber}-` +
+              `${index}`
+            );
+
+        if (!unitMap.has(unitKey)) {
+          unitMap.set(unitKey, {
+            isCase: Boolean(
+              question.caseId
+            ),
+            questions: [],
+          });
+        }
+
+        unitMap
+          .get(unitKey)
+          .questions
+          .push(question);
+      }
+    );
+
+    /*
+     * ケースは、その全問題が現在のPart内に
+     * 収まっている場合だけ使用する。
+     */
+    const units = [
+      ...unitMap.values(),
+    ].filter((unit) => {
+      if (!unit.isCase) {
+        return true;
+      }
+
+      const caseId =
+        unit.questions[0]?.caseId;
+
+      /*
+       * caseId末尾の問題番号から、
+       * 本来そのケースに含まれる問題を確認する。
+       *
+       * 例:
+       * 110-196-197 -> [196, 197]
+       *
+       * 片方が欠落している不完全ケースは、
+       * 模試候補から除外する。
+       */
+      const caseMatch =
+        caseId?.match(
+          /-(\d+)-(\d+)$/
+        );
+
+      if (caseMatch) {
+        const expectedNumbers = [
+          Number(caseMatch[1]),
+          Number(caseMatch[2]),
+        ];
+
+        const actualNumbers =
+          unit.questions
+            .map(
+              (question) =>
+                question.sourceNumber
+            )
+            .sort(
+              (a, b) => a - b
+            );
+
+        const isCompleteCase =
+          expectedNumbers.length ===
+            actualNumbers.length &&
+          expectedNumbers.every(
+            (number, index) =>
+              number ===
+              actualNumbers[index]
+          );
+
+        if (!isCompleteCase) {
+          return false;
+        }
+      }
+
+      return unit.questions.every(
+        (question) =>
+          question.sourceNumber >=
+            startNumber &&
+          question.sourceNumber <=
+            endNumber
+      );
+    });
+
+    /*
+     * ケース内の問題順は維持する。
+     */
+    units.forEach((unit) => {
+      unit.questions.sort(
+        (a, b) =>
+          a.sourceNumber -
+          b.sourceNumber
+      );
+    });
+
+    /*
+     * case / 単問のユニット単位で
+     * ランダム化する。
+     */
+    const shuffledUnits =
+      shuffleArray(units);
+
+    const sectionSelected = [];
+
+    for (const unit of shuffledUnits) {
+      const remaining =
+        count -
+        sectionSelected.length;
+
+      if (remaining <= 0) {
         break;
       }
 
-      selectedQuestions.push(question);
-    }
-  }
-
-  if (selectedQuestions.length < targetCount) {
-    console.warn(
-      "実践模試の問題数が不足しています。",
-      {
-        requestedQuestions: targetCount,
-        selectedQuestions:
-          selectedQuestions.length,
-        availableCaseQuestions:
-          caseQuestions.length,
-        availableSingleQuestions:
-          singleQuestions.length,
+      /*
+       * ケースを途中で分断しない。
+       * 残り枠に入らなければスキップする。
+       */
+      if (
+        unit.questions.length >
+        remaining
+      ) {
+        continue;
       }
+
+      sectionSelected.push(
+        ...unit.questions
+      );
+    }
+
+    /*
+     * ユニット抽選だけで規定数に届かなかった
+     * 場合は警告する。
+     */
+    if (
+      sectionSelected.length <
+      count
+    ) {
+      console.warn(
+        "実践模試の問題数が不足しています。",
+        {
+          startNumber,
+          endNumber,
+          requestedQuestions: count,
+          selectedQuestions:
+            sectionSelected.length,
+          availableUnits:
+            units.length,
+        }
+      );
+    }
+
+    selectedQuestions.push(
+      ...sectionSelected
     );
   }
 

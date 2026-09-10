@@ -95,16 +95,13 @@ function Quiz({
       examType === "practical_part3"
     );
 
-  const isPracticalCaseQuestion =
-    isPracticalMock &&
-    Number.isInteger(currentQuestion?.sourceNumber) &&
-    currentQuestion.sourceNumber >= 196 &&
-    currentQuestion.sourceNumber <= 325;
-
   const currentCaseId =
-    isPracticalCaseQuestion
+    isPracticalMock
       ? currentQuestion?.caseId || null
       : null;
+
+  const isPracticalCaseQuestion =
+    Boolean(currentCaseId);
 
   const caseGroups = [];
 
@@ -118,30 +115,13 @@ function Quiz({
         question.sourceNumber;
 
       /*
-       * 実践問題 196〜325 は、
-       * 問題番号2問を1ケースとして固定する。
-       *
-       * 196-197 -> 111-196-197
-       * 198-199 -> 111-198-199
-       * ...
-       * 324-325 -> 111-324-325
+       * caseId を持つ問題だけをケース問題として扱う。
+       * 年度や問題番号には依存しない。
        */
-      if (
-        Number.isInteger(sourceNumber) &&
-        sourceNumber >= 196 &&
-        sourceNumber <= 325
-      ) {
-        const firstNumber =
-          sourceNumber % 2 === 0
-            ? sourceNumber
-            : sourceNumber - 1;
+      const caseKey =
+        question.caseId || null;
 
-        const secondNumber =
-          firstNumber + 1;
-
-        const caseKey =
-          `111-${firstNumber}-${secondNumber}`;
-
+      if (caseKey) {
         if (!groupMap.has(caseKey)) {
           groupMap.set(caseKey, {
             key: caseKey,
@@ -159,10 +139,10 @@ function Quiz({
       }
 
       /*
-       * 326以降は通常の単問。
+       * caseId を持たない問題は通常の単問。
        */
       const singleKey =
-        `single-${sourceNumber ?? index}`;
+        `single-${question.examNumber ?? "unknown"}-${sourceNumber ?? index}`;
 
       groupMap.set(singleKey, {
         key: singleKey,
