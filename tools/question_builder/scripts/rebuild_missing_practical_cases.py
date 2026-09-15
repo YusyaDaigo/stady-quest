@@ -1,62 +1,20 @@
+import argparse
 import json
+import re
 import subprocess
 import sys
 import time
 from pathlib import Path
 
 
-TARGET_PAIRS = [
-    (198, 199),
-    (200, 201),
-    (202, 203),
-    (204, 205),
-    (206, 207),
-    (208, 209),
-    (212, 213),
-    (214, 215),
-    (216, 217),
-    (220, 221),
-    (222, 223),
-    (226, 227),
-    (234, 235),
-    (236, 237),
-    (242, 243),
-    (246, 247),
-    (250, 251),
-    (252, 253),
-    (254, 255),
-    (256, 257),
-    (264, 265),
-    (266, 267),
-    (268, 269),
-    (270, 271),
-    (272, 273),
-    (276, 277),
-    (280, 281),
-    (282, 283),
-    (288, 289),
-    (294, 295),
-    (298, 299),
-    (300, 301),
-    (306, 307),
-    (308, 309),
-    (314, 315),
-    (316, 317),
-    (322, 323),
-    (324, 325),
-    (326, 327),
-    (328, 329),
-    (332, 333),
-    (334, 335),
-    (336, 337),
-    (342, 343),
-    (344, 345),
-]
+CASE_MANIFEST_PATH = Path(
+    "tools/question_builder/manual/"
+    "practical_case_pairs.json"
+)
 
-
-CASE_CACHE_ROOT = Path(
+CASE_CACHE_BASE = Path(
     "tools/question_builder/cache/pharmacy/"
-    "practical/cases/111"
+    "practical/cases"
 )
 
 REBUILD_SCRIPT = Path(
@@ -64,26 +22,154 @@ REBUILD_SCRIPT = Path(
     "rebuild_practical_case_cache.py"
 )
 
+GENERATED_QUESTION_BASE = Path(
+    "src/exams/pharmacy/questions"
+)
 
-def is_valid_case_cache(path: Path) -> bool:
+
+def load_case_pairs(
+    exam_number: int,
+) -> list:
+    if not CASE_MANIFEST_PATH.exists():
+        raise FileNotFoundError(
+            "case manifestがありません: "
+            f"{CASE_MANIFEST_PATH}"
+        )
+
+    data = json.loads(
+        CASE_MANIFEST_PATH.read_text(
+            encoding="utf-8"
+        )
+    )
+
+    raw_pairs = data.get(
+        str(exam_number)
+    )
+
+    if not isinstance(
+        raw_pairs,
+        list,
+    ):
+        raise ValueError(
+            "case manifestに年度がありません: "
+            f"{exam_number}"
+        )
+
+    pairs = []
+
+    for raw_pair in raw_pairs:
+        if (
+            not isinstance(
+                raw_pair,
+                list,
+            )
+            or len(raw_pair) != 2
+        ):
+            raise ValueError(
+                "不正なcase pair: "
+                f"{raw_pair}"
+            )
+
+        first_no = int(
+            raw_pair[0]
+        )
+        second_no = int(
+            raw_pair[1]
+        )
+
+        if second_no != first_no + 1:
+            raise ValueError(
+                "連番ではないcase pair: "
+                f"{raw_pair}"
+            )
+
+        pairs.append(
+            (
+                first_no,
+                second_no,
+            )
+        )
+
+    return pairs
+
+
+def load_generated_question_numbers(
+    exam_number: int,
+) -> set:
+    path = (
+        GENERATED_QUESTION_BASE
+        / f"practical_{exam_number}.js"
+    )
+
+    if not path.exists():
+        raise FileNotFoundError(
+            "生成済み実践問題がありません: "
+            f"{path}"
+        )
+
+    text = path.read_text(
+        encoding="utf-8"
+    )
+
+    return {
+        int(number)
+        for number in re.findall(
+            r"sourceNumber:\s*(\d+)",
+            text,
+        )
+    }
+
+
+def is_valid_case_cache(
+    path: Path,
+    exam_number: int,
+    first_no: int,
+    second_no: int,
+) -> bool:
     if not path.exists():
         return False
 
     try:
         data = json.loads(
-            path.read_text(encoding="utf-8")
+            path.read_text(
+                encoding="utf-8"
+            )
         )
     except Exception:
         return False
 
-    case_context = data.get("case_context", "")
+    expected_case_id = (
+        f"{exam_number}-"
+        f"{first_no}-"
+        f"{second_no}"
+    )
 
-    if not isinstance(case_context, str):
-        return False
+    case_id = data.get(
+        "case_id"
+    )
 
-    context = case_context.strip()
+    case_context = data.get(
+        "case_context",
+        "",
+    )
 
-    if not context:
+    questions = data.get(
+        "questions"
+    )
+
+    if (
+        case_id != expected_case_id
+        or not isinstance(
+            case_context,
+            str,
+        )
+        or not case_context.strip()
+        or not isinstance(
+            questions,
+            list,
+        )
+        or len(questions) != 2
+    ):
         return False
 
     invalid_phrases = [
@@ -93,63 +179,295 @@ def is_valid_case_cache(path: Path) -> bool:
     ]
 
     if any(
-        phrase in context
+        phrase in case_context
         for phrase in invalid_phrases
     ):
         return False
 
-    return True
+    actual_numbers = []
+
+    for question in questions:
+        if not isinstance(
+            question,
+            dict,
+        ):
+            return False
+
+        try:
+            question_no = int(
+                question.get(
+                    "question_no"
+                )
+            )
+        except (
+            TypeError,
+            ValueError,
+        ):
+            return False
+
+        question_text = question.get(
+            "question",
+            "",
+        )
+
+        choices = question.get(
+            "choices",
+            [],
+        )
+
+        if (
+            not isinstance(
+                question_text,
+                str,
+            )
+            or not question_text.strip()
+            or not isinstance(
+                choices,
+                list,
+            )
+            or len(choices) < 2
+        ):
+            return False
+
+        actual_numbers.append(
+            question_no
+        )
+
+    return sorted(
+        actual_numbers
+    ) == [
+        first_no,
+        second_no,
+    ]
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(
+        description=(
+            "不足している実践問題case cacheを"
+            "manifestから再構築する"
+        )
+    )
+
+    parser.add_argument(
+        "--exam",
+        type=int,
+        required=True,
+        help="試験回数",
+    )
+
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help=(
+            "APIを呼ばず、"
+            "再構築対象だけ表示する"
+        ),
+    )
+
+    return parser.parse_args()
 
 
 def main():
-    CASE_CACHE_ROOT.mkdir(
-        parents=True,
-        exist_ok=True,
+    args = parse_args()
+
+    exam_number = args.exam
+
+    target_pairs = load_case_pairs(
+        exam_number
     )
 
+    generated_numbers = (
+        load_generated_question_numbers(
+            exam_number
+        )
+    )
+
+    case_cache_root = (
+        CASE_CACHE_BASE
+        / str(exam_number)
+    )
+
+    if not args.dry_run:
+        case_cache_root.mkdir(
+            parents=True,
+            exist_ok=True,
+        )
+
     success = []
-    skipped = []
+    skipped_valid = []
+    skipped_incomplete_source = []
+    rebuild_targets = []
     failed = []
 
-    total = len(TARGET_PAIRS)
+    total = len(
+        target_pairs
+    )
 
-    print("==============================")
-    print("PRACTICAL CASE BATCH REBUILD")
-    print("==============================")
-    print(f"対象ケース数: {total}")
-    print("==============================")
-    print()
+    print(
+        "=============================="
+    )
+    print(
+        "PRACTICAL CASE BATCH REBUILD"
+    )
+    print(
+        "=============================="
+    )
+    print(
+        f"試験回数    : {exam_number}"
+    )
+    print(
+        f"manifest数  : {total}"
+    )
+    print(
+        f"dry-run     : {args.dry_run}"
+    )
+    print(
+        "=============================="
+    )
 
-    for index, (first_no, second_no) in enumerate(
-        TARGET_PAIRS,
-        start=1,
-    ):
-        case_name = f"{first_no}-{second_no}"
+    for (
+        first_no,
+        second_no,
+    ) in target_pairs:
+        case_name = (
+            f"{first_no}-{second_no}"
+        )
 
         cache_path = (
-            CASE_CACHE_ROOT
+            case_cache_root
+            / f"{case_name}.json"
+        )
+
+        missing_source_numbers = [
+            number
+            for number in (
+                first_no,
+                second_no,
+            )
+            if number
+            not in generated_numbers
+        ]
+
+        if missing_source_numbers:
+            skipped_incomplete_source.append(
+                (
+                    case_name,
+                    missing_source_numbers,
+                )
+            )
+            continue
+
+        if is_valid_case_cache(
+            cache_path,
+            exam_number,
+            first_no,
+            second_no,
+        ):
+            skipped_valid.append(
+                case_name
+            )
+            continue
+
+        rebuild_targets.append(
+            (
+                first_no,
+                second_no,
+            )
+        )
+
+    print()
+    print(
+        "===== PLAN ====="
+    )
+    print(
+        "完全cache済み       : "
+        f"{len(skipped_valid)}"
+    )
+    print(
+        "再構築対象           : "
+        f"{len(rebuild_targets)}"
+    )
+    print(
+        "source不足でスキップ : "
+        f"{len(skipped_incomplete_source)}"
+    )
+
+    if rebuild_targets:
+        print()
+        print(
+            "===== REBUILD TARGETS ====="
+        )
+
+        for (
+            first_no,
+            second_no,
+        ) in rebuild_targets:
+            print(
+                f"  {first_no}-{second_no}"
+            )
+
+    if skipped_incomplete_source:
+        print()
+        print(
+            "===== INCOMPLETE SOURCE ====="
+        )
+
+        for (
+            case_name,
+            missing_numbers,
+        ) in skipped_incomplete_source:
+            print(
+                f"  {case_name}: "
+                "missing "
+                + ", ".join(
+                    f"Q{number}"
+                    for number
+                    in missing_numbers
+                )
+            )
+
+    if args.dry_run:
+        print()
+        print(
+            "===== DRY RUN COMPLETE ====="
+        )
+        print(
+            "APIは呼び出していません。"
+        )
+        return
+
+    rebuild_total = len(
+        rebuild_targets
+    )
+
+    for index, (
+        first_no,
+        second_no,
+    ) in enumerate(
+        rebuild_targets,
+        start=1,
+    ):
+        case_name = (
+            f"{first_no}-{second_no}"
+        )
+
+        cache_path = (
+            case_cache_root
             / f"{case_name}.json"
         )
 
         print()
         print(
-            f"[{index}/{total}] "
+            f"[{index}/{rebuild_total}] "
             f"CASE {case_name}"
         )
-
-        if is_valid_case_cache(cache_path):
-            print(
-                f"📦 有効cacheあり: {cache_path}"
-            )
-
-            skipped.append(case_name)
-            continue
 
         command = [
             sys.executable,
             str(REBUILD_SCRIPT),
             "--exam",
-            "111",
+            str(exam_number),
             "--first",
             str(first_no),
             "--second",
@@ -166,55 +484,78 @@ def main():
             if (
                 result.returncode == 0
                 and is_valid_case_cache(
-                    cache_path
+                    cache_path,
+                    exam_number,
+                    first_no,
+                    second_no,
                 )
             ):
                 print(
                     f"✅ CASE {case_name} 完了"
                 )
 
-                success.append(case_name)
+                success.append(
+                    case_name
+                )
 
             else:
                 print(
                     f"❌ CASE {case_name} 失敗"
                 )
 
-                failed.append(case_name)
+                failed.append(
+                    case_name
+                )
 
         except Exception as e:
             print(
                 f"❌ CASE {case_name}: {e}"
             )
 
-            failed.append(case_name)
+            failed.append(
+                case_name
+            )
 
-        # APIへの連続負荷を少し抑える
         time.sleep(1)
 
     print()
-    print("==============================")
-    print("BATCH RESULT")
-    print("==============================")
     print(
-        f"新規成功 : {len(success)}"
+        "=============================="
     )
     print(
-        f"既存cache: {len(skipped)}"
+        "BATCH RESULT"
     )
     print(
-        f"失敗     : {len(failed)}"
+        "=============================="
+    )
+    print(
+        f"新規成功       : {len(success)}"
+    )
+    print(
+        f"既存完全cache  : {len(skipped_valid)}"
+    )
+    print(
+        "source不足skip : "
+        f"{len(skipped_incomplete_source)}"
+    )
+    print(
+        f"失敗           : {len(failed)}"
     )
 
     if failed:
         print()
-        print("失敗ケース:")
+        print(
+            "失敗ケース:"
+        )
+
         for case_name in failed:
             print(
                 f"  {case_name}"
             )
 
-    print("==============================")
+    print(
+        "=============================="
+    )
 
 
 if __name__ == "__main__":

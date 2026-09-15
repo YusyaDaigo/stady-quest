@@ -10,7 +10,8 @@ function PharmacyMenu({
   onStartTheoryPart2Mock,
   onStartPracticalPart1Mock,
   onStartPracticalPart2Mock,
-  onStartPracticalPart3Mock,
+  onStartPracticalPart3CaseMock,
+  onStartPracticalPart3SingleMock,
   onStartReview,
   onClearReview,
   mistakeCount,
@@ -133,11 +134,19 @@ function PharmacyMenu({
         </MenuButton>
 
         <MenuButton
-          onClick={onStartPracticalPart3Mock}
+          onClick={onStartPracticalPart3CaseMock}
           variant="primary"
           wide
         >
-          Part3 60問・150分
+          Part3① 症例問題 40問・100分
+        </MenuButton>
+
+        <MenuButton
+          onClick={onStartPracticalPart3SingleMock}
+          variant="primary"
+          wide
+        >
+          Part3② 単問 20問・50分
         </MenuButton>
       </MenuSection>
 

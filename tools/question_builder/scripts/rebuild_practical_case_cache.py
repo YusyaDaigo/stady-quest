@@ -232,6 +232,7 @@ def main():
         image_paths=image_paths,
         first_question_no=args.first,
         second_question_no=args.second,
+        exam_number=args.exam,
     )
 
     output_path.parent.mkdir(

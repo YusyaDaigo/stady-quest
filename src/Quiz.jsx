@@ -92,7 +92,8 @@ function Quiz({
     (
       examType === "practical_part1" ||
       examType === "practical_part2" ||
-      examType === "practical_part3"
+      examType === "practical_part3_case" ||
+      examType === "practical_part3_single"
     );
 
   const currentCaseId =
@@ -309,8 +310,12 @@ function Quiz({
               ? "実践問題 Part1 模試"
               : mode === "mock" && examType === "practical_part2"
               ? "実践問題 Part2 模試"
-              : mode === "mock" && examType === "practical_part3"
-              ? "実践問題 Part3 模試"
+              : mode === "mock" &&
+                examType === "practical_part3_case"
+              ? "実践問題 Part3① 症例問題 模試"
+              : mode === "mock" &&
+                examType === "practical_part3_single"
+              ? "実践問題 Part3② 単問 模試"
               : mode === "mock" && examType === "second"
               ? "二等操縦士 模試"
               : mode === "mock" && examType === "first"

@@ -1,3 +1,4 @@
+import json
 import shutil
 from pathlib import Path
 
@@ -19,6 +20,160 @@ from images.vision_bbox_cropper import crop_by_bbox
 from vision.openai_bbox_detector import detect_question_bboxes
 from vision.openai_vision import analyze_question_across_page_set
 from parsers.answer_vision_parser import parse_answers_with_vision
+
+
+def load_practical_case_cache(
+    exam_number: int,
+) -> dict:
+    """
+    完全な実践問題case cacheだけを読み込み、
+    問番号ごとのVision互換データへ展開する。
+
+    context-only cacheや不完全なcacheは使用しない。
+    """
+
+    cache_root = Path(
+        "tools/question_builder/cache/"
+        "pharmacy/practical/cases"
+    ) / str(exam_number)
+
+    if not cache_root.exists():
+        return {}
+
+    question_map = {}
+
+    for cache_path in sorted(
+        cache_root.glob("*.json")
+    ):
+        try:
+            data = json.loads(
+                cache_path.read_text(
+                    encoding="utf-8"
+                )
+            )
+        except Exception as e:
+            print(
+                "⚠️ case cache読込失敗: "
+                f"{cache_path}: {e}"
+            )
+            continue
+
+        if not isinstance(data, dict):
+            continue
+
+        case_id = data.get("case_id")
+        case_context = data.get(
+            "case_context",
+            "",
+        )
+        questions = data.get(
+            "questions",
+        )
+
+        if (
+            not isinstance(case_id, str)
+            or not case_id.strip()
+            or not isinstance(
+                case_context,
+                str,
+            )
+            or not case_context.strip()
+            or not isinstance(
+                questions,
+                list,
+            )
+            or len(questions) != 2
+        ):
+            continue
+
+        normalized_questions = []
+
+        for question in questions:
+            if not isinstance(
+                question,
+                dict,
+            ):
+                normalized_questions = []
+                break
+
+            try:
+                question_no = int(
+                    question.get(
+                        "question_no"
+                    )
+                )
+            except (
+                TypeError,
+                ValueError,
+            ):
+                normalized_questions = []
+                break
+
+            question_text = question.get(
+                "question",
+                "",
+            )
+            choices = question.get(
+                "choices",
+                [],
+            )
+
+            if (
+                not isinstance(
+                    question_text,
+                    str,
+                )
+                or not question_text.strip()
+                or not isinstance(
+                    choices,
+                    list,
+                )
+                or len(choices) < 2
+            ):
+                normalized_questions = []
+                break
+
+            normalized_question = dict(
+                question
+            )
+
+            normalized_question[
+                "question_no"
+            ] = question_no
+
+            normalized_question[
+                "case_id"
+            ] = case_id.strip()
+
+            normalized_question[
+                "case_context"
+            ] = case_context.strip()
+
+            normalized_questions.append(
+                normalized_question
+            )
+
+        if len(normalized_questions) != 2:
+            continue
+
+        for question in normalized_questions:
+            question_no = question[
+                "question_no"
+            ]
+
+            if question_no in question_map:
+                print(
+                    "⚠️ case cache問番号重複: "
+                    f"第{exam_number}回 "
+                    f"問{question_no}"
+                )
+                continue
+
+            question_map[
+                question_no
+            ] = question
+
+    return question_map
 
 
 def copy_question_image(
@@ -240,7 +395,20 @@ def run_past_exam_pipeline(
     blocks = []
 
     processed_questions = set()
-    case_context_candidates = {}
+
+    practical_case_questions = {}
+
+    if category == "practical":
+        practical_case_questions = (
+            load_practical_case_cache(
+                exam_number
+            )
+        )
+
+        print(
+            "📦 構造化case cache: "
+            f"{len(practical_case_questions)}問"
+        )
 
     for page_index, image_path in enumerate(target_image_paths):
         print(f"📄 解析中: {image_path}")
@@ -266,25 +434,6 @@ def run_past_exam_pipeline(
             has_image = bool(
                 vision_result.get("has_image", False)
             )
-
-            if category == "practical":
-                candidate_question = vision_result.get("question", "")
-
-                if (
-                    isinstance(question_no, int)
-                    and isinstance(choices, list)
-                    and len(choices) < 2
-                    and isinstance(candidate_question, str)
-                    and candidate_question.strip()
-                ):
-                    case_context_candidates[question_no] = (
-                        candidate_question.strip()
-                    )
-
-                    print(
-                        "📋 caseContext候補保存: "
-                        f"問{question_no}"
-                    )
 
             if (
                 isinstance(question_no, int)
@@ -346,35 +495,31 @@ def run_past_exam_pipeline(
 
             question_no = vision_result.get("question_no")
 
-            if category == "practical":
-                case_context = (
-                    case_context_candidates.get(question_no)
+            if (
+                category == "practical"
+                and isinstance(
+                    question_no,
+                    int,
+                )
+                and question_no
+                in practical_case_questions
+            ):
+                cached_case_question = (
+                    practical_case_questions[
+                        question_no
+                    ]
                 )
 
-                if (
-                    isinstance(question_no, int)
-                    and case_context
-                ):
-                    pair_start = (
-                        196
-                        + ((question_no - 196) // 2) * 2
-                    )
+                vision_result = {
+                    **vision_result,
+                    **cached_case_question,
+                }
 
-                    vision_result = dict(vision_result)
-                    vision_result['case_id'] = (
-                        f"{exam_number}-"
-                        f"{pair_start}-"
-                        f"{pair_start + 1}"
-                    )
-                    vision_result['case_context'] = (
-                        case_context
-                    )
-
-                    print(
-                        "🧩 caseContext付与: "
-                        f"問{question_no} → "
-                        f"{vision_result['case_id']}"
-                    )
+                print(
+                    "🧩 構造化case cache使用: "
+                    f"問{question_no} → "
+                    f"{vision_result['case_id']}"
+                )
 
             if (
                 not isinstance(question_no, int)

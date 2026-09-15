@@ -696,6 +696,7 @@ def analyze_practical_case(
     image_paths,
     first_question_no: int,
     second_question_no: int,
+    exam_number: int = 111,
 ):
     """
     薬剤師国家試験・実践問題の
@@ -739,7 +740,7 @@ def analyze_practical_case(
         )
 
     case_id = (
-        f"111-"
+        f"{exam_number}-"
         f"{first_question_no}-"
         f"{second_question_no}"
     )

@@ -68,11 +68,21 @@ const PRACTICAL_PART2_STRUCTURE = [
   },
 ];
 
-const PRACTICAL_PART3_STRUCTURE = [
+const PRACTICAL_PART3_CASE_STRUCTURE = [
   {
     startNumber: 286,
     endNumber: 345,
-    count: 60,
+    count: 40,
+    caseMode: "case",
+  },
+];
+
+const PRACTICAL_PART3_SINGLE_STRUCTURE = [
+  {
+    startNumber: 286,
+    endNumber: 345,
+    count: 20,
+    caseMode: "single",
   },
 ];
 
@@ -171,6 +181,7 @@ const buildPracticalMockQuestions = (
       startNumber,
       endNumber,
       count,
+      caseMode = "all",
     } = section;
 
     if (
@@ -192,12 +203,25 @@ const buildPracticalMockQuestions = (
           return false;
         }
 
-        return (
+        const isInRange =
           question.sourceNumber >=
             startNumber &&
           question.sourceNumber <=
-            endNumber
-        );
+            endNumber;
+
+        if (!isInRange) {
+          return false;
+        }
+
+        if (caseMode === "case") {
+          return Boolean(question.caseId);
+        }
+
+        if (caseMode === "single") {
+          return !question.caseId;
+        }
+
+        return true;
       });
 
     /*
@@ -395,7 +419,8 @@ const getQuestionTimeLimit = (
       selectedExamType === "practical" ||
       selectedExamType === "practical_part1" ||
       selectedExamType === "practical_part2" ||
-      selectedExamType === "practical_part3"
+      selectedExamType === "practical_part3_case" ||
+      selectedExamType === "practical_part3_single"
     )
   ) {
     return 150;
@@ -506,8 +531,11 @@ function App() {
         case "practical_part2":
           return 6000;
 
-        case "practical_part3":
-          return 9000;
+        case "practical_part3_case":
+          return 6000;
+
+        case "practical_part3_single":
+          return 3000;
 
         default:
           break;
@@ -558,7 +586,8 @@ function App() {
           selectedExamType === "practical" ||
           selectedExamType === "practical_part1" ||
           selectedExamType === "practical_part2" ||
-          selectedExamType === "practical_part3"
+          selectedExamType === "practical_part3_case" ||
+          selectedExamType === "practical_part3_single"
         ) {
           pharmacyQuestionPool = practicalQuestions;
         }
@@ -690,8 +719,14 @@ console.log(
           mockStructure = PRACTICAL_PART2_STRUCTURE;
           break;
 
-        case "practical_part3":
-          mockStructure = PRACTICAL_PART3_STRUCTURE;
+        case "practical_part3_case":
+          mockStructure =
+            PRACTICAL_PART3_CASE_STRUCTURE;
+          break;
+
+        case "practical_part3_single":
+          mockStructure =
+            PRACTICAL_PART3_SINGLE_STRUCTURE;
           break;
 
         default:
@@ -701,7 +736,8 @@ console.log(
       const isPracticalMock =
         selectedExamType === "practical_part1" ||
         selectedExamType === "practical_part2" ||
-        selectedExamType === "practical_part3";
+        selectedExamType === "practical_part3_case" ||
+        selectedExamType === "practical_part3_single";
 
       if (!mockStructure) {
         shuffledQuestions =
@@ -1200,8 +1236,18 @@ console.log(
               startQuiz("mock", "practical_part2")
             }
 
-            onStartPracticalPart3Mock={() =>
-              startQuiz("mock", "practical_part3")
+            onStartPracticalPart3CaseMock={() =>
+              startQuiz(
+                "mock",
+                "practical_part3_case"
+              )
+            }
+
+            onStartPracticalPart3SingleMock={() =>
+              startQuiz(
+                "mock",
+                "practical_part3_single"
+              )
             }
           />
     )}
