@@ -591,10 +591,34 @@ def run_past_exam_pipeline(
                 )
                 continue
 
-            print(f"🧠 解説生成中: 問{question['sourceNumber']}")
+            if (
+                question.get("scoringStatus")
+                == "no_answer"
+            ):
+                print(
+                    "ℹ️ 公式解なし: "
+                    f"問{question['sourceNumber']} "
+                    "→ 通常解説生成をスキップ"
+                )
 
-            explanation = generate_explanation(question)
-            question["explanation"] = explanation
+                question["explanation"] = (
+                    "公式解答では正答なし"
+                    "（解なし）とされています。"
+                )
+
+            else:
+                print(
+                    "🧠 解説生成中: "
+                    f"問{question['sourceNumber']}"
+                )
+
+                explanation = generate_explanation(
+                    question
+                )
+
+                question["explanation"] = (
+                    explanation
+                )
 
             blocks.append(build_question_block(question))
             print(f"✅ 追加予定: 問{question['sourceNumber']}")

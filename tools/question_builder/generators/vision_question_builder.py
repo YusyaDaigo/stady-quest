@@ -14,6 +14,11 @@ def build_question_from_vision_result(
 
     answer_info = answer_data[question_no]
 
+    is_no_answer = (
+        answer_info.get("scoringStatus")
+        == "no_answer"
+    )
+
     question = {
         "subject": exam,
         "category": category.upper(),
@@ -29,6 +34,11 @@ def build_question_from_vision_result(
         "answer": answer_info["answer"],
         "explanation": "",
     }
+
+    if is_no_answer:
+        question["scoringStatus"] = (
+            "no_answer"
+        )
 
     required_selections = answer_info.get(
         "requiredSelections"

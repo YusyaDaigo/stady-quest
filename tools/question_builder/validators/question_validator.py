@@ -38,6 +38,19 @@ def validate_question(question: dict):
             "choicesは2つ以上必要です"
         )
 
+    if answer is None:
+        if (
+            question.get("scoringStatus")
+            != "no_answer"
+        ):
+            raise ValueError(
+                "answer=None は "
+                "scoringStatus=no_answer の"
+                "問題だけ許可されます"
+            )
+
+        return True
+
     if isinstance(answer, int):
         answers = [answer]
 

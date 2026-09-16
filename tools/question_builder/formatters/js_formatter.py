@@ -58,6 +58,9 @@ def build_question_block(question_data: dict) -> str:
     required_selections = question_data.get(
         "requiredSelections"
     )
+    scoring_status = question_data.get(
+        "scoringStatus"
+    )
     has_image = question_data.get("hasImage", False)
     image = escape_js_text(question_data.get("image", ""))
 
@@ -98,11 +101,21 @@ def build_question_block(question_data: dict) -> str:
     caseContext:
       "{case_context}",'''
 
+    if scoring_status is not None:
+        metadata_lines += f'''
+    scoringStatus: "{scoring_status}",'''
+
     required_selections_line = ""
 
     if required_selections is not None:
         required_selections_line = f'''
     requiredSelections: {required_selections},'''
+
+    answer_value = (
+        "null"
+        if question_data["answer"] is None
+        else str(question_data["answer"])
+    )
 
     return f'''
   {{
@@ -117,7 +130,7 @@ def build_question_block(question_data: dict) -> str:
 {choices_text}
     ],
 
-    answer: {question_data["answer"]},
+    answer: {answer_value},
 {required_selections_line}
 
     explanation:

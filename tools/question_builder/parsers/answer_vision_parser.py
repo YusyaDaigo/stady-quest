@@ -91,6 +91,29 @@ def normalize_answer_data(
             ):
                 continue
 
+            no_answer = (
+                item.get("noAnswer") is True
+            )
+
+            if no_answer:
+                field = str(
+                    item.get("field", "")
+                ).strip()
+
+                if (
+                    field
+                    and field not in SUBJECTS
+                ):
+                    field = ""
+
+                answers[question_no] = {
+                    "field": field,
+                    "answer": None,
+                    "scoringStatus": "no_answer",
+                }
+
+                continue
+
             raw_answer = item["answer"]
 
             if isinstance(raw_answer, list):
@@ -339,6 +362,11 @@ def parse_answers_with_vision(
     "field": "生物",
     "answer": [1, 3, 5],
     "requiredSelections": 2
+  }},
+  {{
+    "question_no": {start_no + 3},
+    "field": "実務",
+    "noAnswer": true
   }}
 ]
 
@@ -374,8 +402,17 @@ field は次のいずれかを使用してください。
   requiredSelections を付けないでください。
 - 問{start_no}未満と問{end_no}を超える問題は
   含めないでください。
-- 「解なし」など正答が存在しない問題は
-  含めないでください。
+- 正答欄に「解なし」など、
+  公式に正答が存在しないことが
+  明示されている問題は省略せず、
+  "noAnswer": true
+  として必ず含めてください。
+- noAnswer=true の問題には
+  answer と requiredSelections を
+  付けないでください。
+- 正答欄を読み取れないだけの場合は、
+  noAnswer=true と推測せず
+  その問題を省略してください。
 - 読み取れない内容は推測せず省略してください。
 """
 
