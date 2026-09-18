@@ -2,7 +2,7 @@ import { CATEGORIES } from "./categories";
 
 export const theory107Questions = [
 
-  
+
   {
     subject: "pharmacy",
     category: CATEGORIES.THEORY,
@@ -1722,7 +1722,7 @@ export const theory107Questions = [
       "増分費用効果比（ICER）は、「追加費用 ÷ 追加効果」で求めます。ワクチン群2万人の接種費用は、1万円×2万人＝2億円です。発症者はプラセボ群200人、ワクチン群10人なので、発症を防げた人数は200−10＝190人です。したがって、2億円÷190人≒105万円/人となり、最も近いのは4の100万円/人です。ワクチン有効率95％は相対リスク減少を示しますが、費用効果の計算では実際に何人の発症を防いだかを用いる点に注意します。1、2、3は費用を過小評価しており、5は計算値より大きすぎます。"
   },
 
-  
+
   {
     subject: "pharmacy",
     category: CATEGORIES.THEORY,
