@@ -1,3 +1,4 @@
+import { theory100Questions } from "./theory_100";
 import { theory101Questions } from "./theory_101";
 import { theory102Questions } from "./theory_102";
 import { theory103Questions } from "./theory_103";
@@ -11,6 +12,7 @@ import { theory110Questions } from "./theory_110";
 import { theory111Questions } from "./theory_111";
 
 const allTheoryQuestions = [
+  ...theory100Questions,
   ...theory101Questions,
   ...theory102Questions,
   ...theory103Questions,
