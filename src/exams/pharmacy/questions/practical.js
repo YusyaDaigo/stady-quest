@@ -1,3 +1,4 @@
+import { practical100Questions } from "./practical_100";
 import { practical101Questions } from "./practical_101";
 import { practical102Questions } from "./practical_102";
 import { practical103Questions } from "./practical_103";
@@ -11,6 +12,7 @@ import { practical110Questions } from "./practical_110";
 import { practical111Questions } from "./practical_111";
 
 const allPracticalQuestions = [
+  ...practical100Questions,
   ...practical101Questions,
   ...practical102Questions,
   ...practical103Questions,
