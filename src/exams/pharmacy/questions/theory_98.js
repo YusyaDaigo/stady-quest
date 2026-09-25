@@ -2,7 +2,7 @@ import { CATEGORIES } from "./categories";
 
 export const theory98Questions = [
 
-  
+
   {
     subject: "pharmacy",
     category: CATEGORIES.THEORY,
@@ -1700,7 +1700,7 @@ export const theory98Questions = [
       "正しいのは2と4です。共感的態度は、患者の気持ちや立場を理解し、できる限り同じように感じようとする姿勢を指します。アサーションは、自分の意見を一方的に押しつけるのではなく、相手の権利や考えも尊重しながら適切に自己表現する方法です。1は、限られた時間で必要な情報を得やすいのは「閉じた質問」です。開いた質問は患者が自由に話せる利点があります。3は、患者の意思を医療方針に反映する考え方はインフォームド・コンセントなどに基づく医療であり、パターナリズムは医療者が主導して決定する考え方です。"
   },
 
-  
+
   {
     subject: "pharmacy",
     category: CATEGORIES.THEORY,
