@@ -2,7 +2,7 @@ import { CATEGORIES } from "./categories";
 
 export const practical98Questions = [
 
-  
+
   {
     subject: "pharmacy",
     category: CATEGORIES.PRACTICAL,
@@ -1406,7 +1406,7 @@ export const practical98Questions = [
       "特別管理産業廃棄物には、医療機関から出る感染性産業廃棄物が含まれ、注射針などの鋭利なものや、破損したガラス容器などは該当しやすいです。したがって、3の破損したガラス容器、5の注射針が正答です。1の消毒用アルコール綿、2のガーゼ、4のペーパータオルは、汚染されていれば適切な感染性廃棄物として扱いますが、材質としては紙・布類であり、産業廃棄物ではなく一般廃棄物側に分類されるため、本問の「特別管理産業廃棄物」には該当しません。"
   },
 
-  
+
   {
     subject: "pharmacy",
     category: CATEGORIES.PRACTICAL,
@@ -2521,7 +2521,7 @@ export const practical98Questions = [
       "正答は5です。アドエア125エアゾールはpMDI（加圧式定量噴霧吸入器）であり、噴射剤を含むエアゾール剤なので、容器は内容物の揮散や漏出を防ぐ密封容器として扱われます。1は、気管支ぜん息では主に気道局所での作用を目的とするため誤りです。2は、肺深部への到達には一般に数μm程度の粒子が適しており、30～100 μmでは大きすぎます。3は、速く吸うと口腔・咽頭への沈着が増えやすく、pMDIではゆっくり深く吸入することが基本です。4は、吸入後に数秒間息を止めることで薬物の肺内沈着が高まりやすいため、不要とはいえません。"
   },
 
-  
+
   {
     subject: "pharmacy",
     category: CATEGORIES.PRACTICAL,
