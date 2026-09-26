@@ -2,7 +2,7 @@ import { CATEGORIES } from "./categories";
 
 export const theory97Questions = [
 
-  
+
   {
     subject: "pharmacy",
     category: CATEGORIES.THEORY,
@@ -1689,7 +1689,7 @@ export const theory97Questions = [
       "正しいのは2と3です。対面での会話では、言葉そのものだけでなく、表情、視線、声の調子、姿勢などの非言語的情報からも多くを読み取ることができます。3のように、相手の言葉や気持ちを共感的に繰り返すことは「傾聴」の技法の一つで、相手に受け止めていることを伝える方法です。1は、不特定多数へ一方向に情報を送るのはマスコミュニケーションに近く、対人コミュニケーションの説明としては不適切です。4は、自由に答えられる質問は「開いた質問」であり、「閉じた質問」は「はい・いいえ」など答えが限定される質問です。"
   },
 
-  
+
   {
     subject: "pharmacy",
     category: CATEGORIES.THEORY,
