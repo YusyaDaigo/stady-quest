@@ -64,6 +64,7 @@ const renderExamText = (text) => {
 function Quiz({
   mode,
   examType,
+  selectedCategory,
   time,
   currentQuestion,
   questions,
@@ -299,7 +300,17 @@ function Quiz({
 
           <h2>
             {mode === "practice" && examType === "required"
-              ? "必須問題 練習"
+              ? `必須問題 練習｜${
+                  selectedCategory === "ALL"
+                    ? "全範囲"
+                    : selectedCategory
+                }`
+              : mode === "practice" && examType === "theory"
+              ? `理論問題 練習｜${
+                  selectedCategory === "ALL"
+                    ? "全範囲"
+                    : selectedCategory
+                }`
               : mode === "mock" && examType === "required"
               ? "必須問題 模試"
               : mode === "mock" && examType === "theory_part1"

@@ -1258,6 +1258,7 @@ console.log(
         <Quiz
           mode={mode}
           examType={examType}
+          selectedCategory={selectedCategory}
           time={time}
           currentQuestion={currentQuestion}
           questions={currentQuestions}
