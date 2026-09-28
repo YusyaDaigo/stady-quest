@@ -3,7 +3,6 @@ import "./App.css";
 
 import {
   CATEGORIES,
-  commonQuestions,
   secondExamQuestions,
   firstExamQuestions
 } from "./exams/drone/questions";
@@ -463,7 +462,21 @@ function App() {
 
   const [userAnswers, setUserAnswers] = useState([]);
 
-  const [mistakeQuestions, setMistakeQuestions] = useState([]);
+  const [mistakeQuestions, setMistakeQuestions] =
+    useState(() => {
+      const savedMistakes =
+        localStorage.getItem("mistakeQuestions");
+
+      if (!savedMistakes) {
+        return [];
+      }
+
+      try {
+        return JSON.parse(savedMistakes);
+      } catch {
+        return [];
+      }
+    });
 
   const [remainingTimes, setRemainingTimes]
     = useState([]);
@@ -473,19 +486,6 @@ function App() {
 
   const [quizQuestions, setQuizQuestions]
     = useState([]);
-
-  useEffect(() => {
-
-    const savedMistakes =
-      localStorage.getItem("mistakeQuestions");
-
-    if (savedMistakes) {
-      setMistakeQuestions(
-        JSON.parse(savedMistakes)
-      );
-    }
-
-  }, []);
 
   useEffect(() => {
     localStorage.setItem(
@@ -696,7 +696,7 @@ console.log(
       selectedExam === "pharmacy" &&
       selectedMode === "mock"
     ) {
-      let mockStructure = null;
+      let mockStructure;
 
       switch (selectedExamType) {
         case "required":
@@ -970,18 +970,6 @@ console.log(
     }
   };
 
-  const prevQuestion = () => {
-
-    if (currentIndex > 0) {
-
-      setCurrentIndex((prev) => prev - 1);
-
-      setShowExplanation(false);
-
-      setIsCorrect(null);
-    }
-  };
-
   const jumpQuestion = (index) => {
 
     setCurrentIndex(index);
@@ -1069,66 +1057,68 @@ console.log(
 
     if (!currentQuestion) return;
 
-    if (time <= 0) {
+    const timer = setTimeout(() => {
 
-      setMistakeQuestions((prev) => {
+      if (time <= 1) {
 
-        if (prev.includes(currentQuestion)) {
-          return prev;
+        if (mode === "mock") {
+          setTime(0);
+          setScreen("result");
+          return;
         }
 
-        return [...prev, currentQuestion];
-      });
+        setTime(0);
 
-      setIsCorrect(false);
+        setMistakeQuestions((prev) => {
 
-      setRemainingTimes((prev) => [
-        ...prev,
-        0
-      ]);
+          if (prev.includes(currentQuestion)) {
+            return prev;
+          }
 
-      setUserAnswers((prev) => {
-        const newAnswers = [...prev];
-        newAnswers[currentIndex] = null;
-        return newAnswers;
-});
+          return [...prev, currentQuestion];
+        });
 
-      if (mode === "practice") {
+        setIsCorrect(false);
 
-        setShowExplanation(true);
+        setRemainingTimes((prev) => [
+          ...prev,
+          0
+        ]);
 
-      } else {
+        setUserAnswers((prev) => {
+          const newAnswers = [...prev];
+          newAnswers[currentIndex] = null;
+          return newAnswers;
+        });
+
+        if (mode === "practice") {
+          setShowExplanation(true);
+          return;
+        }
 
         if (
           currentIndex + 1 >=
           currentQuestions.length
         ) {
-
           setScreen("result");
-
-        } else {
-
-          setCurrentIndex((prev) => prev + 1);
-
-          if (mode !== "mock") {
-            const next =
-              currentQuestions[currentIndex + 1];
-
-            setTime(
-              getQuestionTimeLimit(
-                next,
-                selectedExam,
-                examType
-              )
-            );
-          }
+          return;
         }
+
+        const next =
+          currentQuestions[currentIndex + 1];
+
+        setCurrentIndex((prev) => prev + 1);
+
+        setTime(
+          getQuestionTimeLimit(
+            next,
+            selectedExam,
+            examType
+          )
+        );
+
+        return;
       }
-
-      return;
-    }
-
-    const timer = setTimeout(() => {
 
       setTime((prev) => prev - 1);
 
@@ -1143,7 +1133,9 @@ console.log(
     mode,
     currentIndex,
     currentQuestion,
-    currentQuestions.length
+    currentQuestions,
+    selectedExam,
+    examType
   ]);
 
   if (selectedExam === null) {
@@ -1269,7 +1261,6 @@ console.log(
           jumpQuestion={jumpQuestion}
           totalQuestions={currentQuestions.length}
           bookmarkedIndexes={bookmarkedIndexes}
-          prevQuestion={prevQuestion}
           currentIndex={currentIndex}
           toggleBookmark={toggleBookmark}
           isBookmarked={

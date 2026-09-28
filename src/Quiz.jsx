@@ -72,7 +72,6 @@ function Quiz({
   handleAnswer,
   isCorrect,
   nextQuestion,
-  prevQuestion,
   currentIndex,
   toggleBookmark,
   isBookmarked,
