@@ -96,8 +96,21 @@ function Quiz({
       examType === "practical_part3_single"
     );
 
+  const isPracticalPractice =
+    mode === "practice" &&
+    examType === "practical";
+
+  const isPracticalCaseReview =
+    mode === "review" &&
+    Boolean(currentQuestion?.caseId);
+
+  const usesPracticalCaseDisplay =
+    isPracticalMock ||
+    isPracticalPractice ||
+    isPracticalCaseReview;
+
   const currentCaseId =
-    isPracticalMock
+    usesPracticalCaseDisplay
       ? currentQuestion?.caseId || null
       : null;
 
@@ -106,7 +119,10 @@ function Quiz({
 
   const caseGroups = [];
 
-  if (isPracticalMock && Array.isArray(questions)) {
+  if (
+    usesPracticalCaseDisplay &&
+    Array.isArray(questions)
+  ) {
     const groupMap = new Map();
 
     questions.forEach((question, index) => {
@@ -158,7 +174,7 @@ function Quiz({
   }
 
   const currentGroupIndex =
-    isPracticalMock
+    usesPracticalCaseDisplay
       ? caseGroups.findIndex(
           (group) =>
             group.indexes.includes(currentIndex)
@@ -310,6 +326,12 @@ function Quiz({
                     ? "全範囲"
                     : selectedCategory
                 }`
+              : mode === "practice" && examType === "practical"
+              ? `実践問題 練習｜${
+                  selectedCategory === "ALL"
+                    ? "全範囲"
+                    : selectedCategory
+                }`
               : mode === "mock" && examType === "required"
               ? "必須問題 模試"
               : mode === "mock" && examType === "theory_part1"
@@ -357,10 +379,12 @@ function Quiz({
             </p>
           )}
 
-          <p>
-            残り時間：
-            {time}秒
-          </p>
+          {mode !== "review" && (
+            <p>
+              残り時間：
+              {time}秒
+            </p>
+          )}
 
           <button onClick={toggleBookmark}>
             {isBookmarked

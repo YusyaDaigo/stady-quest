@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import "./App.css";
 
 import {
@@ -403,6 +403,236 @@ const buildPracticalMockQuestions = (
 };
 
 
+const buildPracticalPracticeQuestions = (
+  questions,
+  selectedField,
+  count
+) => {
+  const unitMap = new Map();
+
+  /*
+   * 実践問題はcaseId単位で症例をまとめる。
+   * caseIdなしは1問1ユニット。
+   */
+  questions.forEach((question, index) => {
+    if (!question) return;
+
+    const unitKey =
+      question.caseId
+        ? `case-${question.caseId}`
+        : (
+          `single-` +
+          `${question.examNumber ?? "unknown"}-` +
+          `${question.sourceNumber}-` +
+          `${index}`
+        );
+
+    if (!unitMap.has(unitKey)) {
+      unitMap.set(unitKey, {
+        isCase: Boolean(question.caseId),
+        questions: [],
+      });
+    }
+
+    unitMap
+      .get(unitKey)
+      .questions
+      .push(question);
+  });
+
+  /*
+   * 不完全な症例は練習候補から除外する。
+   *
+   * 例:
+   * 110-196-197 -> [196, 197]
+   */
+  const completeUnits = [
+    ...unitMap.values(),
+  ].filter((unit) => {
+    if (!unit.isCase) {
+      return true;
+    }
+
+    const caseId =
+      unit.questions[0]?.caseId;
+
+    const caseMatch =
+      caseId?.match(
+        /-(\d+)-(\d+)$/
+      );
+
+    if (!caseMatch) {
+      return true;
+    }
+
+    const expectedNumbers = [
+      Number(caseMatch[1]),
+      Number(caseMatch[2]),
+    ];
+
+    const actualNumbers =
+      unit.questions
+        .map(
+          (question) =>
+            question.sourceNumber
+        )
+        .sort((a, b) => a - b);
+
+    return (
+      expectedNumbers.length ===
+        actualNumbers.length &&
+      expectedNumbers.every(
+        (number, index) =>
+          number === actualNumbers[index]
+      )
+    );
+  });
+
+  /*
+   * 症例内部の問題順を維持する。
+   */
+  completeUnits.forEach((unit) => {
+    unit.questions.sort(
+      (a, b) =>
+        a.sourceNumber -
+        b.sourceNumber
+    );
+  });
+
+  /*
+   * 実践練習は症例問題専用とし、
+   * caseIdを持たない単問は候補から除外する。
+   */
+  const caseUnits =
+    completeUnits.filter(
+      (unit) => unit.isCase
+    );
+
+  /*
+   * 科目指定時:
+   * その科目を1問でも含む症例全体を候補にする。
+   *
+   * これにより異なる科目をまたぐ症例でも
+   * ペアを分断しない。
+   */
+  const candidateUnits =
+    selectedField === "ALL"
+      ? caseUnits
+      : caseUnits.filter((unit) =>
+          unit.questions.some(
+            (question) =>
+              getQuestionField(question) ===
+              selectedField
+          )
+        );
+
+  const shuffledUnits =
+    shuffleArray(candidateUnits);
+
+  const selectedQuestions = [];
+
+  /*
+   * 症例を途中で切らず、
+   * 指定問題数以内でユニット単位に採用する。
+   */
+  for (const unit of shuffledUnits) {
+    const remaining =
+      count - selectedQuestions.length;
+
+    if (remaining <= 0) {
+      break;
+    }
+
+    if (
+      unit.questions.length >
+      remaining
+    ) {
+      continue;
+    }
+
+    selectedQuestions.push(
+      ...unit.questions
+    );
+  }
+
+  if (selectedQuestions.length < count) {
+    console.warn(
+      "実践練習の問題数が不足しています。",
+      {
+        selectedField,
+        requestedQuestions: count,
+        selectedQuestions:
+          selectedQuestions.length,
+        availableUnits:
+          candidateUnits.length,
+      }
+    );
+  }
+
+  return selectedQuestions;
+};
+
+
+const buildReviewQuestions = (questions) => {
+  const unitMap = new Map();
+
+  questions.forEach((question, index) => {
+    if (!question) return;
+
+    /*
+     * 症例問題はcaseId単位で1ユニット。
+     * その他の復習問題は1問1ユニット。
+     */
+    const unitKey =
+      question.caseId
+        ? `case-${question.caseId}`
+        : (
+          `single-` +
+          `${question.examNumber ?? "unknown"}-` +
+          `${question.sourceNumber ?? "unknown"}-` +
+          `${index}`
+        );
+
+    if (!unitMap.has(unitKey)) {
+      unitMap.set(unitKey, {
+        isCase: Boolean(question.caseId),
+        questions: [],
+      });
+    }
+
+    unitMap
+      .get(unitKey)
+      .questions
+      .push(question);
+  });
+
+  const units = [
+    ...unitMap.values(),
+  ];
+
+  /*
+   * 症例内部は元の問題番号順を維持。
+   */
+  units.forEach((unit) => {
+    if (!unit.isCase) return;
+
+    unit.questions.sort(
+      (a, b) =>
+        (a.sourceNumber ?? 0) -
+        (b.sourceNumber ?? 0)
+    );
+  });
+
+  /*
+   * 症例そのもの・通常問題を
+   * ユニット単位でランダム化する。
+   */
+  return shuffleArray(units).flatMap(
+    (unit) => unit.questions
+  );
+};
+
+
 const getQuestionTimeLimit = (
   question,
   selectedExam,
@@ -755,20 +985,59 @@ console.log(
             mockStructure
           );
       }
+    } else if (
+      selectedExam === "pharmacy" &&
+      selectedMode === "practice" &&
+      selectedExamType === "practical"
+    ) {
+      const selectedField =
+        category === CATEGORIES.ALL
+          ? "ALL"
+          : normalizeField(category);
+
+      const practiceCount =
+        category === CATEGORIES.ALL
+          ? 30
+          : 10;
+
+      /*
+       * 科目指定でも症例ペアを復元できるよう、
+       * 事前filter済みselectedQuestionsではなく
+       * 実践問題の全poolからユニットを構築する。
+       */
+      shuffledQuestions =
+        buildPracticalPracticeQuestions(
+          practicalQuestions,
+          selectedField,
+          practiceCount
+        );
+    } else if (
+      selectedMode === "review"
+    ) {
+      shuffledQuestions =
+        buildReviewQuestions(
+          selectedQuestions
+        );
     } else {
       shuffledQuestions =
         shuffleArray(selectedQuestions);
     }
 
-    if (selectedMode === "practice") {
+    if (
+      selectedMode === "practice" &&
+      !(
+        selectedExam === "pharmacy" &&
+        selectedExamType === "practical"
+      )
+    ) {
       if (category === CATEGORIES.ALL) {
         shuffledQuestions =
           shuffledQuestions.slice(0, 30);
       } else {
         shuffledQuestions =
           shuffledQuestions.slice(0, 10);
-  }
-}
+      }
+    }
 
     if (
       selectedMode === "mock" &&
@@ -824,6 +1093,64 @@ console.log(
 
     setScreen("quiz");
   };
+
+  const addMistakeQuestions = useCallback(
+    (question) => {
+      if (!question) return;
+
+      let questionsToAdd = [question];
+
+      /*
+       * 薬剤師・実践症例では、
+       * 片方を間違えた時点で同じcaseIdの
+       * 症例全体を復習対象にする。
+       */
+      if (
+        selectedExam === "pharmacy" &&
+        question.caseId
+      ) {
+        const caseQuestions =
+          practicalQuestions
+            .filter(
+              (candidate) =>
+                candidate?.caseId ===
+                question.caseId
+            )
+            .sort(
+              (a, b) =>
+                a.sourceNumber -
+                b.sourceNumber
+            );
+
+        if (caseQuestions.length > 0) {
+          questionsToAdd = caseQuestions;
+        }
+      }
+
+      setMistakeQuestions((prev) => {
+        const next = [...prev];
+
+        for (const candidate of questionsToAdd) {
+          const alreadyExists =
+            next.some(
+              (savedQuestion) =>
+                savedQuestion?.examNumber ===
+                  candidate.examNumber &&
+                savedQuestion?.sourceNumber ===
+                  candidate.sourceNumber
+            );
+
+          if (!alreadyExists) {
+            next.push(candidate);
+          }
+        }
+
+        return next;
+      });
+    },
+    [selectedExam]
+  );
+
 
   const handleAnswer = (answer) => {
     if (userAnswers[currentIndex] !== undefined) {
@@ -888,13 +1215,7 @@ console.log(
     }
 
     if (!correct) {
-      setMistakeQuestions((prev) => {
-        if (prev.includes(currentQuestion)) {
-          return prev;
-        }
-
-        return [...prev, currentQuestion];
-      });
+      addMistakeQuestions(currentQuestion);
     }
 
     if (mode === "practice") {
@@ -1053,6 +1374,12 @@ console.log(
 
     if (screen !== "quiz") return;
 
+    /*
+     * 復習モードは時間無制限。
+     * カウントダウン・時間切れ処理を行わない。
+     */
+    if (mode === "review") return;
+
     if (showExplanation) return;
 
     if (!currentQuestion) return;
@@ -1069,14 +1396,9 @@ console.log(
 
         setTime(0);
 
-        setMistakeQuestions((prev) => {
-
-          if (prev.includes(currentQuestion)) {
-            return prev;
-          }
-
-          return [...prev, currentQuestion];
-        });
+        addMistakeQuestions(
+          currentQuestion
+        );
 
         setIsCorrect(false);
 
@@ -1135,7 +1457,8 @@ console.log(
     currentQuestion,
     currentQuestions,
     selectedExam,
-    examType
+    examType,
+    addMistakeQuestions
   ]);
 
   if (selectedExam === null) {
@@ -1198,6 +1521,13 @@ console.log(
               startQuiz(
                 "practice",
                 "theory",
+                field
+              )
+            }
+            onStartPracticalPractice={(field) =>
+              startQuiz(
+                "practice",
+                "practical",
                 field
               )
             }

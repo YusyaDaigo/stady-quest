@@ -5,6 +5,7 @@ import MenuSection from "../../components/MenuSection";
 function PharmacyMenu({
   onStartRequiredPractice,
   onStartTheoryPractice,
+  onStartPracticalPractice,
   onStartRequiredMock,
   onStartTheoryPart1Mock,
   onStartTheoryPart2Mock,
@@ -72,6 +73,23 @@ function PharmacyMenu({
             key={field.value}
             onClick={() =>
               onStartTheoryPractice(field.value)
+            }
+          >
+            {field.label}
+          </MenuButton>
+        ))}
+      </MenuSection>
+
+      <MenuSection
+        title="🩺 実践問題 練習"
+        description="学習したい科目を選択してください"
+        grid
+      >
+        {fields.map((field) => (
+          <MenuButton
+            key={field.value}
+            onClick={() =>
+              onStartPracticalPractice(field.value)
             }
           >
             {field.label}
