@@ -1,4 +1,5 @@
 import json
+import re
 import shutil
 from pathlib import Path
 
@@ -82,9 +83,37 @@ def load_practical_case_cache(
                 questions,
                 list,
             )
-            or len(questions) != 2
+            or len(questions) < 2
         ):
             continue
+
+        case_match = re.fullmatch(
+            rf"{exam_number}-(\d+)-(\d+)",
+            case_id.strip(),
+        )
+
+        if not case_match:
+            continue
+
+        first_question_no = int(
+            case_match.group(1)
+        )
+        last_question_no = int(
+            case_match.group(2)
+        )
+
+        if (
+            last_question_no
+            <= first_question_no
+        ):
+            continue
+
+        expected_question_numbers = list(
+            range(
+                first_question_no,
+                last_question_no + 1,
+            )
+        )
 
         normalized_questions = []
 
@@ -153,7 +182,21 @@ def load_practical_case_cache(
                 normalized_question
             )
 
-        if len(normalized_questions) != 2:
+        normalized_questions.sort(
+            key=lambda question:
+                question["question_no"]
+        )
+
+        actual_question_numbers = [
+            question["question_no"]
+            for question
+            in normalized_questions
+        ]
+
+        if (
+            actual_question_numbers
+            != expected_question_numbers
+        ):
             continue
 
         for question in normalized_questions:

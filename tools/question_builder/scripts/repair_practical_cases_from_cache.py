@@ -67,9 +67,34 @@ def load_complete_case_cache(exam_number):
             or not isinstance(case_context, str)
             or not case_context.strip()
             or not isinstance(questions, list)
-            or len(questions) != 2
+            or len(questions) < 2
         ):
             continue
+
+        case_match = re.search(
+            r"-(\d+)-(\d+)$",
+            case_id.strip(),
+        )
+
+        if not case_match:
+            continue
+
+        first_question_no = int(
+            case_match.group(1)
+        )
+        last_question_no = int(
+            case_match.group(2)
+        )
+
+        if last_question_no <= first_question_no:
+            continue
+
+        expected_question_numbers = list(
+            range(
+                first_question_no,
+                last_question_no + 1,
+            )
+        )
 
         normalized = []
 
@@ -123,6 +148,17 @@ def load_complete_case_cache(exam_number):
             )
 
         if not valid:
+            continue
+
+        actual_question_numbers = sorted(
+            question["question_no"]
+            for question in normalized
+        )
+
+        if (
+            actual_question_numbers
+            != expected_question_numbers
+        ):
             continue
 
         for question in normalized:
@@ -391,16 +427,6 @@ def load_context_only_case_cache(
         ):
             continue
 
-        # 完全cacheは既存処理へ任せる。
-        if (
-            isinstance(
-                questions,
-                list,
-            )
-            and len(questions) == 2
-        ):
-            continue
-
         match = re.fullmatch(
             rf"{exam_number}-(\d+)-(\d+)",
             case_id,
@@ -415,6 +441,56 @@ def load_context_only_case_cache(
         second = int(
             match.group(2)
         )
+
+        if second <= first:
+            continue
+
+        expected_question_numbers = list(
+            range(
+                first,
+                second + 1,
+            )
+        )
+
+        actual_question_numbers = []
+
+        if isinstance(
+            questions,
+            list,
+        ):
+            for question in questions:
+                if not isinstance(
+                    question,
+                    dict,
+                ):
+                    actual_question_numbers = []
+                    break
+
+                try:
+                    question_no = int(
+                        question.get(
+                            "question_no"
+                        )
+                    )
+                except (
+                    TypeError,
+                    ValueError,
+                ):
+                    actual_question_numbers = []
+                    break
+
+                actual_question_numbers.append(
+                    question_no
+                )
+
+        # 完全cacheは既存処理へ任せる。
+        if (
+            sorted(
+                actual_question_numbers
+            )
+            == expected_question_numbers
+        ):
+            continue
 
         result[
             (first, second)

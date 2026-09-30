@@ -700,15 +700,40 @@ def analyze_practical_case(
 ):
     """
     薬剤師国家試験・実践問題の
-    2問1組ケースを複数ページから解析する。
+    連続した複数問ケースを複数ページから解析する。
+
+    first_question_no を開始番号、
+    second_question_no を終了番号として扱う。
 
     目的:
-    - 2問に共通する症例・処方・状況を case_context として抽出
+    - ケース全体に共通する症例・処方・状況を
+      case_context として抽出
     - 各問題固有の設問文と選択肢を分離
     - ケース単位で再構築できる情報を返す
 
     API実行専用関数。
     """
+
+    if second_question_no < first_question_no:
+        raise ValueError(
+            "case終了番号が開始番号より前です: "
+            f"{first_question_no}-"
+            f"{second_question_no}"
+        )
+
+    target_question_numbers = list(
+        range(
+            first_question_no,
+            second_question_no + 1,
+        )
+    )
+
+    if len(target_question_numbers) < 2:
+        raise ValueError(
+            "caseは2問以上必要です: "
+            f"{first_question_no}-"
+            f"{second_question_no}"
+        )
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError(
@@ -745,20 +770,50 @@ def analyze_practical_case(
         f"{second_question_no}"
     )
 
+    target_question_lines = "\n".join(
+        f"問{question_no}"
+        for question_no
+        in target_question_numbers
+    )
+
+    question_json_examples = []
+
+    for question_no in target_question_numbers:
+        question_json_examples.append(
+            f"""    {{
+      "question_no": {question_no},
+      "field": "科目",
+      "question": "問{question_no}固有の設問文",
+      "choices": [
+        "選択肢1",
+        "選択肢2",
+        "選択肢3",
+        "選択肢4",
+        "選択肢5"
+      ],
+      "has_image": false
+    }}"""
+        )
+
+    questions_json = ",\n".join(
+        question_json_examples
+    )
+
     prompt = f"""
 薬剤師国家試験の実践問題を解析してください。
 
-対象は次の2問1組のケースです。
+対象は次の連続した実践問題ケースです。
 
-問{first_question_no}
-問{second_question_no}
+対象問題:
+{target_question_lines}
 
 実践問題では、症例、患者背景、処方内容、検査値、
-薬歴、医療現場の状況などが2問に共通して提示され、
-その共通情報を前提として2つの設問が出題されることがあります。
+薬歴、医療現場の状況などが複数の設問に共通して提示され、
+その共通情報を前提として複数の設問が
+出題されることがあります。
 
 今回の最重要目的は、
-2問に共通して必要となる情報を
+対象問題すべてに共通して必要となる情報を
 case_context として正確に復元することです。
 
 複数画像はPDF上の連続ページです。
@@ -771,50 +826,29 @@ case_context として正確に復元することです。
 
 {{
   "case_id": "{case_id}",
-  "case_context": "2問に共通する症例・処方・状況など",
+  "case_context": "対象問題に共通する症例・処方・状況など",
   "questions": [
-    {{
-      "question_no": {first_question_no},
-      "field": "科目",
-      "question": "問{first_question_no}固有の設問文",
-      "choices": [
-        "選択肢1",
-        "選択肢2",
-        "選択肢3",
-        "選択肢4",
-        "選択肢5"
-      ],
-      "has_image": false
-    }},
-    {{
-      "question_no": {second_question_no},
-      "field": "科目",
-      "question": "問{second_question_no}固有の設問文",
-      "choices": [
-        "選択肢1",
-        "選択肢2",
-        "選択肢3",
-        "選択肢4",
-        "選択肢5"
-      ],
-      "has_image": false
-    }}
+{questions_json}
   ]
 }}
 
 重要ルール:
 
-- case_contextには、2問を理解するために必要な共通情報だけを入れてください。
+- case_contextには、対象問題を理解するために必要な
+  共通情報だけを入れてください。
 - 患者背景、年齢、性別、症状、既往歴、薬歴、処方内容、
-  検査値、経過、医療者の行動などは必要に応じて省略せず含めてください。
+  検査値、経過、医療者の行動などは
+  必要に応じて省略せず含めてください。
 - 各questionには、その問題固有の問いだけを入れてください。
 - case_contextとquestionを重複させないでください。
-- 処方内容の薬剤名、用量、用法、日数を勝手に省略しないでください。
+- 処方内容の薬剤名、用量、用法、日数を
+  勝手に省略しないでください。
 - 数値、単位、薬剤名を推測で変更しないでください。
 - 選択肢は画像に存在する内容を省略せず記録してください。
-- 問{first_question_no}または問{second_question_no}の情報が
-  画像内に存在しない場合、推測で補完しないでください。
-- 2問共通の図・表・構造式などが問題を解くために必要な場合、
+- 対象問題の情報が画像内に存在しない場合、
+  推測で補完しないでください。
+- ケース共通の図・表・構造式などが
+  問題を解くために必要な場合、
   該当問題のhas_imageをtrueにしてください。
 - 見えていない情報は絶対に推測しないでください。
 
@@ -885,10 +919,9 @@ fieldは次のいずれかに正規化してください:
 
     normalized_questions = []
 
-    allowed_question_numbers = {
-        first_question_no,
-        second_question_no,
-    }
+    allowed_question_numbers = set(
+        target_question_numbers
+    )
 
     for question in questions:
 
@@ -902,7 +935,10 @@ fieldは次のいずれかに正規化してください:
         except (TypeError, ValueError):
             continue
 
-        if question_no not in allowed_question_numbers:
+        if (
+            question_no
+            not in allowed_question_numbers
+        ):
             continue
 
         normalized_question = dict(
@@ -930,6 +966,30 @@ fieldは次のいずれかに正規化してください:
 
         normalized_questions.append(
             normalized_question
+        )
+
+    normalized_questions.sort(
+        key=lambda question:
+            question["question_no"]
+    )
+
+    actual_question_numbers = [
+        question["question_no"]
+        for question
+        in normalized_questions
+    ]
+
+    if (
+        actual_question_numbers
+        != target_question_numbers
+    ):
+        raise ValueError(
+            "ケースVisionの対象問題が"
+            "完全ではありません: "
+            f"expected="
+            f"{target_question_numbers}, "
+            f"actual="
+            f"{actual_question_numbers}"
         )
 
     return {

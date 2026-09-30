@@ -280,7 +280,7 @@ const buildPracticalMockQuestions = (
        * 例:
        * 110-196-197 -> [196, 197]
        *
-       * 片方が欠落している不完全ケースは、
+       * 一部の問題が欠落している不完全ケースは、
        * 模試候補から除外する。
        */
       const caseMatch =
@@ -288,11 +288,33 @@ const buildPracticalMockQuestions = (
           /-(\d+)-(\d+)$/
         );
 
+      if (!caseMatch) {
+        return false;
+      }
+
       if (caseMatch) {
-        const expectedNumbers = [
-          Number(caseMatch[1]),
-          Number(caseMatch[2]),
-        ];
+        const firstNumber =
+          Number(caseMatch[1]);
+        const lastNumber =
+          Number(caseMatch[2]);
+
+        if (
+          lastNumber <= firstNumber
+        ) {
+          return false;
+        }
+
+        const expectedNumbers =
+          Array.from(
+            {
+              length:
+                lastNumber -
+                firstNumber +
+                1,
+            },
+            (_, index) =>
+              firstNumber + index
+          );
 
         const actualNumbers =
           unit.questions
@@ -462,13 +484,31 @@ const buildPracticalPracticeQuestions = (
       );
 
     if (!caseMatch) {
-      return true;
+      return false;
     }
 
-    const expectedNumbers = [
-      Number(caseMatch[1]),
-      Number(caseMatch[2]),
-    ];
+    const firstNumber =
+      Number(caseMatch[1]);
+    const lastNumber =
+      Number(caseMatch[2]);
+
+    if (
+      lastNumber <= firstNumber
+    ) {
+      return false;
+    }
+
+    const expectedNumbers =
+      Array.from(
+        {
+          length:
+            lastNumber -
+            firstNumber +
+            1,
+        },
+        (_, index) =>
+          firstNumber + index
+      );
 
     const actualNumbers =
       unit.questions

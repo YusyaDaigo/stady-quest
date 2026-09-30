@@ -77,9 +77,9 @@ def load_case_pairs(
             raw_pair[1]
         )
 
-        if second_no != first_no + 1:
+        if second_no <= first_no:
             raise ValueError(
-                "連番ではないcase pair: "
+                "不正なcase範囲: "
                 f"{raw_pair}"
             )
 
@@ -168,7 +168,7 @@ def is_valid_case_cache(
             questions,
             list,
         )
-        or len(questions) != 2
+        or len(questions) < 2
     ):
         return False
 
@@ -233,12 +233,16 @@ def is_valid_case_cache(
             question_no
         )
 
+    expected_numbers = list(
+        range(
+            first_no,
+            second_no + 1,
+        )
+    )
+
     return sorted(
         actual_numbers
-    ) == [
-        first_no,
-        second_no,
-    ]
+    ) == expected_numbers
 
 
 def parse_args():
@@ -339,12 +343,15 @@ def main():
             / f"{case_name}.json"
         )
 
+        expected_source_numbers = range(
+            first_no,
+            second_no + 1,
+        )
+
         missing_source_numbers = [
             number
-            for number in (
-                first_no,
-                second_no,
-            )
+            for number
+            in expected_source_numbers
             if number
             not in generated_numbers
         ]

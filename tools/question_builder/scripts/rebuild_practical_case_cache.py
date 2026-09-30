@@ -73,10 +73,18 @@ def find_related_pages(
         CACHE_ROOT / str(exam_number)
     )
 
-    targets = {
-        first_question_no,
-        second_question_no,
-    }
+    if second_question_no <= first_question_no:
+        raise ValueError(
+            "caseは2問以上必要です: "
+            f"{first_question_no}-{second_question_no}"
+        )
+
+    targets = set(
+        range(
+            first_question_no,
+            second_question_no + 1,
+        )
+    )
 
     found = []
 
