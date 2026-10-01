@@ -65,6 +65,34 @@ export const theory111Questions = [
 
     sourceType: "past_exam",
     examNumber: 111,
+    sourceNumber: 92,
+    field: "物理",
+    scoringStatus: "no_answer",
+
+    question:
+      "平衡状態にある次の化学反応に関する記述として、正しいのはどれか。2つ選べ。\nただし、ΔfH° は標準生成エンタルピー、（g）は気体状態、（s）は固体状態を表す。\n\nNH₃（g）＋ HCl（g） ⇄ NH₄Cl（s）　ΔfH° ＝ −176.2 kJ/mol",
+
+    choices: [
+    "この反応はエントロピー駆動の反応である。",
+    "縦軸に平衡定数の対数を、横軸に絶対温度をとると右上がりの直線となる。",
+    "圧力を上げると平衡は右に傾く。",
+    "温度を上げると平衡は右に傾く。",
+    "アンモニアを加えると平衡は右に傾く。"
+],
+
+    answer: null,
+
+    explanation:
+      "公式解答では正答なし（解なし）とされています。"
+  },
+
+
+  {
+    subject: "pharmacy",
+    category: CATEGORIES.THEORY,
+
+    sourceType: "past_exam",
+    examNumber: 111,
     sourceNumber: 93,
     field: "物理",
 

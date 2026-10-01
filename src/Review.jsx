@@ -30,20 +30,28 @@ function Review({
         const normalizedCorrectAnswer =
           normalizeAnswer(question.answer);
 
-        const isCorrect =
+        let isCorrect;
+
+        if (
           Array.isArray(normalizedUserAnswer) &&
           Array.isArray(normalizedCorrectAnswer)
-            ? (
-                normalizedUserAnswer.length ===
-                  normalizedCorrectAnswer.length &&
-                normalizedUserAnswer.every(
-                  (value, answerIndex) =>
-                    value ===
-                    normalizedCorrectAnswer[answerIndex]
-                )
-              )
-            : normalizedUserAnswer ===
-              normalizedCorrectAnswer;
+        ) {
+          const requiredSelections =
+            question.requiredSelections ??
+            normalizedCorrectAnswer.length;
+
+          isCorrect =
+            normalizedUserAnswer.length ===
+              requiredSelections &&
+            normalizedUserAnswer.every(
+              (value) =>
+                normalizedCorrectAnswer.includes(value)
+            );
+        } else {
+          isCorrect =
+            normalizedUserAnswer ===
+            normalizedCorrectAnswer;
+        }
 
         const formatAnswer = (answer) => {
           if (answer === undefined) {
