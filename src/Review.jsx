@@ -14,6 +14,9 @@ function Review({
         const userAnswer =
           userAnswers[index];
 
+        const isUnanswered =
+          userAnswer === undefined;
+
         const normalizeAnswer = (value) => {
           if (Array.isArray(value)) {
             return [...value].sort(
@@ -87,9 +90,39 @@ function Review({
                 : ""}
             </h3>
 
-            <p>
+            <p
+              style={{
+                whiteSpace: "pre-wrap"
+              }}
+            >
               {question.question}
             </p>
+
+            {question.image && (
+              <div
+                style={{
+                  width: "92%",
+                  maxWidth: "920px",
+                  maxHeight: "58vh",
+                  overflow: "auto",
+                  margin: "20px auto",
+                  backgroundColor: "#ffffff",
+                  borderRadius: "10px",
+                  border: "1px solid #ddd"
+                }}
+              >
+                <img
+                  src={question.image}
+                  alt="問題図"
+                  style={{
+                    display: "block",
+                    width: "100%",
+                    height: "auto",
+                    objectFit: "contain"
+                  }}
+                />
+              </div>
+            )}
 
             <p>
               あなたの回答：
@@ -102,9 +135,11 @@ function Review({
             </p>
 
             <h3>
-              {isCorrect
-                ? "⭕ 正解"
-                : "❌ 不正解"}
+              {isUnanswered
+                ? "⚪ 未回答"
+                : isCorrect
+                  ? "⭕ 正解"
+                  : "❌ 不正解"}
             </h3>
 
             <p>

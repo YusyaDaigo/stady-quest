@@ -10,6 +10,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 196,
+    caseId: "102-196-197",
+    caseContext:
+      "70歳男性。脳腫瘍の疑いがあり、ガドペンテト酸ジメグルミン注射液を造影剤として用いてMRI検査を行うこととなった。男性は、2型糖尿病と高血圧症と診断され、以下の薬を1年間継続的に服用している。\n\nロサルタンK錠50 mg　1回1錠（1日1錠）　朝食後\nメトホルミン塩酸塩錠250 mg　1回1錠（1日2錠）　朝夕食後\nシタグリプチンリン酸塩水和物錠50 mg　1回1錠（1日1錠）　朝食後\n\nMRI検査日1ヶ月前の検査値\n血圧 154/86 mmHg　ALT 12 IU/L　AST 25 IU/L　γ-GTP 27 IU/L\neGFR 52 mL/min/1.73 m2　HbA1c 6.7％\n\nMRI検査日の検査値\n血圧 143/83 mmHg　ALT 34 IU/L　AST 34 IU/L　γ-GTP 43 IU/L\neGFR 27 mL/min/1.73 m2　HbA1c 7.0％\n\n注）ガドペンテト酸ジメグルミン注射液の有効成分は、ガドペンテト酸メグルミンである。",
     field: "実務",
 
     question:
@@ -38,6 +41,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 197,
+    caseId: "102-196-197",
+    caseContext:
+      "70歳男性。脳腫瘍の疑いがあり、ガドペンテト酸ジメグルミン注射液を造影剤として用いてMRI検査を行うこととなった。男性は、2型糖尿病と高血圧症と診断され、以下の薬を1年間継続的に服用している。\n\nロサルタンK錠50 mg　1回1錠（1日1錠）　朝食後\nメトホルミン塩酸塩錠250 mg　1回1錠（1日2錠）　朝夕食後\nシタグリプチンリン酸塩水和物錠50 mg　1回1錠（1日1錠）　朝食後\n\nMRI検査日1ヶ月前の検査値\n血圧 154/86 mmHg　ALT 12 IU/L　AST 25 IU/L　γ-GTP 27 IU/L\neGFR 52 mL/min/1.73 m2　HbA1c 6.7％\n\nMRI検査日の検査値\n血圧 143/83 mmHg　ALT 34 IU/L　AST 34 IU/L　γ-GTP 43 IU/L\neGFR 27 mL/min/1.73 m2　HbA1c 7.0％\n\n注）ガドペンテト酸ジメグルミン注射液の有効成分は、ガドペンテト酸メグルミンである。",
     field: "物理",
 
     question:
@@ -66,6 +72,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 198,
+    caseId: "102-198-199",
+    caseContext:
+      "38歳女性。肝内胆管がんと診断され、肝臓を部分切除した。患者は術後の回復期にあり、食事を経口的に摂取しはじめ、高カロリー輸液療法の離脱を目指している。また、肝性浮腫と痰のからみがあるため、図のような注射剤が投与されている。\n\nA：ブロムヘキシン塩酸塩 4 mg/2 mL、生理食塩液 50 mL、100 mL/hr。中心ライン側管。\nB：高カロリー輸液（糖・電解質・アミノ酸・総合ビタミン・微量元素液）1000 mL、40 mL/hr。中心ライン主管。\nC：酢酸リンゲル液 500 mL、20 mL/hr。末梢ライン主管。\nD：注射用カンレノ酸カリウム 200 mg、生理食塩液 20 mL、1日2回ゆっくりと静脈内注射し、使用しない時はシリンジを外す。管注。\nE：管注。",
     field: "実務",
     hasImage: true,
     image: "/pharmacy/102/practical/q198.png",
@@ -96,6 +105,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 199,
+    caseId: "102-198-199",
+    caseContext:
+      "38歳女性。肝内胆管がんと診断され、肝臓を部分切除した。患者は術後の回復期にあり、食事を経口的に摂取しはじめ、高カロリー輸液療法の離脱を目指している。また、肝性浮腫と痰のからみがあるため、図のような注射剤が投与されている。\n\nA：ブロムヘキシン塩酸塩 4 mg/2 mL、生理食塩液 50 mL、100 mL/hr。中心ライン側管。\nB：高カロリー輸液（糖・電解質・アミノ酸・総合ビタミン・微量元素液）1000 mL、40 mL/hr。中心ライン主管。\nC：酢酸リンゲル液 500 mL、20 mL/hr。末梢ライン主管。\nD：注射用カンレノ酸カリウム 200 mg、生理食塩液 20 mL、1日2回ゆっくりと静脈内注射し、使用しない時はシリンジを外す。管注。\nE：管注。",
     field: "物理",
 
     question:
@@ -124,6 +136,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 200,
+    caseId: "102-200-201",
+    caseContext:
+      "64歳男性。COPD（慢性閉塞性肺疾患）と診断され、チオトロピウム臭化物水和物（1日5 μg）とサルメテロールキシナホ酸塩（1日100 μg）の吸入を継続的に行っていた。日常の薬物治療のアドヒアランスは良好であった。受診から2年後、この男性は呼吸困難と38.1℃の発熱を訴え、肺からはラ音が聞こえたため感染症が疑われ緊急入院となった。パルスオキシメーター（オキシメトリー）で測定したところSpO2（経皮的動脈血酸素飽和度）は92％であった。喫煙歴44年であり、若い頃から1日30〜40本吸っていた。COPD発症を機会に禁煙指導を受けていたが、1日10本程度吸っていたという。酸素吸入の他に、増悪期の薬物治療として医師は以下に示した処方薬と注射用抗菌薬を投与することとした。\n\n（処方）\nアミノフィリン注射液 250 mg\n注射用プレドニゾロンコハク酸エステルナトリウム 20 mg\n上記を生理食塩液 250 mL に溶解し、点滴静脈内投与",
     field: "実務",
 
     question:
@@ -152,6 +167,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 201,
+    caseId: "102-200-201",
+    caseContext:
+      "64歳男性。COPD（慢性閉塞性肺疾患）と診断され、チオトロピウム臭化物水和物（1日5 μg）とサルメテロールキシナホ酸塩（1日100 μg）の吸入を継続的に行っていた。日常の薬物治療のアドヒアランスは良好であった。受診から2年後、この男性は呼吸困難と38.1℃の発熱を訴え、肺からはラ音が聞こえたため感染症が疑われ緊急入院となった。パルスオキシメーター（オキシメトリー）で測定したところSpO2（経皮的動脈血酸素飽和度）は92％であった。喫煙歴44年であり、若い頃から1日30〜40本吸っていた。COPD発症を機会に禁煙指導を受けていたが、1日10本程度吸っていたという。酸素吸入の他に、増悪期の薬物治療として医師は以下に示した処方薬と注射用抗菌薬を投与することとした。\n\n（処方）\nアミノフィリン注射液 250 mg\n注射用プレドニゾロンコハク酸エステルナトリウム 20 mg\n上記を生理食塩液 250 mL に溶解し、点滴静脈内投与",
     field: "物理",
     hasImage: true,
     image: "/pharmacy/102/practical/q201.png",
@@ -182,6 +200,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 202,
+    caseId: "102-202-203",
+    caseContext:
+      "25歳女性。テニスで上腕部の筋肉痛を自覚し、これに効く消炎鎮痛薬の貼付剤を購入する目的で薬局を訪れた。応対した薬剤師はこの女性から以下の4つの情報を聴取した。\n\n・喘息の既往はない。\n・現在、妊娠はしていない。\n・貼付剤で皮膚がかぶれたことはない。\n・以前に日焼け止め剤を使用して過敏症を発症したことがある。",
     field: "実務",
 
     question:
@@ -210,6 +231,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 203,
+    caseId: "102-202-203",
+    caseContext:
+      "25歳女性。テニスで上腕部の筋肉痛を自覚し、これに効く消炎鎮痛薬の貼付剤を購入する目的で薬局を訪れた。応対した薬剤師はこの女性から以下の4つの情報を聴取した。\n\n・喘息の既往はない。\n・現在、妊娠はしていない。\n・貼付剤で皮膚がかぶれたことはない。\n・以前に日焼け止め剤を使用して過敏症を発症したことがある。",
     field: "物理",
 
     question:
@@ -238,6 +262,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 204,
+    caseId: "102-204-205",
+    caseContext:
+      "75歳男性。体重70 kg。脳梗塞により右半身の麻痺があり、処方1の薬剤を服用していた。その後、嚥下機能が低下し誤嚥性肺炎を起こし入院したが、刻み食を食べることができるまでに回復した。血圧の上昇が認められたため、退院時に処方2が追加され、介護者が以下の処方箋を持って薬局を訪れた。\n\n（処方1）\nアスピリン腸溶錠 100 mg　1回1錠（1日1錠）粉砕\nアラセプリル錠 25 mg　1回1錠（1日1錠）粉砕\nランソプラゾール口腔内崩壊錠 15 mg　1回1錠（1日1錠）\n1日1回　朝食後　14日分\n\n（処方2）\nニフェジピン腸溶細粒 2％ 0.5 g　1回1包（1日2包）\n1日2回　朝夕食後　14日分",
     field: "実務",
 
     question:
@@ -266,6 +293,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 205,
+    caseId: "102-204-205",
+    caseContext:
+      "75歳男性。体重70 kg。脳梗塞により右半身の麻痺があり、処方1の薬剤を服用していた。その後、嚥下機能が低下し誤嚥性肺炎を起こし入院したが、刻み食を食べることができるまでに回復した。血圧の上昇が認められたため、退院時に処方2が追加され、介護者が以下の処方箋を持って薬局を訪れた。\n\n（処方1）\nアスピリン腸溶錠 100 mg　1回1錠（1日1錠）粉砕\nアラセプリル錠 25 mg　1回1錠（1日1錠）粉砕\nランソプラゾール口腔内崩壊錠 15 mg　1回1錠（1日1錠）\n1日1回　朝食後　14日分\n\n（処方2）\nニフェジピン腸溶細粒 2％ 0.5 g　1回1包（1日2包）\n1日2回　朝夕食後　14日分",
     field: "化学",
     hasImage: true,
     image: "/pharmacy/102/practical/q205.png",
@@ -296,6 +326,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 206,
+    caseId: "102-206-207",
+    caseContext:
+      "28歳男性。悪性軟部腫瘍の転移が判明し、病棟カンファレンスにおいてイホスファミドの投与が検討された。薬剤師は、イホスファミドによる治療及びメスナの投与に関して医療スタッフに説明を行った。",
     field: "実務",
 
     question:
@@ -324,6 +357,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 207,
+    caseId: "102-206-207",
+    caseContext:
+      "28歳男性。悪性軟部腫瘍の転移が判明し、病棟カンファレンスにおいてイホスファミドの投与が検討された。薬剤師は、イホスファミドによる治療及びメスナの投与に関して医療スタッフに説明を行った。",
     field: "化学",
     hasImage: true,
     image: "/pharmacy/102/practical/q207.png",
@@ -354,6 +390,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 208,
+    caseId: "102-208-209",
+    caseContext:
+      "22歳女性。体重45 kg。アセトアミノフェンを含有するOTC医薬品を大量に服用し、救急搬送されてきた。服用後約4時間が経過しており、アセトアミノフェンの摂取量から、解毒薬としてアセチルシステイン内用液17.6％の投与が必要と判断された。",
     field: "実務",
 
     question:
@@ -382,6 +421,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 209,
+    caseId: "102-208-209",
+    caseContext:
+      "22歳女性。体重45 kg。アセトアミノフェンを含有するOTC医薬品を大量に服用し、救急搬送されてきた。服用後約4時間が経過しており、アセトアミノフェンの摂取量から、解毒薬としてアセチルシステイン内用液17.6％の投与が必要と判断された。",
     field: "化学",
     hasImage: true,
     image: "/pharmacy/102/practical/q209.png",
@@ -412,6 +454,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 210,
+    caseId: "102-210-211",
+    caseContext:
+      "1歳男児。耳鼻科を受診し中耳炎と診断され、以下の薬剤が処方された。母親が処方箋を持参し、薬局を訪れた。\n\n（処方）\nセフジトレン ピボキシル細粒 10％　1回0.5 g（1日1.5 g）\n1日3回　朝昼夕食後　5日分",
     field: "実務",
 
     question:
@@ -440,6 +485,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 211,
+    caseId: "102-210-211",
+    caseContext:
+      "1歳男児。耳鼻科を受診し中耳炎と診断され、以下の薬剤が処方された。母親が処方箋を持参し、薬局を訪れた。\n\n（処方）\nセフジトレン ピボキシル細粒 10％　1回0.5 g（1日1.5 g）\n1日3回　朝昼夕食後　5日分",
     field: "化学",
     hasImage: true,
     image: "/pharmacy/102/practical/q211.png",
@@ -470,6 +518,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 212,
+    caseId: "102-212-213",
+    caseContext:
+      "70歳女性。下記の生薬を含む漢方エキス細粒（釣藤散）の処方箋を持って薬局に来局した。なお、処方量は常用量である。\n\n釣藤散\n生薬名　1日量\nセッコウ　5 g\nチンピ　3 g\nバクモンドウ　3 g\nハンゲ　3 g\nブクリョウ　3 g\nショウキョウ　1 g\nチョウトウコウ　3 g\nニンジン　2 g\nボウフウ　2 g\nキクカ　2 g\nカンゾウ　1 g",
     field: "実務",
 
     question:
@@ -498,6 +549,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 213,
+    caseId: "102-212-213",
+    caseContext:
+      "70歳女性。下記の生薬を含む漢方エキス細粒（釣藤散）の処方箋を持って薬局に来局した。なお、処方量は常用量である。\n\n釣藤散\n生薬名　1日量\nセッコウ　5 g\nチンピ　3 g\nバクモンドウ　3 g\nハンゲ　3 g\nブクリョウ　3 g\nショウキョウ　1 g\nチョウトウコウ　3 g\nニンジン　2 g\nボウフウ　2 g\nキクカ　2 g\nカンゾウ　1 g",
     field: "化学",
 
     question:
@@ -526,6 +580,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 214,
+    caseId: "102-214-215",
+    caseContext:
+      "病院でバイオ後続品の採用を検討することになり、医師よりバイオ後続品の特性について薬剤部に問い合わせがあった。",
     field: "実務",
 
     question:
@@ -553,6 +610,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 215,
+    caseId: "102-214-215",
+    caseContext:
+      "病院でバイオ後続品の採用を検討することになり、医師よりバイオ後続品の特性について薬剤部に問い合わせがあった。",
     field: "生物",
 
     question:
@@ -580,6 +640,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 216,
+    caseId: "102-216-217",
+    caseContext:
+      "震度7の地震が発生し、多くの住民が家屋を失った。多数の人が狭い避難所や自家用車の中で1日の大部分を過ごしているので、過去の震災での経験から深部静脈血栓症/肺血栓塞栓症（いわゆるエコノミークラス症候群）の発症が危惧された。",
     field: "実務",
 
     question:
@@ -608,6 +671,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 217,
+    caseId: "102-216-217",
+    caseContext:
+      "震度7の地震が発生し、多くの住民が家屋を失った。多数の人が狭い避難所や自家用車の中で1日の大部分を過ごしているので、過去の震災での経験から深部静脈血栓症/肺血栓塞栓症（いわゆるエコノミークラス症候群）の発症が危惧された。",
     field: "生物",
 
     question:
@@ -636,6 +702,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 218,
+    caseId: "102-218-219",
+    caseContext:
+      "75歳女性。脳梗塞で寝たきりとなり、仙骨部に褥瘡を形成したことから、褥瘡対策チームが対応した。なお、本患者には、心機能、肝機能、腎機能及び甲状腺機能の低下や各臓器からの出血はいずれも認められていなかった。",
     field: "生物",
     hasImage: true,
     image: "/pharmacy/102/practical/q218.png",
@@ -666,6 +735,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 219,
+    caseId: "102-218-219",
+    caseContext:
+      "75歳女性。脳梗塞で寝たきりとなり、仙骨部に褥瘡を形成したことから、褥瘡対策チームが対応した。なお、本患者には、心機能、肝機能、腎機能及び甲状腺機能の低下や各臓器からの出血はいずれも認められていなかった。",
     field: "実務",
 
     question:
@@ -695,6 +767,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 220,
+    caseId: "102-220-221",
+    caseContext:
+      "22歳女性。統合失調症のため病院の精神科へ通院している。母親が薬局を訪れ、「娘が薬を時々飲み忘れて、症状が安定しないことから、リスペリドン持効性懸濁注射液を注射された。」と薬剤師に伝えた。また、母親は下記の処方箋を見て、注射剤と同じ薬物が内服薬としても処方されていることに疑問をもち、今後の薬物治療について薬剤師に質問した。\n\n（処方）\nリスペリドン錠2 mg　1回1錠（1日2錠）\n1日2回　朝夕食後　21日分\n\nなお、リスペリドン持効性懸濁注射液の添付文書には、次の2つのグラフが掲載されている（一部改変）。\n\nリスペリドン持効性懸濁注射液\n25 mg（n＝12〜14）\n50 mg（n＝24〜26）\n血漿中薬物濃度（ng/mL）、投与後（日）\n統合失調症患者にリスペリドン持効性懸濁注射液を単回筋肉内投与したときの血漿中薬物濃度推移（平均値＋S.D.）\n\nリスペリドン持効性懸濁注射液\n25 mg（n＝7〜8）\n37.5 mg（n＝9）\n50 mg（n＝8〜9）\n血漿中薬物濃度（ng/mL）、注射液初回投与後（日）\n統合失調症患者にリスペリドン持効性懸濁注射液を反復筋肉内投与（2週間隔で6回）したときの血漿中薬物濃度推移（平均値＋S.D.）\nただし、当該患者にはリスペリドン錠を注射液初回投与後3週間、経口投与した。",
     field: "実務",
     hasImage: true,
     image: "/pharmacy/102/practical/q220.png",
@@ -724,6 +799,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 221,
+    caseId: "102-220-221",
+    caseContext:
+      "22歳女性。統合失調症のため病院の精神科へ通院している。母親が薬局を訪れ、「娘が薬を時々飲み忘れて、症状が安定しないことから、リスペリドン持効性懸濁注射液を注射された。」と薬剤師に伝えた。また、母親は下記の処方箋を見て、注射剤と同じ薬物が内服薬としても処方されていることに疑問をもち、今後の薬物治療について薬剤師に質問した。\n\n（処方）\nリスペリドン錠2 mg　1回1錠（1日2錠）\n1日2回　朝夕食後　21日分\n\nなお、リスペリドン持効性懸濁注射液の添付文書には、次の2つのグラフが掲載されている（一部改変）。\n\nリスペリドン持効性懸濁注射液\n25 mg（n＝12〜14）\n50 mg（n＝24〜26）\n血漿中薬物濃度（ng/mL）、投与後（日）\n統合失調症患者にリスペリドン持効性懸濁注射液を単回筋肉内投与したときの血漿中薬物濃度推移（平均値＋S.D.）\n\nリスペリドン持効性懸濁注射液\n25 mg（n＝7〜8）\n37.5 mg（n＝9）\n50 mg（n＝8〜9）\n血漿中薬物濃度（ng/mL）、注射液初回投与後（日）\n統合失調症患者にリスペリドン持効性懸濁注射液を反復筋肉内投与（2週間隔で6回）したときの血漿中薬物濃度推移（平均値＋S.D.）\nただし、当該患者にはリスペリドン錠を注射液初回投与後3週間、経口投与した。",
     field: "生物",
 
     question:
@@ -752,6 +830,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 222,
+    caseId: "102-222-225",
+    caseContext:
+      "50歳男性。体重60 kg。重症感染症のため一時的に高カロリー輸液ソフトバッグ製剤（1,003 mL中にブドウ糖175 g、総遊離アミノ酸30 gを含有）を中心静脈から投与することになった。この男性の腎機能は正常である。",
     field: "実務",
 
     question:
@@ -780,6 +861,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 223,
+    caseId: "102-222-225",
+    caseContext:
+      "50歳男性。体重60 kg。重症感染症のため一時的に高カロリー輸液ソフトバッグ製剤（1,003 mL中にブドウ糖175 g、総遊離アミノ酸30 gを含有）を中心静脈から投与することになった。この男性の腎機能は正常である。",
     field: "物理",
 
     question:
@@ -807,6 +891,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 224,
+    caseId: "102-222-225",
+    caseContext:
+      "50歳男性。体重60 kg。重症感染症のため一時的に高カロリー輸液ソフトバッグ製剤（1,003 mL中にブドウ糖175 g、総遊離アミノ酸30 gを含有）を中心静脈から投与することになった。この男性の腎機能は正常である。",
     field: "実務",
 
     question:
@@ -835,6 +922,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 225,
+    caseId: "102-222-225",
+    caseContext:
+      "50歳男性。体重60 kg。重症感染症のため一時的に高カロリー輸液ソフトバッグ製剤（1,003 mL中にブドウ糖175 g、総遊離アミノ酸30 gを含有）を中心静脈から投与することになった。この男性の腎機能は正常である。",
     field: "生物",
 
     question:
@@ -863,6 +953,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 226,
+    caseId: "102-226-227",
+    caseContext:
+      "65歳女性。慢性腎不全にて通院治療中。最近、時々腰が痛くなり、寝付きも良くないので、整形外科を受診した。骨粗しょう症と診断され、処方箋を薬局に持参した。\n\n（処方1）\nラロキシフェン塩酸塩錠60 mg　1回1錠（1日1錠）\nアルファカルシドールカプセル0.5 μg　1回1カプセル（1日1カプセル）\n1日1回朝食後　14日分\n\n（処方2）\nジクロフェナクNa錠25 mg　1回1錠\n痛い時　5回分（5錠）",
     field: "実務",
 
     question:
@@ -891,6 +984,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 227,
+    caseId: "102-226-227",
+    caseContext:
+      "65歳女性。慢性腎不全にて通院治療中。最近、時々腰が痛くなり、寝付きも良くないので、整形外科を受診した。骨粗しょう症と診断され、処方箋を薬局に持参した。\n\n（処方1）\nラロキシフェン塩酸塩錠60 mg　1回1錠（1日1錠）\nアルファカルシドールカプセル0.5 μg　1回1カプセル（1日1カプセル）\n1日1回朝食後　14日分\n\n（処方2）\nジクロフェナクNa錠25 mg　1回1錠\n痛い時　5回分（5錠）",
     field: "衛生",
 
     question:
@@ -919,6 +1015,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 228,
+    caseId: "102-228-229",
+    caseContext:
+      "69歳女性。胃がんの手術後の入院中に、医師、看護師、管理栄養士及び薬剤師で構成されたNST（Nutrition Support Team）による患者カンファレンスが行われた結果、脂肪乳剤輸液（10%、250 mL）の投与が開始された。",
     field: "実務",
 
     question:
@@ -947,6 +1046,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 229,
+    caseId: "102-228-229",
+    caseContext:
+      "69歳女性。胃がんの手術後の入院中に、医師、看護師、管理栄養士及び薬剤師で構成されたNST（Nutrition Support Team）による患者カンファレンスが行われた結果、脂肪乳剤輸液（10%、250 mL）の投与が開始された。",
     field: "衛生",
 
     question:
@@ -975,6 +1077,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 230,
+    caseId: "102-230-231",
+    caseContext:
+      "医薬品の適正使用のため、承認前には治験、承認後にもPMS（製造販売後調査 Post Marketing Surveillance）が行われている。",
     field: "実務",
 
     question:
@@ -1003,6 +1108,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 231,
+    caseId: "102-230-231",
+    caseContext:
+      "医薬品の適正使用のため、承認前には治験、承認後にもPMS（製造販売後調査 Post Marketing Surveillance）が行われている。",
     field: "衛生",
     hasImage: true,
     image: "/pharmacy/102/practical/q231.png",
@@ -1033,6 +1141,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 232,
+    caseId: "102-232-233",
+    caseContext:
+      "85歳男性。在宅にて要介護度5の寝たきり状態であったが、高熱のため入院した。入院時に患者に触れた看護師等の職員数名が数日後かゆみを伴う皮膚症状を訴えた。その後、患者が重度の角化型疥癬と診断されたため、院内感染対策委員会にて対応策が検討された。",
     field: "実務",
 
     question:
@@ -1060,6 +1171,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 233,
+    caseId: "102-232-233",
+    caseContext:
+      "85歳男性。在宅にて要介護度5の寝たきり状態であったが、高熱のため入院した。入院時に患者に触れた看護師等の職員数名が数日後かゆみを伴う皮膚症状を訴えた。その後、患者が重度の角化型疥癬と診断されたため、院内感染対策委員会にて対応策が検討された。",
     field: "衛生",
 
     question:
@@ -1088,6 +1202,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 234,
+    caseId: "102-234-235",
+    caseContext:
+      "20歳女性。性感染症の薬物治療のため薬局に処方箋を持参した。",
     field: "実務",
     hasImage: true,
     image: "/pharmacy/102/practical/q234.png",
@@ -1118,6 +1235,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 235,
+    caseId: "102-234-235",
+    caseContext:
+      "20歳女性。性感染症の薬物治療のため薬局に処方箋を持参した。",
     field: "衛生",
 
     question:
@@ -1146,6 +1266,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 236,
+    caseId: "102-236-237",
+    caseContext:
+      "ある病院において、予防接種の頻度が上がり、患者からの薬剤部への問い合わせ件数も増加したため、ワクチンの接種法及び接種時期について確認作業を行った。",
     field: "実務",
 
     question:
@@ -1173,6 +1296,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 237,
+    caseId: "102-236-237",
+    caseContext:
+      "ある病院において、予防接種の頻度が上がり、患者からの薬剤部への問い合わせ件数も増加したため、ワクチンの接種法及び接種時期について確認作業を行った。",
     field: "衛生",
 
     question:
@@ -1201,6 +1327,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 238,
+    caseId: "102-238-239",
+    caseContext:
+      "40歳男性。喫煙歴20年、気管支ぜん息の治療のためテオフィリン製剤を服用している。最近、ぜん息症状が悪化してきたこともあり禁煙を試みたいと薬局を訪れた。薬剤師は、ニコチンガム、ニコチンパッチ及びバレニクリン酒石酸塩錠について情報提供を求められた。",
     field: "実務",
 
     question:
@@ -1229,6 +1358,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 239,
+    caseId: "102-238-239",
+    caseContext:
+      "40歳男性。喫煙歴20年、気管支ぜん息の治療のためテオフィリン製剤を服用している。最近、ぜん息症状が悪化してきたこともあり禁煙を試みたいと薬局を訪れた。薬剤師は、ニコチンガム、ニコチンパッチ及びバレニクリン酒石酸塩錠について情報提供を求められた。",
     field: "衛生",
 
     question:
@@ -1257,6 +1389,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 240,
+    caseId: "102-240-241",
+    caseContext:
+      "学校薬剤師が中学校の校長から薬物乱用防止教室の講師を依頼された。",
     field: "実務",
 
     question:
@@ -1285,6 +1420,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 241,
+    caseId: "102-240-241",
+    caseContext:
+      "学校薬剤師が中学校の校長から薬物乱用防止教室の講師を依頼された。",
     field: "衛生",
     hasImage: true,
     image: "/pharmacy/102/practical/q241.png",
@@ -1315,6 +1453,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 242,
+    caseId: "102-242-243",
+    caseContext:
+      "学校薬剤師が小学校の水道水の水質検査を行った。結果は以下の通りであった。\n\n一般細菌：36集落/mL\n大腸菌：検出されず\n塩化物イオン：27 mg/L\n全有機炭素（TOC）：1 mg/L\npH値：7.0\n味：異常なし\n臭気：異常なし\n色度：0.5度\n濁度：0.1度\n遊離残留塩素：0.3 mg/L",
     field: "実務",
     hasImage: true,
     image: "/pharmacy/102/practical/q242.png",
@@ -1345,6 +1486,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 243,
+    caseId: "102-242-243",
+    caseContext:
+      "学校薬剤師が小学校の水道水の水質検査を行った。結果は以下の通りであった。\n\n一般細菌：36集落/mL\n大腸菌：検出されず\n塩化物イオン：27 mg/L\n全有機炭素（TOC）：1 mg/L\npH値：7.0\n味：異常なし\n臭気：異常なし\n色度：0.5度\n濁度：0.1度\n遊離残留塩素：0.3 mg/L",
     field: "衛生",
     hasImage: true,
     image: "/pharmacy/102/practical/q243.png",
@@ -1375,6 +1519,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 244,
+    caseId: "102-244-245",
+    caseContext:
+      "病院薬剤部において高カロリー輸液の調製を行う際に排出される廃棄物の処理方法を検討することとなった。",
     field: "実務",
 
     question:
@@ -1403,6 +1550,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 245,
+    caseId: "102-244-245",
+    caseContext:
+      "病院薬剤部において高カロリー輸液の調製を行う際に排出される廃棄物の処理方法を検討することとなった。",
     field: "衛生",
 
     question:
@@ -1430,6 +1580,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 246,
+    caseId: "102-246-247",
+    caseContext:
+      "53歳男性。尿酸値が高く、3週間前より処方1で治療を開始。その2週間後、尿酸値が改善されなかったので処方2及び処方3が追加となった。\n\n（処方1）\nフェブキソスタット錠10 mg　1回1錠（1日1錠）\n1日1回　夕食後　14日分\n\n（処方2）\nベンズブロマロン錠25 mg　1回1錠（1日1錠）\n1日1回　夕食後　14日分\n\n（処方3）\nクエン酸カリウム・クエン酸ナトリウム配合錠　1回2錠（1日6錠）\n1日3回　朝昼夕食後　14日分\n\n処方2及び処方3を追加して7日後、患者より「新年会が続き、ビールを飲む量が増えており、足の親指が腫れて激しい痛みが生じてきた。」との訴えがあった。",
     field: "実務",
 
     question:
@@ -1458,6 +1611,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 247,
+    caseId: "102-246-247",
+    caseContext:
+      "53歳男性。尿酸値が高く、3週間前より処方1で治療を開始。その2週間後、尿酸値が改善されなかったので処方2及び処方3が追加となった。\n\n（処方1）\nフェブキソスタット錠10 mg　1回1錠（1日1錠）\n1日1回　夕食後　14日分\n\n（処方2）\nベンズブロマロン錠25 mg　1回1錠（1日1錠）\n1日1回　夕食後　14日分\n\n（処方3）\nクエン酸カリウム・クエン酸ナトリウム配合錠　1回2錠（1日6錠）\n1日3回　朝昼夕食後　14日分\n\n処方2及び処方3を追加して7日後、患者より「新年会が続き、ビールを飲む量が増えており、足の親指が腫れて激しい痛みが生じてきた。」との訴えがあった。",
     field: "薬理",
 
     question:
@@ -1486,6 +1642,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 248,
+    caseId: "102-248-249",
+    caseContext:
+      "26歳女性。妊娠30週。妊娠高血圧症候群で経過観察中、切迫早産のため入院し、以下が処方された。\n\n（処方1）\nリトドリン塩酸塩注射液（50 mg/アンプル　1本）　50 mg\n10％マルトース注射液　500 mL\n30 mL/hで点滴静注\n\n（処方2）\nメチルドパ錠250 mg　1回1錠（1日2錠）\n1日2回　朝夕食後　3日分",
     field: "実務",
 
     question:
@@ -1514,6 +1673,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 249,
+    caseId: "102-248-249",
+    caseContext:
+      "26歳女性。妊娠30週。妊娠高血圧症候群で経過観察中、切迫早産のため入院し、以下が処方された。\n\n（処方1）\nリトドリン塩酸塩注射液（50 mg/アンプル　1本）　50 mg\n10％マルトース注射液　500 mL\n30 mL/hで点滴静注\n\n（処方2）\nメチルドパ錠250 mg　1回1錠（1日2錠）\n1日2回　朝夕食後　3日分",
     field: "薬理",
 
     question:
@@ -1542,6 +1704,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 250,
+    caseId: "102-250-251",
+    caseContext:
+      "72歳男性。腎実質性高血圧症で循環器内科を受診し、以下の処方箋を持って薬局を訪れた。\n\n循環器内科\n（処方1）\nエホニジピン塩酸塩エタノール付加物錠20 mg　1回1錠（1日1錠）\nイミダプリル塩酸塩錠5 mg　1回1錠（1日1錠）\n1日1回　朝食後　28日分\n\nお薬手帳で併用薬を確認したところ、他の医療機関（消化器内科）で処方された以下の薬を服用中であった。患者は消化器内科の薬について、循環器内科の医師に伝えていないとのことであった。薬剤師として処方医（循環器内科）に併用薬の情報提供と処方内容の確認が必要と考えた。\n\n消化器内科\n（処方2）\nラニチジン錠75 mg　1回1錠（1日2錠）\n1日2回　朝食後、就寝前　28日分\n\n（処方3）\nテルミサルタン錠40 mg　1回1錠（1日1錠）\n1日1回　朝食後　28日分",
     field: "実務",
 
     question:
@@ -1570,6 +1735,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 251,
+    caseId: "102-250-251",
+    caseContext:
+      "72歳男性。腎実質性高血圧症で循環器内科を受診し、以下の処方箋を持って薬局を訪れた。\n\n循環器内科\n（処方1）\nエホニジピン塩酸塩エタノール付加物錠20 mg　1回1錠（1日1錠）\nイミダプリル塩酸塩錠5 mg　1回1錠（1日1錠）\n1日1回　朝食後　28日分\n\nお薬手帳で併用薬を確認したところ、他の医療機関（消化器内科）で処方された以下の薬を服用中であった。患者は消化器内科の薬について、循環器内科の医師に伝えていないとのことであった。薬剤師として処方医（循環器内科）に併用薬の情報提供と処方内容の確認が必要と考えた。\n\n消化器内科\n（処方2）\nラニチジン錠75 mg　1回1錠（1日2錠）\n1日2回　朝食後、就寝前　28日分\n\n（処方3）\nテルミサルタン錠40 mg　1回1錠（1日1錠）\n1日1回　朝食後　28日分",
     field: "薬理",
 
     question:
@@ -1598,6 +1766,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 252,
+    caseId: "102-252-253",
+    caseContext:
+      "20歳女性。統合失調症と診断され、3ヶ月間、薬物治療が継続されていた。副作用は特にみられなかったが症状が改善されないため、主治医はクロルプロマジン塩酸塩錠を1日300 mgから450 mgへ増量した。\n\n（処方）\nクロルプロマジン塩酸塩錠100 mg　1回1錠（1日3錠）\nクロルプロマジン塩酸塩錠50 mg　1回1錠（1日3錠）\n1日3回　朝昼夕食後　14日分",
     field: "実務",
 
     question:
@@ -1626,6 +1797,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 253,
+    caseId: "102-252-253",
+    caseContext:
+      "20歳女性。統合失調症と診断され、3ヶ月間、薬物治療が継続されていた。副作用は特にみられなかったが症状が改善されないため、主治医はクロルプロマジン塩酸塩錠を1日300 mgから450 mgへ増量した。\n\n（処方）\nクロルプロマジン塩酸塩錠100 mg　1回1錠（1日3錠）\nクロルプロマジン塩酸塩錠50 mg　1回1錠（1日3錠）\n1日3回　朝昼夕食後　14日分",
     field: "薬理",
 
     question:
@@ -1654,6 +1828,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 254,
+    caseId: "102-254-255",
+    caseContext:
+      "68歳女性。脳梗塞で1ヶ月間入院した後退院し、以下の処方箋を持って薬局を訪れた。\n\n（処方）\nクロピドグレル錠75 mg　1回1錠（1日1錠）\nエナラプリルマレイン酸塩錠5 mg　1回1錠（1日1錠）\nラベプラゾールNa錠10 mg　1回1錠（1日1錠）\nフェノフィブラート錠80 mg　1回2錠（1日2錠）\n1日1回　朝食後　28日分",
     field: "薬理",
 
     question:
@@ -1682,6 +1859,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 255,
+    caseId: "102-254-255",
+    caseContext:
+      "68歳女性。脳梗塞で1ヶ月間入院した後退院し、以下の処方箋を持って薬局を訪れた。\n\n（処方）\nクロピドグレル錠75 mg　1回1錠（1日1錠）\nエナラプリルマレイン酸塩錠5 mg　1回1錠（1日1錠）\nラベプラゾールNa錠10 mg　1回1錠（1日1錠）\nフェノフィブラート錠80 mg　1回2錠（1日2錠）\n1日1回　朝食後　28日分",
     field: "実務",
 
     question:
@@ -1710,6 +1890,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 256,
+    caseId: "102-256-257",
+    caseContext:
+      "65歳男性。COPD（慢性閉塞性肺疾患）治療のため、以下の処方箋を持って薬局を訪れた。\n\n（処方1）\nインダカテロールマレイン酸塩吸入用カプセル150 μg　全28カプセル\n1回1カプセル　1日1回　朝吸入\n\n（処方2）\nチオトロピウム臭化物水和物2.5 μg吸入用カートリッジ60吸入　全1本\n1回2吸入　1日1回　就寝前　吸入",
     field: "実務",
 
     question:
@@ -1738,6 +1921,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 257,
+    caseId: "102-256-257",
+    caseContext:
+      "65歳男性。COPD（慢性閉塞性肺疾患）治療のため、以下の処方箋を持って薬局を訪れた。\n\n（処方1）\nインダカテロールマレイン酸塩吸入用カプセル150 μg　全28カプセル\n1回1カプセル　1日1回　朝吸入\n\n（処方2）\nチオトロピウム臭化物水和物2.5 μg吸入用カートリッジ60吸入　全1本\n1回2吸入　1日1回　就寝前　吸入",
     field: "薬理",
 
     question:
@@ -1766,6 +1952,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 258,
+    caseId: "102-258-259",
+    caseContext:
+      "36歳女性。乳がん手術後、以下の薬物療法が開始された。\n\n（処方）\n1）A 錠10 mg　1回2錠（1日2錠）\n　1日1回朝食後　28日分\n\n2）B 注射用3.75 mg　全1本\n　1回3.75 mg　4週間ごとに1回　皮下注射\n\nこの処方の服薬指導として、A は、子宮体がんのリスクを上げるため、定期的な検査を行うよう患者に指導した。また、B は、ほてりやのぼせ、抑うつなどの更年期症状がみられることがあると患者に説明した。",
     field: "実務",
 
     question:
@@ -1794,6 +1983,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 259,
+    caseId: "102-258-259",
+    caseContext:
+      "36歳女性。乳がん手術後、以下の薬物療法が開始された。\n\n（処方）\n1）A 錠10 mg　1回2錠（1日2錠）\n　1日1回朝食後　28日分\n\n2）B 注射用3.75 mg　全1本\n　1回3.75 mg　4週間ごとに1回　皮下注射\n\nこの処方の服薬指導として、A は、子宮体がんのリスクを上げるため、定期的な検査を行うよう患者に指導した。また、B は、ほてりやのぼせ、抑うつなどの更年期症状がみられることがあると患者に説明した。",
     field: "薬理",
 
     question:
@@ -1822,6 +2014,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 260,
+    caseId: "102-260-261",
+    caseContext:
+      "38歳男性。急性リンパ性白血病と診断され、以下の化学療法が開始された。\n\n（処方1）\n注射用シクロホスファミド水和物 1,200 mg/m2（無水物換算）\n　3時間で点滴静注　Day 1\n\n（処方2）\n注射用ダウノルビシン塩酸塩 60 mg/m2\n　1時間で点滴静注　Day 1〜3\n\n（処方3）\n注射用ビンクリスチン硫酸塩 1.3 mg/m2\n　静注　Day 1, 8, 15, 22\n\n（処方4）\n注射用アスパラギナーゼ 3,000 U/m2\n　3時間で点滴静注　Day 9, 11, 13, 16, 18, 20\n\n（処方5）\nプレドニゾロン錠 60 mg/m2\n　分2　経口　Day 1〜21",
     field: "実務",
 
     question:
@@ -1850,6 +2045,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 261,
+    caseId: "102-260-261",
+    caseContext:
+      "38歳男性。急性リンパ性白血病と診断され、以下の化学療法が開始された。\n\n（処方1）\n注射用シクロホスファミド水和物 1,200 mg/m2（無水物換算）\n　3時間で点滴静注　Day 1\n\n（処方2）\n注射用ダウノルビシン塩酸塩 60 mg/m2\n　1時間で点滴静注　Day 1〜3\n\n（処方3）\n注射用ビンクリスチン硫酸塩 1.3 mg/m2\n　静注　Day 1, 8, 15, 22\n\n（処方4）\n注射用アスパラギナーゼ 3,000 U/m2\n　3時間で点滴静注　Day 9, 11, 13, 16, 18, 20\n\n（処方5）\nプレドニゾロン錠 60 mg/m2\n　分2　経口　Day 1〜21",
     field: "薬理",
 
     question:
@@ -1878,6 +2076,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 262,
+    caseId: "102-262-263",
+    caseContext:
+      "50歳女性。発熱、咽頭痛を主訴として受診し、入院することとなった。入院時に薬剤師が持参薬を確認したところ、下記の薬剤を服用していることが分かった。服薬コンプライアンスは良好であった。\n\n入院時検査値：体温 38.7℃、血圧 108/72 mmHg、赤血球数 180×104/μL、白血球数 2,200/μL、血小板 3×104/μL、血清クレアチニン値 0.7 mg/dL、BUN 18 mg/dL、AST 25 IU/L、ALT 30 IU/L、空腹時血糖値 96 mg/dL、Na 140 mEq/L、K 4.2 mEq/L、Mg 2 mEq/L、胸部X線検査では肺に異常所見なし。\n\n持参薬の内容\n（薬袋1）\nリセドロン酸Na錠 17.5 mg　1回1錠（1日1錠）\n毎週月曜日 1日1回　朝起床時　2日分（投与実日数）\n\n（薬袋2）\nプレドニゾロン錠 5 mg　1回半錠（1日半錠）\n1日1回　朝食後　14日分\n\n（薬袋3）\nメトトレキサートカプセル 2 mg　1回4カプセル（1日8カプセル）\n毎週月曜日 1日2回　朝夕食後　2日分（投与実日数）\n\n（薬袋4）\n酪酸菌錠（宮入菌として）20 mg　1回1錠（1日3錠）\nスクラルファート細粒 90%　1回1g（1日3g）\n1日3回　朝昼夕食後　14日分",
     field: "実務",
 
     question:
@@ -1906,6 +2107,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 263,
+    caseId: "102-262-263",
+    caseContext:
+      "50歳女性。発熱、咽頭痛を主訴として受診し、入院することとなった。入院時に薬剤師が持参薬を確認したところ、下記の薬剤を服用していることが分かった。服薬コンプライアンスは良好であった。\n\n入院時検査値：体温 38.7℃、血圧 108/72 mmHg、赤血球数 180×104/μL、白血球数 2,200/μL、血小板 3×104/μL、血清クレアチニン値 0.7 mg/dL、BUN 18 mg/dL、AST 25 IU/L、ALT 30 IU/L、空腹時血糖値 96 mg/dL、Na 140 mEq/L、K 4.2 mEq/L、Mg 2 mEq/L、胸部X線検査では肺に異常所見なし。\n\n持参薬の内容\n（薬袋1）\nリセドロン酸Na錠 17.5 mg　1回1錠（1日1錠）\n毎週月曜日 1日1回　朝起床時　2日分（投与実日数）\n\n（薬袋2）\nプレドニゾロン錠 5 mg　1回半錠（1日半錠）\n1日1回　朝食後　14日分\n\n（薬袋3）\nメトトレキサートカプセル 2 mg　1回4カプセル（1日8カプセル）\n毎週月曜日 1日2回　朝夕食後　2日分（投与実日数）\n\n（薬袋4）\n酪酸菌錠（宮入菌として）20 mg　1回1錠（1日3錠）\nスクラルファート細粒 90%　1回1g（1日3g）\n1日3回　朝昼夕食後　14日分",
     field: "薬理",
 
     question:
@@ -1934,6 +2138,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 264,
+    caseId: "102-264-267",
+    caseContext:
+      "58歳男性。手術不能の直腸がんと診断され、以下に示すレジメンに従った化学療法を施行することとなった。\n\n（レジメン）\nベバシズマブ 5 mg/kg（90分で点滴静注）　1日目\nイリノテカン塩酸塩水和物 150 mg/m2（120分で点滴静注）　1日目\nレボホリナートカルシウム 200 mg/m2（120分で点滴静注）　1日目\nフルオロウラシル 400 mg/m2（5分で静注）　1日目\nフルオロウラシル 2,400 mg/m2（46時間で持続静注）　1日目〜3日目（持続静注終了）\n\n2週間を1クールとする。",
     field: "薬理",
     hasImage: true,
     image: "/pharmacy/102/practical/q264.png",
@@ -1963,6 +2170,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 265,
+    caseId: "102-264-267",
+    caseContext:
+      "58歳男性。手術不能の直腸がんと診断され、以下に示すレジメンに従った化学療法を施行することとなった。\n\n（レジメン）\nベバシズマブ 5 mg/kg（90分で点滴静注）　1日目\nイリノテカン塩酸塩水和物 150 mg/m2（120分で点滴静注）　1日目\nレボホリナートカルシウム 200 mg/m2（120分で点滴静注）　1日目\nフルオロウラシル 400 mg/m2（5分で静注）　1日目\nフルオロウラシル 2,400 mg/m2（46時間で持続静注）　1日目〜3日目（持続静注終了）\n\n2週間を1クールとする。",
     field: "実務",
 
     question:
@@ -1991,6 +2201,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 266,
+    caseId: "102-264-267",
+    caseContext:
+      "58歳男性。手術不能の直腸がんと診断され、以下に示すレジメンに従った化学療法を施行することとなった。\n\n（レジメン）\nベバシズマブ 5 mg/kg（90分で点滴静注）　1日目\nイリノテカン塩酸塩水和物 150 mg/m2（120分で点滴静注）　1日目\nレボホリナートカルシウム 200 mg/m2（120分で点滴静注）　1日目\nフルオロウラシル 400 mg/m2（5分で静注）　1日目\nフルオロウラシル 2,400 mg/m2（46時間で持続静注）　1日目〜3日目（持続静注終了）\n\n2週間を1クールとする。",
     field: "薬剤",
 
     question:
@@ -2019,6 +2232,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 267,
+    caseId: "102-264-267",
+    caseContext:
+      "58歳男性。手術不能の直腸がんと診断され、以下に示すレジメンに従った化学療法を施行することとなった。\n\n（レジメン）\nベバシズマブ 5 mg/kg（90分で点滴静注）　1日目\nイリノテカン塩酸塩水和物 150 mg/m2（120分で点滴静注）　1日目\nレボホリナートカルシウム 200 mg/m2（120分で点滴静注）　1日目\nフルオロウラシル 400 mg/m2（5分で静注）　1日目\nフルオロウラシル 2,400 mg/m2（46時間で持続静注）　1日目〜3日目（持続静注終了）\n\n2週間を1クールとする。",
     field: "実務",
     hasImage: true,
     image: "/pharmacy/102/practical/q267.png",
@@ -2050,6 +2266,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 268,
+    caseId: "102-268-269",
+    caseContext:
+      "40歳女性。卵巣がんを原発とした多発性骨転移による疼痛があり、以下の処方が出されている。疼痛コントロールは良好であったが、2日前から、突然に我慢できない痛みが1日2〜3回程度出現するようになった。主治医よりレスキュー薬の問い合わせがあった。\n\n（処方）\nオキシコドン塩酸塩水和物徐放錠 40 mg　1回1錠（1日2錠）\n1日2回　朝夕食後　14日分",
     field: "実務",
 
     question:
@@ -2078,6 +2297,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 269,
+    caseId: "102-268-269",
+    caseContext:
+      "40歳女性。卵巣がんを原発とした多発性骨転移による疼痛があり、以下の処方が出されている。疼痛コントロールは良好であったが、2日前から、突然に我慢できない痛みが1日2〜3回程度出現するようになった。主治医よりレスキュー薬の問い合わせがあった。\n\n（処方）\nオキシコドン塩酸塩水和物徐放錠 40 mg　1回1錠（1日2錠）\n1日2回　朝夕食後　14日分",
     field: "薬剤",
 
     question:
@@ -2106,6 +2328,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 270,
+    caseId: "102-270-271",
+    caseContext:
+      "76歳男性。1年ほど前から安静時に手足の震えや硬直が認められ、パーキンソン病と診断された。現在までレボドパ・ベンセラジド配合錠が処方され、症状は改善されている。",
     field: "薬剤",
 
     question:
@@ -2134,6 +2359,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 271,
+    caseId: "102-270-271",
+    caseContext:
+      "76歳男性。1年ほど前から安静時に手足の震えや硬直が認められ、パーキンソン病と診断された。現在までレボドパ・ベンセラジド配合錠が処方され、症状は改善されている。",
     field: "実務",
 
     question:
@@ -2162,6 +2390,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 272,
+    caseId: "102-272-273",
+    caseContext:
+      "30歳女性。排尿痛、頻尿の症状があり、近医を受診した。急性単純性膀胱炎と診断され、以下の処方箋を薬局に持参した。薬歴を確認すると、同一の医師より消化性潰瘍治療のためスクラルファート細粒90%の処方があり、毎食後に服用中であった。\n\n（処方）\nシプロフロキサシン錠100 mg　1回1錠（1日2錠）\n1日2回　朝夕食後　14日分",
     field: "実務",
 
     question:
@@ -2190,6 +2421,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 273,
+    caseId: "102-272-273",
+    caseContext:
+      "30歳女性。排尿痛、頻尿の症状があり、近医を受診した。急性単純性膀胱炎と診断され、以下の処方箋を薬局に持参した。薬歴を確認すると、同一の医師より消化性潰瘍治療のためスクラルファート細粒90%の処方があり、毎食後に服用中であった。\n\n（処方）\nシプロフロキサシン錠100 mg　1回1錠（1日2錠）\n1日2回　朝夕食後　14日分",
     field: "薬剤",
 
     question:
@@ -2218,6 +2452,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 274,
+    caseId: "102-274-275",
+    caseContext:
+      "73歳男性。体重60 kg。メチシリン耐性黄色ブドウ球菌（MRSA）肺炎の治療目的でアルベカシン硫酸塩の投与が開始された。\n\n（処方）\n点滴静注　アルベカシン硫酸塩注射液　150 mg\n　　　　　生理食塩液　100 mL\n　　　　　1日1回　30分かけて投与　7日連日投与\n\n投与開始から3日目に血中アルベカシン濃度の測定依頼があり、測定の結果、トラフ値は3.5 μg/mL、ピーク値（点滴終了30分後採血）は15 μg/mLであった。\n\n検査値（3日目）：白血球数9,500/μL、CRP 4.8 mg/dL、血清クレアチニン2.84 mg/dL",
     field: "実務",
 
     question:
@@ -2246,6 +2483,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 275,
+    caseId: "102-274-275",
+    caseContext:
+      "73歳男性。体重60 kg。メチシリン耐性黄色ブドウ球菌（MRSA）肺炎の治療目的でアルベカシン硫酸塩の投与が開始された。\n\n（処方）\n点滴静注　アルベカシン硫酸塩注射液　150 mg\n　　　　　生理食塩液　100 mL\n　　　　　1日1回　30分かけて投与　7日連日投与\n\n投与開始から3日目に血中アルベカシン濃度の測定依頼があり、測定の結果、トラフ値は3.5 μg/mL、ピーク値（点滴終了30分後採血）は15 μg/mLであった。\n\n検査値（3日目）：白血球数9,500/μL、CRP 4.8 mg/dL、血清クレアチニン2.84 mg/dL",
     field: "薬剤",
     hasImage: true,
     image: "/pharmacy/102/practical/q275.png",
@@ -2277,6 +2517,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 276,
+    caseId: "102-276-277",
+    caseContext:
+      "7歳女児。アトピー性皮膚炎と診断され、母親とともに処方箋を薬局に持参した。\n\n（処方1）\nベタメタゾン吉草酸エステルクリーム0.12%　5 g\n1回適量　1日2回　朝夕　体、腕に塗布\n\n（処方2）\n白色ワセリン　25 g\n1回適量　1日2回　朝夕　体、腕に塗布\n\n（処方3）\nタクロリムス軟膏0.03%　5 g\n1回適量　1日2回　朝夕　赤みが強い部位に塗布",
     field: "薬剤",
 
     question:
@@ -2305,6 +2548,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 277,
+    caseId: "102-276-277",
+    caseContext:
+      "7歳女児。アトピー性皮膚炎と診断され、母親とともに処方箋を薬局に持参した。\n\n（処方1）\nベタメタゾン吉草酸エステルクリーム0.12%　5 g\n1回適量　1日2回　朝夕　体、腕に塗布\n\n（処方2）\n白色ワセリン　25 g\n1回適量　1日2回　朝夕　体、腕に塗布\n\n（処方3）\nタクロリムス軟膏0.03%　5 g\n1回適量　1日2回　朝夕　赤みが強い部位に塗布",
     field: "実務",
 
     question:
@@ -2333,6 +2579,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 278,
+    caseId: "102-278-279",
+    caseContext:
+      "33歳女性。鼻づまりの症状が続いていたため、耳鼻科を受診したところ、花粉症と診断され、以下の処方箋を薬局に持参した。\n\n（処方1）\nプランルカストカプセル112.5 mg　1回2カプセル（1日4カプセル）\n1日2回　朝夕食後　14日分\n\n（処方2）\nエバスチン錠10 mg　1回1錠（1日1錠）\n1日1回　朝食後　14日分\n\n（処方3）\nフルチカゾンプロピオン酸エステル点鼻液50 μg　56噴霧用　1本\n1回各鼻腔に1噴霧　1日2回　朝夕　噴霧\n\n（処方4）\nトラマゾリン塩酸塩点鼻液0.118％　10 mL\n鼻閉時　1回各鼻腔に1噴霧　1日4回まで",
     field: "実務",
 
     question:
@@ -2361,6 +2610,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 279,
+    caseId: "102-278-279",
+    caseContext:
+      "33歳女性。鼻づまりの症状が続いていたため、耳鼻科を受診したところ、花粉症と診断され、以下の処方箋を薬局に持参した。\n\n（処方1）\nプランルカストカプセル112.5 mg　1回2カプセル（1日4カプセル）\n1日2回　朝夕食後　14日分\n\n（処方2）\nエバスチン錠10 mg　1回1錠（1日1錠）\n1日1回　朝食後　14日分\n\n（処方3）\nフルチカゾンプロピオン酸エステル点鼻液50 μg　56噴霧用　1本\n1回各鼻腔に1噴霧　1日2回　朝夕　噴霧\n\n（処方4）\nトラマゾリン塩酸塩点鼻液0.118％　10 mL\n鼻閉時　1回各鼻腔に1噴霧　1日4回まで",
     field: "薬剤",
 
     question:
@@ -2389,6 +2641,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 280,
+    caseId: "102-280-281",
+    caseContext:
+      "68歳男性。慢性閉塞性動脈硬化症における安静時疼痛に対し、アルプロスタジル注射液10 μg（リピッドマイクロスフェア製剤）を輸液と混合し、持続投与することになった。病棟の看護師から、本剤の使用上の注意事項について薬剤師に問い合わせがあった。",
     field: "薬剤",
 
     question:
@@ -2417,6 +2672,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 281,
+    caseId: "102-280-281",
+    caseContext:
+      "68歳男性。慢性閉塞性動脈硬化症における安静時疼痛に対し、アルプロスタジル注射液10 μg（リピッドマイクロスフェア製剤）を輸液と混合し、持続投与することになった。病棟の看護師から、本剤の使用上の注意事項について薬剤師に問い合わせがあった。",
     field: "実務",
 
     question:
@@ -2445,6 +2703,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 282,
+    caseId: "102-282-283",
+    caseContext:
+      "病棟で、患者からある訴えがあり、医師が以下の処方を追加した。\n\n（処方）\nリドカインテープ18 mg/枚　1回1枚　10回分　（全10枚）",
     field: "実務",
 
     question:
@@ -2473,6 +2734,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 283,
+    caseId: "102-282-283",
+    caseContext:
+      "病棟で、患者からある訴えがあり、医師が以下の処方を追加した。\n\n（処方）\nリドカインテープ18 mg/枚　1回1枚　10回分　（全10枚）",
     field: "薬剤",
 
     question:
@@ -2501,6 +2765,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 284,
+    caseId: "102-284-285",
+    caseContext:
+      "65歳男性。2型糖尿病。インスリン導入目的で入院となった。入院後は、看護師が1日3回インスリンを注射し、血糖コントロールは良好となった。退院に向け、以下のインスリンカートリッジ製剤が処方され、自己注射の指導に薬剤師が加わることになった。\n\n（処方）\nレベミル注　ペンフィル*　1本（3 mL）\n1回6単位（1日6単位）　1日1回　就寝前\n（＊：成分名：インスリン　デテミル（遺伝子組換え）　（100単位／mL））",
     field: "実務",
 
     question:
@@ -2528,6 +2795,9 @@ export const practical102Questions = [
     sourceType: "past_exam",
     examNumber: 102,
     sourceNumber: 285,
+    caseId: "102-284-285",
+    caseContext:
+      "65歳男性。2型糖尿病。インスリン導入目的で入院となった。入院後は、看護師が1日3回インスリンを注射し、血糖コントロールは良好となった。退院に向け、以下のインスリンカートリッジ製剤が処方され、自己注射の指導に薬剤師が加わることになった。\n\n（処方）\nレベミル注　ペンフィル*　1本（3 mL）\n1回6単位（1日6単位）　1日1回　就寝前\n（＊：成分名：インスリン　デテミル（遺伝子組換え）　（100単位／mL））",
     field: "薬剤",
 
     question:

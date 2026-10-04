@@ -3935,13 +3935,10 @@ export const practical111Questions = [
     sourceType: "past_exam",
     examNumber: 111,
     sourceNumber: 326,
-    caseId: "111-326-327",
-    caseContext:
-      "60歳女性。白金製剤を含む化学療法治療後に増悪した再発卵巣がんに対し、ドキソルビシン塩酸塩をMPEG-DSPE修飾リポソームに封入した注射剤（ドキシル注）による治療を検討することになった。（注：N-(Carbonyl-methoxypolyethylene glycol 2000)-1, 2-distearoyl-sn-glycero-3-phosphoethanolamine sodium salt）",
     field: "実務",
 
     question:
-      "治療導入前のカンファレンスにおいて薬剤師が情報提供する内容として、適切なのはどれか。2つ選べ。",
+      "60歳女性。白金製剤を含む化学療法治療後に増悪した再発卵巣がんに対し、ドキソルビシン塩酸塩をMPEG-DSPE（注）修飾リポソームに封入した注射剤（ドキシル注）による治療を検討することになった。\n\n（注：N-(Carbonyl-methoxypolyethylene glycol 2000)-1, 2-distearoyl-sn-glycero-3-phosphoethanolamine sodium salt）\n\n治療導入前のカンファレンスにおいて薬剤師が情報提供する内容として、適切なのはどれか。2つ選べ。",
 
     choices: [
     "本剤は、従来のドキソルビシン塩酸塩製剤の代替として使用しない。",
@@ -3965,9 +3962,6 @@ export const practical111Questions = [
     sourceType: "past_exam",
     examNumber: 111,
     sourceNumber: 327,
-    caseId: "111-326-327",
-    caseContext:
-      "60歳女性。白金製剤を含む化学療法治療後に増悪した再発卵巣がんに対し、ドキソルビシン塩酸塩をMPEG-DSPE修飾リポソームに封入した注射剤（ドキシル注）による治療を検討することになった。（注：N-(Carbonyl-methoxypolyethylene glycol 2000)-1, 2-distearoyl-sn-glycero-3-phosphoethanolamine sodium salt）",
     field: "実務",
 
     question:
@@ -4157,13 +4151,10 @@ export const practical111Questions = [
     sourceType: "past_exam",
     examNumber: 111,
     sourceNumber: 334,
-    caseId: "111-334-335",
-    caseContext:
-      "56歳男性。身長163 cm、体重58 kg。食道がん全摘出から5日後の栄養管理として、処方1及び2の薬剤が投与される予定である。\n\n入院時の検査値：HbA1c 5.4%、空腹時血糖101 mg/dL、血清クレアチニン0.72 mg/dL、BUN 17.0 mg/dL、AST 19 IU/L、ALT 22 IU/L。\n\n処方1：高カロリー輸液用アミノ酸・糖・電解質・総合ビタミン液（注1） 1バッグ、高カロリー輸液用微量元素製剤2 mLシリンジ 1本、1日1回 持続点滴 24時間。注1：1,500 mL中にブドウ糖180 g、総遊離アミノ酸30 gが含まれる。\n\n処方2：20%静注用脂肪乳剤100 mL（注2） 1バッグ、1日1回 持続点滴 4時間。注2：100 mL中に熱量が約200 kcal含まれる。",
     field: "実務",
 
     question:
-      "この患者の担当薬剤師が、薬学実習生に対して、本症例に関する説明を行った。説明内容として、適切なのはどれか。2つ選べ。ただし、アミノ酸は16%の窒素を含むものとする。",
+      "56歳男性。身長163 cm、体重58 kg。食道がん全摘出から5日後の栄養管理として、処方1及び2の薬剤が投与される予定である。\n\n（入院時の検査値）\nHbA1c 5.4％、空腹時血糖101 mg/dL、血清クレアチニン0.72 mg/dL、BUN 17.0 mg/dL、AST 19 IU/L、ALT 22 IU/L\n\n（処方1）\n高カロリー輸液用アミノ酸・糖・電解質・総合ビタミン液（注1） 1バッグ\n高カロリー輸液用微量元素製剤2 mLシリンジ 1本\n1日1回　持続点滴　24時間\n（注1：1,500 mL中にブドウ糖180 g、総遊離アミノ酸30 gが含まれる）\n\n（処方2）\n20％静注用脂肪乳剤100 mL（注2） 1バッグ\n1日1回　持続点滴　4時間\n（注2：100 mL中に熱量が約200 kcal含まれる）\n\nこの患者の担当薬剤師が、薬学実習生に対して、本症例に関する説明を行った。説明内容として、適切なのはどれか。2つ選べ。ただし、アミノ酸は16％の窒素を含むものとする。",
 
     choices: [
     "処方1の薬剤を投与する時は、輸液バッグを遮光カバーで被覆すること。",
@@ -4187,9 +4178,6 @@ export const practical111Questions = [
     sourceType: "past_exam",
     examNumber: 111,
     sourceNumber: 335,
-    caseId: "111-334-335",
-    caseContext:
-      "56歳男性。身長163 cm、体重58 kg。食道がん全摘出から5日後の栄養管理として、処方1及び2の薬剤が投与される予定である。\n\n入院時の検査値：HbA1c 5.4%、空腹時血糖101 mg/dL、血清クレアチニン0.72 mg/dL、BUN 17.0 mg/dL、AST 19 IU/L、ALT 22 IU/L。\n\n処方1：高カロリー輸液用アミノ酸・糖・電解質・総合ビタミン液（注1） 1バッグ、高カロリー輸液用微量元素製剤2 mLシリンジ 1本、1日1回 持続点滴 24時間。注1：1,500 mL中にブドウ糖180 g、総遊離アミノ酸30 gが含まれる。\n\n処方2：20%静注用脂肪乳剤100 mL（注2） 1バッグ、1日1回 持続点滴 4時間。注2：100 mL中に熱量が約200 kcal含まれる。",
     field: "実務",
     hasImage: true,
     image: "/pharmacy/111/practical/q335.png",

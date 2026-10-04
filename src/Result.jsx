@@ -29,6 +29,16 @@
 
 let rank = "";
 
+  const showPerformanceRank =
+    mode === "practice" ||
+    (
+      mode === "mock" &&
+      (
+        examType === "second" ||
+        examType === "first"
+      )
+    );
+
   if (mode === "practice") {
 
     if (
@@ -154,7 +164,9 @@ return (
 
       <h2>結果発表</h2>
 
-      <h3>ランク : {rank}</h3>
+      {showPerformanceRank && (
+        <h3>ランク : {rank}</h3>
+      )}
 
       <p>
         正解数 :
@@ -172,15 +184,19 @@ return (
         {bookmarkedCount}
       </p>
 
-      <p>
-        Score :
-        {score} pt
-      </p>
+      {showPerformanceRank && (
+        <>
+          <p>
+            Score :
+            {score} pt
+          </p>
 
-      <p>
-  平均残り時間 :
-  {averageTime} sec
-</p>
+          <p>
+            平均残り時間 :
+            {averageTime} sec
+          </p>
+        </>
+      )}
 
       <button onClick={goReview}>
         📋 答案を見る
