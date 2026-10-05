@@ -1,1 +1,7 @@
-export const webDesignTheoryQuestions = [];
+export {
+  CATEGORIES
+} from "./categories";
+
+export {
+  theoryQuestions
+} from "./theory";

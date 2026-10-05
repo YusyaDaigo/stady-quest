@@ -1,15 +1,27 @@
 import {
+  theoryQuestions
+} from "./questions";
+
+import {
   webDesignPracticalTasks
 } from "./practical/tasks";
 
 function WebDesignMenu({
+  onStartTheoryPractice,
+  onStartTheoryMock,
   onStartPracticalPractice,
   onStartPracticalMock
 }) {
+  const theoryQuestionCount =
+    theoryQuestions.length;
+
   const practicalTaskCount =
     webDesignPracticalTasks.length;
 
-  const canStartMock =
+  const canStartTheoryMock =
+    theoryQuestionCount >= 25;
+
+  const canStartPracticalMock =
     practicalTaskCount >= 5;
 
   return (
@@ -29,14 +41,44 @@ function WebDesignMenu({
         }}
       >
         <button
-          disabled
+          onClick={
+            onStartTheoryPractice
+          }
           style={{
             padding: "18px"
           }}
         >
-          📘 学科試験
+          📘 学科 練習モード
           <br />
-          準備中
+          現在
+          {" "}
+          {theoryQuestionCount}
+          問
+        </button>
+
+        <button
+          onClick={
+            onStartTheoryMock
+          }
+          disabled={
+            !canStartTheoryMock
+          }
+          style={{
+            padding: "18px"
+          }}
+        >
+          📝 学科 模試モード
+          <br />
+          25問・45分
+          {!canStartTheoryMock && (
+            <>
+              <br />
+              現在
+              {" "}
+              {theoryQuestionCount}
+              /25問
+            </>
+          )}
         </button>
 
         <button
@@ -56,7 +98,9 @@ function WebDesignMenu({
           onClick={
             onStartPracticalMock
           }
-          disabled={!canStartMock}
+          disabled={
+            !canStartPracticalMock
+          }
           style={{
             padding: "18px"
           }}
@@ -64,7 +108,7 @@ function WebDesignMenu({
           🧪 実技 模試モード
           <br />
           5課題・60分
-          {!canStartMock && (
+          {!canStartPracticalMock && (
             <>
               <br />
               現在

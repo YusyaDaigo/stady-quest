@@ -15,6 +15,9 @@ import MainMenu from "./MainMenu";
 import PharmacyMenu from "./exams/pharmacy/PharmacyMenu";
 import WebDesignMenu from "./exams/webdesign/WebDesignMenu";
 import WebDesignPractical from "./exams/webdesign/WebDesignPractical";
+import {
+  theoryQuestions as webDesignTheoryQuestions
+} from "./exams/webdesign/questions";
 import { requiredQuestions } from "./exams/pharmacy/questions/required";
 import { theoryQuestions } from "./exams/pharmacy/questions/theory";
 import { practicalQuestions } from "./exams/pharmacy/questions/practical";
@@ -702,6 +705,13 @@ const getQuestionTimeLimit = (
     return 60;
   }
 
+  // ウェブデザイン技能検定・学科
+  if (
+    selectedExam === "webdesign"
+  ) {
+    return 108;
+  }
+
   // ドローン計算問題
   if (question?.category === CATEGORIES.CALC) {
     return 150;
@@ -843,87 +853,167 @@ function App() {
 
     // 薬剤師国家試験
     if (selectedExam === "pharmacy") {
-        const selectedField =
-          category === "ALL" ? "ALL" : normalizeField(category);
+      const selectedField =
+        category === "ALL"
+          ? "ALL"
+          : normalizeField(category);
 
-        let pharmacyQuestionPool = requiredQuestions;
+      let pharmacyQuestionPool =
+        requiredQuestions;
 
-        if (
-          selectedExamType === "theory" ||
-          selectedExamType === "theory_part1" ||
-          selectedExamType === "theory_part2"
-        ) {
-          pharmacyQuestionPool = theoryQuestions;
-        } else if (
-          selectedExamType === "practical" ||
-          selectedExamType === "practical_part1" ||
-          selectedExamType === "practical_part2" ||
-          selectedExamType === "practical_part3_case" ||
-          selectedExamType === "practical_part3_single"
-        ) {
-          pharmacyQuestionPool = practicalQuestions;
-        }
+      if (
+        selectedExamType === "theory" ||
+        selectedExamType === "theory_part1" ||
+        selectedExamType === "theory_part2"
+      ) {
+        pharmacyQuestionPool =
+          theoryQuestions;
+      } else if (
+        selectedExamType === "practical" ||
+        selectedExamType === "practical_part1" ||
+        selectedExamType === "practical_part2" ||
+        selectedExamType === "practical_part3_case" ||
+        selectedExamType === "practical_part3_single"
+      ) {
+        pharmacyQuestionPool =
+          practicalQuestions;
+      }
 
-        if (TEST_GENERATED_PHARMACY_QUESTION) {
-          selectedQuestions = pharmacyQuestionPool.filter((question) => {
-            return question?.sourceType === "generated";
-          });
-        } else if (selectedMode === "review") {
-          selectedQuestions = mistakeQuestions;
-        } else if (
-          selectedMode === "practice" &&
-          selectedField !== "ALL"
-        ) {
-          selectedQuestions = pharmacyQuestionPool.filter((question) => {
-            if (!question) return false;
-
-            return (
-              getQuestionField(question) === selectedField
-            );
-          });
-        } else {
-          selectedQuestions = pharmacyQuestionPool;
-        }
-
-        console.log("PHARMACY MODE:", selectedMode);
-        console.log("PHARMACY FIELD:", selectedField);
-        console.log("PHARMACY QUESTIONS:", selectedQuestions.length);
-
-        if (selectedQuestions.length === 0) {
-          alert(
-            `${selectedField} の問題が見つかりません。field名を確認してください。`
+      if (
+        TEST_GENERATED_PHARMACY_QUESTION
+      ) {
+        selectedQuestions =
+          pharmacyQuestionPool.filter(
+            (question) =>
+              question?.sourceType ===
+              "generated"
           );
-          return;
-        }
+      } else if (
+        selectedMode === "review"
+      ) {
+        selectedQuestions =
+          mistakeQuestions;
+      } else if (
+        selectedMode === "practice" &&
+        selectedField !== "ALL"
+      ) {
+        selectedQuestions =
+          pharmacyQuestionPool.filter(
+            (question) => {
+              if (!question) {
+                return false;
+              }
 
-      } else
+              return (
+                getQuestionField(
+                  question
+                ) ===
+                selectedField
+              );
+            }
+          );
+      } else {
+        selectedQuestions =
+          pharmacyQuestionPool;
+      }
 
+      console.log(
+        "PHARMACY MODE:",
+        selectedMode
+      );
+      console.log(
+        "PHARMACY FIELD:",
+        selectedField
+      );
+      console.log(
+        "PHARMACY QUESTIONS:",
+        selectedQuestions.length
+      );
 
-    if (selectedMode === "review") {
+      if (
+        selectedQuestions.length === 0
+      ) {
+        alert(
+          `${selectedField} の問題が見つかりません。field名を確認してください。`
+        );
+        return;
+      }
 
-      selectedQuestions =
-        mistakeQuestions;
-
+    // ウェブデザイン技能検定
     } else if (
-      selectedMode === "mock" &&
-      selectedExamType === "second"
+      selectedExam === "webdesign"
     ) {
+      if (
+        selectedMode === "review"
+      ) {
+        selectedQuestions =
+          mistakeQuestions.filter(
+            (question) =>
+              question?.subject ===
+              "webdesign"
+          );
+      } else if (
+        category === "全範囲"
+      ) {
+        selectedQuestions =
+          webDesignTheoryQuestions;
+      } else {
+        selectedQuestions =
+          webDesignTheoryQuestions.filter(
+            (question) =>
+              question.category ===
+              category
+          );
+      }
 
-      selectedQuestions =
-        secondExamQuestions;
+      console.log(
+        "WEBDESIGN MODE:",
+        selectedMode
+      );
+      console.log(
+        "WEBDESIGN CATEGORY:",
+        category
+      );
+      console.log(
+        "WEBDESIGN QUESTIONS:",
+        selectedQuestions.length
+      );
 
-    } else if (
-      selectedMode === "mock" &&
-      selectedExamType === "first"
-    ) {
+      if (
+        selectedQuestions.length === 0
+      ) {
+        alert(
+          "ウェブデザイン学科の問題が見つかりません。"
+        );
+        return;
+      }
 
-      selectedQuestions =
-        firstExamQuestions;
+    // ドローン国家資格
+    } else {
+      if (
+        selectedMode === "review"
+      ) {
+        selectedQuestions =
+          mistakeQuestions;
+
+      } else if (
+        selectedMode === "mock" &&
+        selectedExamType === "second"
+      ) {
+        selectedQuestions =
+          secondExamQuestions;
+
+      } else if (
+        selectedMode === "mock" &&
+        selectedExamType === "first"
+      ) {
+        selectedQuestions =
+          firstExamQuestions;
 
       } else {
-
-        if (category === CATEGORIES.ALL) {
-
+        if (
+          category === CATEGORIES.ALL
+        ) {
           selectedQuestions =
             secondExamQuestions;
 
@@ -931,36 +1021,52 @@ function App() {
           category === CATEGORIES.CALC ||
           category === CATEGORIES.FIRST
         ) {
-
           selectedQuestions =
             firstExamQuestions.filter(
               (question) =>
-                question.category === category
+                question.category ===
+                category
             );
 
         } else {
-
           selectedQuestions =
             secondExamQuestions.filter(
               (question) =>
-                question.category === category
+                question.category ===
+                category
             );
-      console.log("MODE:", selectedMode);
-      console.log("CATEGORY:", category);
-      console.log("SELECTED QUESTIONS:", selectedQuestions.length);
-      console.log(
-        "CATEGORY LIST:",
-        secondExamQuestions.map((q) => q.category).slice(0, 10)
-);
-
-console.log(
-  "CATEGORY",
-  category,
-  "COUNT",
-  selectedQuestions.length
-);
         }
+
+        console.log(
+          "MODE:",
+          selectedMode
+        );
+        console.log(
+          "CATEGORY:",
+          category
+        );
+        console.log(
+          "SELECTED QUESTIONS:",
+          selectedQuestions.length
+        );
+        console.log(
+          "CATEGORY LIST:",
+          secondExamQuestions
+            .map(
+              (question) =>
+                question.category
+            )
+            .slice(0, 10)
+        );
+
+        console.log(
+          "CATEGORY",
+          category,
+          "COUNT",
+          selectedQuestions.length
+        );
       }
+    }
 
     let shuffledQuestions;
 
@@ -1620,6 +1726,18 @@ console.log(
       {selectedExam === "webdesign" &&
         screen === "menu" && (
           <WebDesignMenu
+            onStartTheoryPractice={() =>
+              startQuiz(
+                "practice",
+                "webdesign_theory"
+              )
+            }
+            onStartTheoryMock={() =>
+              startQuiz(
+                "mock",
+                "webdesign_theory"
+              )
+            }
             onStartPracticalPractice={() =>
               setScreen(
                 "webdesign_practical_practice"
