@@ -9,6 +9,8 @@ import {
 
 function PracticalWorkspace({
   task,
+  files,
+  onFilesChange,
   onExit
 }) {
   const initialFiles =
@@ -27,9 +29,6 @@ function PracticalWorkspace({
     task.workspace.starterFiles.filter(
       (file) => file.editable
     );
-
-  const [files, setFiles] =
-    useState(initialFiles);
 
   const [
     selectedPath,
@@ -90,10 +89,10 @@ function PracticalWorkspace({
 
   const updateCurrentFile =
     (value) => {
-      setFiles((current) => ({
-        ...current,
+      onFilesChange({
+        ...files,
         [selectedPath]: value
-      }));
+      });
 
       setResults(null);
     };
@@ -108,7 +107,7 @@ function PracticalWorkspace({
   };
 
   const resetTask = () => {
-    setFiles(initialFiles);
+    onFilesChange(initialFiles);
     setResults(null);
     setSelectedPath(
       editableFiles[0]?.path || ""
