@@ -17,6 +17,12 @@ function MainMenu({ selectExam }) {
         💊 薬剤師国家試験
       </button>
 
+      <button
+        onClick={() => selectExam("webdesign")}
+      >
+        🌐 ウェブデザイン技能検定
+      </button>
+
       
     </div>
   );

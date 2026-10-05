@@ -13,6 +13,8 @@ import Result from "./Result";
 import Review from "./Review";
 import MainMenu from "./MainMenu";
 import PharmacyMenu from "./exams/pharmacy/PharmacyMenu";
+import WebDesignMenu from "./exams/webdesign/WebDesignMenu";
+import WebDesignPractical from "./exams/webdesign/WebDesignPractical";
 import { requiredQuestions } from "./exams/pharmacy/questions/required";
 import { theoryQuestions } from "./exams/pharmacy/questions/theory";
 import { practicalQuestions } from "./exams/pharmacy/questions/practical";
@@ -1613,6 +1615,26 @@ console.log(
             }
           />
     )}
+
+
+      {selectedExam === "webdesign" &&
+        screen === "menu" && (
+          <WebDesignMenu
+            onStartPractical={() =>
+              setScreen("webdesign_practical")
+            }
+          />
+        )}
+
+
+      {selectedExam === "webdesign" &&
+        screen === "webdesign_practical" && (
+          <WebDesignPractical
+            onExit={() =>
+              setScreen("menu")
+            }
+          />
+        )}
 
 
       {screen === "quiz" && (
