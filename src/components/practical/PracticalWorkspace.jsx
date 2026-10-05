@@ -50,9 +50,15 @@ function PracticalWorkspace({
 
   const previewHtml =
     useMemo(() => {
+      const previewPath =
+        selectedFile?.language ===
+        "html"
+          ? selectedPath
+          : task.workspace.entryFile;
+
       const html =
         files[
-          task.workspace.entryFile
+          previewPath
         ] || "";
 
       const css =
@@ -84,6 +90,8 @@ function PracticalWorkspace({
       );
     }, [
       files,
+      selectedFile,
+      selectedPath,
       task.workspace.entryFile
     ]);
 

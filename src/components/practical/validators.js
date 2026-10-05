@@ -82,6 +82,31 @@ const evaluateHtmlText = (
   );
 };
 
+const evaluateHtmlAttribute = (
+  check,
+  files
+) => {
+  const parser =
+    new DOMParser();
+
+  const document =
+    parser.parseFromString(
+      files[check.file] || "",
+      "text/html"
+    );
+
+  const element =
+    document.querySelector(
+      check.selector
+    );
+
+  return (
+    element?.getAttribute(
+      check.attribute
+    ) === check.expected
+  );
+};
+
 const evaluateHtmlClass = (
   check,
   files
@@ -126,6 +151,8 @@ const evaluateCssProperty = (
 
 const CHECK_EVALUATORS = {
   html_text: evaluateHtmlText,
+  html_attribute:
+    evaluateHtmlAttribute,
   html_class: evaluateHtmlClass,
   css_property: evaluateCssProperty
 };

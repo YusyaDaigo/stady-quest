@@ -45,26 +45,6 @@ const createInitialTaskFiles = (
   );
 };
 
-const formatTime = (
-  totalSeconds
-) => {
-  const minutes =
-    Math.floor(
-      totalSeconds / 60
-    );
-
-  const seconds =
-    totalSeconds % 60;
-
-  return (
-    `${minutes}:` +
-    `${seconds}`.padStart(
-      2,
-      "0"
-    )
-  );
-};
-
 function WebDesignPractical({
   mode,
   onExit
@@ -240,9 +220,8 @@ function WebDesignPractical({
         <p>
           残り時間：
           {" "}
-          {formatTime(
-            remainingSeconds
-          )}
+          {remainingSeconds}
+          秒
         </p>
 
         <p>
