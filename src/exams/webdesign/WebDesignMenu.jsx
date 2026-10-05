@@ -1,6 +1,17 @@
+import {
+  webDesignPracticalTasks
+} from "./practical/tasks";
+
 function WebDesignMenu({
-  onStartPractical
+  onStartPracticalPractice,
+  onStartPracticalMock
 }) {
+  const practicalTaskCount =
+    webDesignPracticalTasks.length;
+
+  const canStartMock =
+    practicalTaskCount >= 5;
+
   return (
     <div>
       <h2>
@@ -13,7 +24,7 @@ function WebDesignMenu({
         style={{
           display: "grid",
           gap: "16px",
-          maxWidth: "520px",
+          maxWidth: "560px",
           margin: "30px auto"
         }}
       >
@@ -29,14 +40,39 @@ function WebDesignMenu({
         </button>
 
         <button
-          onClick={onStartPractical}
+          onClick={
+            onStartPracticalPractice
+          }
           style={{
             padding: "18px"
           }}
         >
-          💻 実技試験
+          💻 実技 練習モード
           <br />
-          Practical Engine v1
+          1課題・12分
+        </button>
+
+        <button
+          onClick={
+            onStartPracticalMock
+          }
+          disabled={!canStartMock}
+          style={{
+            padding: "18px"
+          }}
+        >
+          🧪 実技 模試モード
+          <br />
+          5課題・60分
+          {!canStartMock && (
+            <>
+              <br />
+              現在
+              {" "}
+              {practicalTaskCount}
+              /5課題
+            </>
+          )}
         </button>
       </div>
     </div>

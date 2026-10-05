@@ -1620,16 +1620,36 @@ console.log(
       {selectedExam === "webdesign" &&
         screen === "menu" && (
           <WebDesignMenu
-            onStartPractical={() =>
-              setScreen("webdesign_practical")
+            onStartPracticalPractice={() =>
+              setScreen(
+                "webdesign_practical_practice"
+              )
+            }
+            onStartPracticalMock={() =>
+              setScreen(
+                "webdesign_practical_mock"
+              )
             }
           />
         )}
 
 
       {selectedExam === "webdesign" &&
-        screen === "webdesign_practical" && (
+        screen ===
+          "webdesign_practical_practice" && (
           <WebDesignPractical
+            mode="practice"
+            onExit={() =>
+              setScreen("menu")
+            }
+          />
+        )}
+
+      {selectedExam === "webdesign" &&
+        screen ===
+          "webdesign_practical_mock" && (
+          <WebDesignPractical
+            mode="mock"
             onExit={() =>
               setScreen("menu")
             }
