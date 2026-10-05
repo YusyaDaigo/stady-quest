@@ -11,7 +11,8 @@ function PracticalWorkspace({
   task,
   files,
   onFilesChange,
-  onExit
+  onExit,
+  showTaskScoring = true
 }) {
   const initialFiles =
     useMemo(() => {
@@ -282,17 +283,21 @@ function PracticalWorkspace({
           flexWrap: "wrap"
         }}
       >
-        <button
-          onClick={submitTask}
-        >
-          ✅ 提出して採点
-        </button>
+        {showTaskScoring && (
+          <>
+            <button
+              onClick={submitTask}
+            >
+              ✅ 提出して採点
+            </button>
 
-        <button
-          onClick={resetTask}
-        >
-          ↩️ 初期状態に戻す
-        </button>
+            <button
+              onClick={resetTask}
+            >
+              ↩️ 初期状態に戻す
+            </button>
+          </>
+        )}
 
         <button
           onClick={onExit}
@@ -301,7 +306,8 @@ function PracticalWorkspace({
         </button>
       </div>
 
-      {results && (
+      {showTaskScoring &&
+        results && (
         <section
           style={{
             maxWidth: "800px",

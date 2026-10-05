@@ -1,10 +1,14 @@
 import {
+  useCallback,
   useEffect,
   useMemo,
   useState
 } from "react";
 
 import PracticalWorkspace from "../../components/practical/PracticalWorkspace";
+import {
+  evaluateTask
+} from "../../components/practical/validators";
 import { webDesignPracticalTasks } from "./practical/tasks";
 
 const PRACTICAL_MODES = {
@@ -85,32 +89,125 @@ function WebDesignPractical({
     modeConfig?.timeLimit ?? 0
   );
 
+  const [
+    examResult,
+    setExamResult
+  ] = useState(null);
+
+  const submitExam =
+    useCallback(
+      (reason = "manual") => {
+        const taskResults =
+          sessionTasks.map(
+            (task) => {
+              const files =
+                taskFiles[
+                  task.id
+                ] ||
+                createInitialFiles(
+                  task
+                );
+
+              const checks =
+                evaluateTask(
+                  task,
+                  files
+                );
+
+              const passed =
+                checks.filter(
+                  (check) =>
+                    check.passed
+                ).length;
+
+              return {
+                taskId:
+                  task.id,
+                title:
+                  task.title,
+                passed,
+                total:
+                  checks.length,
+                checks
+              };
+            }
+          );
+
+        const passed =
+          taskResults.reduce(
+            (sum, result) =>
+              sum +
+              result.passed,
+            0
+          );
+
+        const total =
+          taskResults.reduce(
+            (sum, result) =>
+              sum +
+              result.total,
+            0
+          );
+
+        setExamResult({
+          reason,
+          passed,
+          total,
+          taskResults
+        });
+      },
+      [
+        sessionTasks,
+        taskFiles
+      ]
+    );
+
   useEffect(() => {
     if (
-      remainingSeconds <= 0
+      remainingSeconds <= 0 ||
+      examResult
     ) {
       return undefined;
     }
 
     const timer =
-      window.setInterval(
+      window.setTimeout(
         () => {
+          if (
+            remainingSeconds <= 1
+          ) {
+            setRemainingSeconds(
+              0
+            );
+
+            if (
+              mode === "mock"
+            ) {
+              submitExam(
+                "time_limit"
+              );
+            }
+
+            return;
+          }
+
           setRemainingSeconds(
-            (current) =>
-              Math.max(
-                0,
-                current - 1
-              )
+            remainingSeconds - 1
           );
         },
         1000
       );
 
     return () =>
-      window.clearInterval(
+      window.clearTimeout(
         timer
       );
-  }, [remainingSeconds]);
+  }, [
+    mode,
+    remainingSeconds,
+    examResult,
+    submitExam
+  ]);
 
   if (!modeConfig) {
     return (
@@ -159,6 +256,138 @@ function WebDesignPractical({
         <button onClick={onExit}>
           実技メニューへ戻る
         </button>
+      </div>
+    );
+  }
+
+  if (
+    mode === "mock" &&
+    examResult
+  ) {
+    const percentage =
+      examResult.total > 0
+        ? Math.round(
+            (
+              examResult.passed /
+              examResult.total
+            ) * 100
+          )
+        : 0;
+
+    return (
+      <div
+        style={{
+          width: "92%",
+          maxWidth: "1000px",
+          margin: "0 auto 60px"
+        }}
+      >
+        <h2>
+          ウェブデザイン技能検定
+          3級 実技 模試
+        </h2>
+
+        <h2>結果発表</h2>
+
+        {examResult.reason ===
+          "time_limit" && (
+          <p>
+            ⏰ 時間切れのため
+            自動提出されました。
+          </p>
+        )}
+
+        <h3>
+          総合採点：
+          {" "}
+          {examResult.passed}
+          /
+          {examResult.total}
+        </h3>
+
+        <p>
+          達成率：
+          {" "}
+          {percentage}
+          %
+        </p>
+
+        <div
+          style={{
+            display: "grid",
+            gap: "16px",
+            marginTop: "30px"
+          }}
+        >
+          {examResult.taskResults.map(
+            (
+              taskResult,
+              index
+            ) => (
+              <section
+                key={
+                  taskResult.taskId
+                }
+                style={{
+                  textAlign: "left",
+                  border:
+                    "1px solid #555",
+                  borderRadius:
+                    "10px",
+                  padding: "20px"
+                }}
+              >
+                <h3>
+                  課題
+                  {" "}
+                  {index + 1}
+                  ：
+                  {" "}
+                  {
+                    taskResult.passed
+                  }
+                  /
+                  {
+                    taskResult.total
+                  }
+                </h3>
+
+                <p>
+                  {
+                    taskResult.title
+                  }
+                </p>
+
+                {taskResult.checks.map(
+                  (check) => (
+                    <p
+                      key={
+                        check.id
+                      }
+                    >
+                      {check.passed
+                        ? "✅"
+                        : "❌"}{" "}
+                      {check.label}
+                    </p>
+                  )
+                )}
+              </section>
+            )
+          )}
+        </div>
+
+        <div
+          style={{
+            marginTop: "30px"
+          }}
+        >
+          <button
+            onClick={onExit}
+          >
+            実技メニューへ戻る
+          </button>
+        </div>
       </div>
     );
   }
@@ -241,7 +470,7 @@ function WebDesignPractical({
                 "center",
               gap: "10px",
               flexWrap: "wrap",
-              marginBottom: "24px"
+              marginBottom: "18px"
             }}
           >
             {sessionTasks.map(
@@ -271,6 +500,23 @@ function WebDesignPractical({
             )}
           </div>
         )}
+
+        {mode === "mock" && (
+          <button
+            onClick={() =>
+              submitExam(
+                "manual"
+              )
+            }
+            style={{
+              padding:
+                "12px 24px",
+              marginBottom: "20px"
+            }}
+          >
+            📤 試験全体を提出
+          </button>
+        )}
       </div>
 
       <PracticalWorkspace
@@ -281,6 +527,9 @@ function WebDesignPractical({
           updateCurrentFiles
         }
         onExit={onExit}
+        showTaskScoring={
+          mode === "practice"
+        }
       />
     </div>
   );
