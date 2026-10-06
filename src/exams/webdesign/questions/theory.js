@@ -8,6 +8,7 @@ export const theoryQuestions = [
     subject: "webdesign",
     category: CATEGORIES.INTERNET,
     sourceType: "original",
+    questionType: "true_false",
     sourceNumber: 1,
 
     question:
@@ -29,6 +30,7 @@ export const theoryQuestions = [
     subject: "webdesign",
     category: CATEGORIES.HTML_CSS,
     sourceType: "original",
+    questionType: "true_false",
     sourceNumber: 2,
 
     question:
@@ -50,6 +52,7 @@ export const theoryQuestions = [
     subject: "webdesign",
     category: CATEGORIES.HTML_CSS,
     sourceType: "original",
+    questionType: "multiple_choice",
     sourceNumber: 3,
 
     question:
@@ -73,6 +76,7 @@ export const theoryQuestions = [
     subject: "webdesign",
     category: CATEGORIES.DESIGN,
     sourceType: "original",
+    questionType: "multiple_choice",
     sourceNumber: 4,
 
     question:
@@ -96,6 +100,7 @@ export const theoryQuestions = [
     subject: "webdesign",
     category: CATEGORIES.ACCESSIBILITY,
     sourceType: "original",
+    questionType: "multiple_choice",
     sourceNumber: 5,
 
     question:

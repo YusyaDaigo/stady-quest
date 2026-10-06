@@ -825,6 +825,14 @@ function App() {
     }
 
     if (
+      selectedExam === "webdesign" &&
+      selectedMode === "mock" &&
+      selectedExamType === "webdesign_theory"
+    ) {
+      return 2700;
+    }
+
+    if (
       selectedMode === "mock" &&
       selectedExamType === "second"
     ) {
@@ -1071,6 +1079,50 @@ function App() {
     let shuffledQuestions;
 
     if (
+      selectedExam === "webdesign" &&
+      selectedMode === "mock" &&
+      selectedExamType === "webdesign_theory"
+    ) {
+      const trueFalseQuestions =
+        shuffleArray(
+          selectedQuestions.filter(
+            (question) =>
+              question.questionType ===
+              "true_false"
+          )
+        );
+
+      const multipleChoiceQuestions =
+        shuffleArray(
+          selectedQuestions.filter(
+            (question) =>
+              question.questionType ===
+              "multiple_choice"
+          )
+        );
+
+      if (
+        trueFalseQuestions.length < 10 ||
+        multipleChoiceQuestions.length < 15
+      ) {
+        alert(
+          "学科模試には正誤10問・4択15問が必要です。"
+        );
+        return;
+      }
+
+      shuffledQuestions = [
+        ...trueFalseQuestions.slice(
+          0,
+          10
+        ),
+        ...multipleChoiceQuestions.slice(
+          0,
+          15
+        )
+      ];
+
+    } else if (
       selectedExam === "pharmacy" &&
       selectedMode === "mock"
     ) {
