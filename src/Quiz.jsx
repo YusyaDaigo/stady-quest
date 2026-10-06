@@ -352,6 +352,9 @@ function Quiz({
               ? "二等操縦士 模試"
               : mode === "mock" && examType === "first"
               ? "一等操縦士 模試"
+              : mode === "mock" &&
+                examType === "webdesign_theory"
+              ? "ウェブデザイン技能検定3級 学科 模試"
               : mode === "review"
               ? "復習モード"
               : "練習モード"}
