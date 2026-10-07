@@ -12,6 +12,11 @@ import {
   firstExamQuestions
 } from "./exams/drone/questions";
 
+import {
+  getPharmacyQuestionPool,
+  getWebDesignQuestionPool
+} from "./exams/questionPools";
+
 import DroneMenu from "./exams/drone/DroneMenu";
 import Quiz from "./Quiz";
 import Result from "./Result";
@@ -20,11 +25,6 @@ import MainMenu from "./MainMenu";
 import PharmacyMenu from "./exams/pharmacy/PharmacyMenu";
 import WebDesignMenu from "./exams/webdesign/WebDesignMenu";
 import WebDesignPractical from "./exams/webdesign/WebDesignPractical";
-import {
-  theoryQuestions as webDesignTheoryQuestions
-} from "./exams/webdesign/questions";
-import { requiredQuestions } from "./exams/pharmacy/questions/required";
-import { theoryQuestions } from "./exams/pharmacy/questions/theory";
 import { practicalQuestions } from "./exams/pharmacy/questions/practical";
 
 const shuffleArray = (array) => {
@@ -762,26 +762,10 @@ function App() {
           ? "ALL"
           : normalizeField(category);
 
-      let pharmacyQuestionPool =
-        requiredQuestions;
-
-      if (
-        selectedExamType === "theory" ||
-        selectedExamType === "theory_part1" ||
-        selectedExamType === "theory_part2"
-      ) {
-        pharmacyQuestionPool =
-          theoryQuestions;
-      } else if (
-        selectedExamType === "practical" ||
-        selectedExamType === "practical_part1" ||
-        selectedExamType === "practical_part2" ||
-        selectedExamType === "practical_part3_case" ||
-        selectedExamType === "practical_part3_single"
-      ) {
-        pharmacyQuestionPool =
-          practicalQuestions;
-      }
+      const pharmacyQuestionPool =
+        getPharmacyQuestionPool(
+          selectedExamType
+        );
 
       if (
         TEST_GENERATED_PHARMACY_QUESTION
@@ -860,10 +844,10 @@ function App() {
         category === "全範囲"
       ) {
         selectedQuestions =
-          webDesignTheoryQuestions;
+          getWebDesignQuestionPool();
       } else {
         selectedQuestions =
-          webDesignTheoryQuestions.filter(
+          getWebDesignQuestionPool().filter(
             (question) =>
               question.category ===
               category
