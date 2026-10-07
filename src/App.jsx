@@ -7,14 +7,13 @@ import {
 } from "./exams/examTiming";
 
 import {
-  CATEGORIES,
-  secondExamQuestions,
-  firstExamQuestions
+  CATEGORIES
 } from "./exams/drone/questions";
 
 import {
   getPharmacyQuestionPool,
-  getWebDesignQuestionPool
+  getWebDesignQuestionPool,
+  getDroneQuestionPool
 } from "./exams/questionPools";
 
 import DroneMenu from "./exams/drone/DroneMenu";
@@ -889,28 +888,28 @@ function App() {
         selectedExamType === "second"
       ) {
         selectedQuestions =
-          secondExamQuestions;
+          getDroneQuestionPool("second");
 
       } else if (
         selectedMode === "mock" &&
         selectedExamType === "first"
       ) {
         selectedQuestions =
-          firstExamQuestions;
+          getDroneQuestionPool("first");
 
       } else {
         if (
           category === CATEGORIES.ALL
         ) {
           selectedQuestions =
-            secondExamQuestions;
+            getDroneQuestionPool("second");
 
         } else if (
           category === CATEGORIES.CALC ||
           category === CATEGORIES.FIRST
         ) {
           selectedQuestions =
-            firstExamQuestions.filter(
+            getDroneQuestionPool("first").filter(
               (question) =>
                 question.category ===
                 category
@@ -918,7 +917,7 @@ function App() {
 
         } else {
           selectedQuestions =
-            secondExamQuestions.filter(
+            getDroneQuestionPool("second").filter(
               (question) =>
                 question.category ===
                 category
@@ -939,7 +938,7 @@ function App() {
         );
         console.log(
           "CATEGORY LIST:",
-          secondExamQuestions
+          getDroneQuestionPool("second")
             .map(
               (question) =>
                 question.category
