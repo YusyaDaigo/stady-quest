@@ -2,6 +2,11 @@ import { useState, useEffect, useCallback } from "react";
 import "./App.css";
 
 import {
+  getQuestionTimeLimit,
+  getInitialTime
+} from "./exams/examTiming";
+
+import {
   CATEGORIES,
   secondExamQuestions,
   firstExamQuestions
@@ -678,49 +683,6 @@ const buildReviewQuestions = (questions) => {
 };
 
 
-const getQuestionTimeLimit = (
-  question,
-  selectedExam,
-  selectedExamType
-) => {
-  // 薬剤師国家試験・理論 / 実践
-  if (
-    selectedExam === "pharmacy" &&
-    (
-      selectedExamType === "theory" ||
-      selectedExamType === "theory_part1" ||
-      selectedExamType === "theory_part2" ||
-      selectedExamType === "practical" ||
-      selectedExamType === "practical_part1" ||
-      selectedExamType === "practical_part2" ||
-      selectedExamType === "practical_part3_case" ||
-      selectedExamType === "practical_part3_single"
-    )
-  ) {
-    return 150;
-  }
-
-  // 薬剤師国家試験・必須問題
-  if (selectedExam === "pharmacy") {
-    return 60;
-  }
-
-  // ウェブデザイン技能検定・学科
-  if (
-    selectedExam === "webdesign"
-  ) {
-    return 108;
-  }
-
-  // ドローン計算問題
-  if (question?.category === CATEGORIES.CALC) {
-    return 150;
-  }
-
-  // ドローン通常問題
-  return 30;
-};
-
 function App() {
 
   const [selectedExam, setSelectedExam] = useState(null);
@@ -782,72 +744,6 @@ function App() {
 
   const currentQuestion =
     currentQuestions[currentIndex] || null;
-
-  const getInitialTime = (
-    selectedMode,
-    selectedExamType
-  ) => {
-
-    if (
-      selectedExam === "pharmacy" &&
-      selectedMode === "mock" &&
-      selectedExamType === "required"
-    ) {
-      return 5400;
-    }
-
-    if (
-      selectedExam === "pharmacy" &&
-      selectedMode === "mock"
-    ) {
-      switch (selectedExamType) {
-        case "theory_part1":
-          return 9000;
-
-        case "theory_part2":
-          return 6900;
-
-        case "practical_part1":
-          return 7500;
-
-        case "practical_part2":
-          return 6000;
-
-        case "practical_part3_case":
-          return 6000;
-
-        case "practical_part3_single":
-          return 3000;
-
-        default:
-          break;
-      }
-    }
-
-    if (
-      selectedExam === "webdesign" &&
-      selectedMode === "mock" &&
-      selectedExamType === "webdesign_theory"
-    ) {
-      return 2700;
-    }
-
-    if (
-      selectedMode === "mock" &&
-      selectedExamType === "second"
-    ) {
-      return 1800;
-    }
-
-    if (
-      selectedMode === "mock" &&
-      selectedExamType === "first"
-    ) {
-      return 4500;
-    }
-
-    return 30;
-  };
 
   const startQuiz = (
     selectedMode,
@@ -1280,6 +1176,7 @@ function App() {
 
     setTime(
       getInitialTime(
+        selectedExam,
         selectedMode,
         selectedExamType
     )
