@@ -54,6 +54,67 @@ EXAM_GENERATION_PROFILES: Dict[str, Dict[str, Any]] = {
         ),
     },
 
+    "webdesign": {
+        "displayName": "ウェブデザイン技能検定3級",
+
+        "subject": "webdesign",
+        "defaultCategory": "HTML_CSS",
+
+        "answerIndexBase": 0,
+
+        "difficultyMin": 1,
+        "difficultyMax": 5,
+
+        "questionTypes": {
+            "true_false": {
+                "choiceCount": 2,
+                "mockCount": 10,
+            },
+            "multiple_choice": {
+                "choiceCount": 4,
+                "mockCount": 15,
+            },
+        },
+
+        "supportedFigureTypes": [
+            "none",
+            "table",
+            "line_chart",
+            "bar_chart",
+            "flowchart",
+        ],
+
+        "generationRules": [
+            "ウェブデザイン技能検定3級の出題範囲を逸脱しない",
+            "正答は必ず1つにする",
+            "既存問題や資料の文章をそのままコピーしない",
+            "根拠資料から独立した表現で問題を作成する",
+            "曖昧な選択肢を作らない",
+            "正答の根拠を説明できる問題だけを作る",
+            "出力はJSONのみにする",
+        ],
+
+        "sections": {
+            "internet": "インターネット概論",
+            "html_css": "HTML・CSS",
+            "design": "ウェブデザイン",
+            "accessibility": "アクセシビリティ",
+            "operation": "運用・制作",
+        },
+
+        "categoryBySection": {
+            "internet": "INTERNET",
+            "html_css": "HTML_CSS",
+            "design": "DESIGN",
+            "accessibility": "ACCESSIBILITY",
+            "operation": "OPERATION",
+        },
+
+        "generatedBaseDir": (
+            "generated_questions/webdesign/theory"
+        ),
+    },
+
     "pharmacy": {
         "displayName": "薬剤師国家試験",
 
@@ -122,7 +183,7 @@ def get_exam_generation_profile(
         normalized_exam
     ]
 
-    return {
+    result = {
         **profile,
         "generationRules": list(
             profile["generationRules"]
@@ -134,6 +195,20 @@ def get_exam_generation_profile(
             profile["sections"]
         ),
     }
+
+    if "questionTypes" in profile:
+        result["questionTypes"] = {
+            key: dict(value)
+            for key, value
+            in profile["questionTypes"].items()
+        }
+
+    if "categoryBySection" in profile:
+        result["categoryBySection"] = dict(
+            profile["categoryBySection"]
+        )
+
+    return result
 
 
 def validate_generation_request(
