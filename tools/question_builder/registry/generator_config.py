@@ -11,6 +11,9 @@ from tools.question_builder.generators.drone_question_generator import (
 from tools.question_builder.generators.pharmacy_similar_generator import (
     PharmacySimilarGenerator,
 )
+from tools.question_builder.generators.webdesign_question_generator import (
+    WebDesignQuestionGenerator,
+)
 
 
 class GeneratorConfig(NamedTuple):
@@ -29,5 +32,10 @@ GENERATOR_CONFIGS = [
         exam="pharmacy",
         mode="similar",
         generator_class=PharmacySimilarGenerator,
+    ),
+    GeneratorConfig(
+        exam="webdesign",
+        mode="batch",
+        generator_class=WebDesignQuestionGenerator,
     ),
 ]

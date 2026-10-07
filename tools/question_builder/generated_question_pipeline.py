@@ -337,6 +337,15 @@ def build_study_quest_question(
         ],
     }
 
+    question_type = processed_question.get(
+        "questionType"
+    )
+
+    if question_type is not None:
+        result[
+            "questionType"
+        ] = question_type
+
     source_exam_number = source_question.get(
         "examNumber"
     )

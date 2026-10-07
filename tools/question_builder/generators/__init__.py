@@ -8,6 +8,9 @@ from tools.question_builder.generators.drone_question_generator import (
 from tools.question_builder.generators.pharmacy_similar_generator import (
     PharmacySimilarGenerator,
 )
+from tools.question_builder.generators.webdesign_question_generator import (
+    WebDesignQuestionGenerator,
+)
 
 
 __all__ = [
@@ -15,4 +18,5 @@ __all__ = [
     "DroneQuestionGenerator",
     "GeneratedData",
     "PharmacySimilarGenerator",
+    "WebDesignQuestionGenerator",
 ]
