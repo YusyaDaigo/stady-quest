@@ -1,3 +1,6 @@
+import MenuButton from "../../components/MenuButton";
+import MenuSection from "../../components/MenuSection";
+
 import {
   theoryQuestions
 } from "./questions";
@@ -25,100 +28,76 @@ function WebDesignMenu({
     practicalTaskCount >= 5;
 
   return (
-    <div>
-      <h2>
+    <div className="menu-page">
+      <h2 className="menu-page__title">
         🌐 ウェブデザイン技能検定
       </h2>
 
-      <h3>3級</h3>
+      <p className="menu-page__description">
+        3級
+      </p>
 
-      <div
-        style={{
-          display: "grid",
-          gap: "16px",
-          maxWidth: "560px",
-          margin: "30px auto"
-        }}
+      <MenuSection
+        title="📘 学科"
+        description="学習したいモードを選択してください"
       >
-        <button
-          onClick={
-            onStartTheoryPractice
-          }
-          style={{
-            padding: "18px"
-          }}
+        <MenuButton
+          onClick={onStartTheoryPractice}
+          wide
         >
-          📘 学科 練習モード
+          学科 練習モード
           <br />
-          現在
-          {" "}
-          {theoryQuestionCount}
-          問
-        </button>
+          現在 {theoryQuestionCount}問
+        </MenuButton>
 
-        <button
-          onClick={
-            onStartTheoryMock
-          }
-          disabled={
-            !canStartTheoryMock
-          }
-          style={{
-            padding: "18px"
-          }}
+        <MenuButton
+          onClick={onStartTheoryMock}
+          disabled={!canStartTheoryMock}
+          variant="primary"
+          wide
         >
-          📝 学科 模試モード
+          学科 模試モード
           <br />
           25問・45分
           {!canStartTheoryMock && (
             <>
               <br />
-              現在
-              {" "}
-              {theoryQuestionCount}
-              /25問
+              現在 {theoryQuestionCount}/25問
             </>
           )}
-        </button>
+        </MenuButton>
+      </MenuSection>
 
-        <button
-          onClick={
-            onStartPracticalPractice
-          }
-          style={{
-            padding: "18px"
-          }}
+      <MenuSection
+        title="💻 実技"
+        description="実技課題のモードを選択してください"
+      >
+        <MenuButton
+          onClick={onStartPracticalPractice}
+          wide
         >
-          💻 実技 練習モード
+          実技 練習モード
           <br />
           1課題・12分
-        </button>
+        </MenuButton>
 
-        <button
-          onClick={
-            onStartPracticalMock
-          }
-          disabled={
-            !canStartPracticalMock
-          }
-          style={{
-            padding: "18px"
-          }}
+        <MenuButton
+          onClick={onStartPracticalMock}
+          disabled={!canStartPracticalMock}
+          variant="primary"
+          wide
         >
-          🧪 実技 模試モード
+          実技 模試モード
           <br />
           5課題・60分
           {!canStartPracticalMock && (
             <>
               <br />
-              現在
-              {" "}
-              {practicalTaskCount}
-              /5課題
+              現在 {practicalTaskCount}/5課題
             </>
           )}
-        </button>
-      </div>
+        </MenuButton>
+      </MenuSection>
     </div>
   );
 }

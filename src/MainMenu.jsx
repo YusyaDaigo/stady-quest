@@ -1,3 +1,7 @@
+import {
+  EXAM_CATALOG
+} from "./exams/examCatalog";
+
 function MainMenu({ selectExam }) {
   return (
     <div>
@@ -5,25 +9,16 @@ function MainMenu({ selectExam }) {
 
       <h2>学習する試験を選択</h2>
 
-      <button
-        onClick={() => selectExam("drone")}
-      >
-        🚁 ドローン国家資格
-      </button>
-
-      <button
-        onClick={() => selectExam("pharmacy")}
-      >
-        💊 薬剤師国家試験
-      </button>
-
-      <button
-        onClick={() => selectExam("webdesign")}
-      >
-        🌐 ウェブデザイン技能検定
-      </button>
-
-      
+      {EXAM_CATALOG.map((exam) => (
+        <button
+          key={exam.id}
+          onClick={() =>
+            selectExam(exam.id)
+          }
+        >
+          {exam.icon} {exam.label}
+        </button>
+      ))}
     </div>
   );
 }
