@@ -159,11 +159,28 @@ def write_generated_questions_js(
 
     content += "];\n"
 
-    # categoryだけはJS定数へ置換
-    content = content.replace(
-        '"REQUIRED"',
-        "CATEGORIES.REQUIRED",
-    )
+    # categoryだけは資格に依存せず
+    # CATEGORIES定数へ変換する。
+    categories = {
+        question.get("category")
+        for question in questions
+        if isinstance(
+            question.get("category"),
+            str,
+        )
+    }
+
+    for category in categories:
+        if (
+            not category
+            or not category.isidentifier()
+        ):
+            continue
+
+        content = content.replace(
+            f'category: "{category}"',
+            f"category: CATEGORIES.{category}",
+        )
 
     path.write_text(
         content,
