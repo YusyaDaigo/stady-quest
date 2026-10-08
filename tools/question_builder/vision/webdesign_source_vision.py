@@ -104,6 +104,12 @@ sectionは必ず次のいずれかです:
 - 原文の長い文章を facts にコピーせず、
   独立した短い事実文へ抽象化してください。
 
+- 問題番号が画像上にはっきり表示されている場合は、
+  sourceQuestionNumbers にその番号を整数で記録してください。
+- 問題番号がない教材・解説・試験案内では
+  sourceQuestionNumbers を空配列にしてください。
+- 問題番号を推測で補わないでください。
+
 knowledgeType:
 - exam_content:
   ウェブデザイン技能検定で学習・理解すべき
@@ -149,6 +155,9 @@ operation:
       "section": "html_css",
       "knowledgeType": "exam_content",
       "questionGenerationEligible": true,
+      "sourceQuestionNumbers": [
+        1
+      ],
       "title": "短い学習論点名",
       "keywords": [
         "keyword1",
@@ -279,6 +288,41 @@ def validate_webdesign_knowledge(
                 "cannot be generation eligible"
             )
 
+        source_question_numbers = concept.get(
+            "sourceQuestionNumbers"
+        )
+
+        if not isinstance(
+            source_question_numbers,
+            list,
+        ):
+            raise ValueError(
+                f"concept {index} requires "
+                "sourceQuestionNumbers"
+            )
+
+        normalized_question_numbers = []
+
+        for value in source_question_numbers:
+            if (
+                not isinstance(value, int)
+                or value < 1
+            ):
+                raise ValueError(
+                    f"concept {index} has invalid "
+                    "sourceQuestionNumbers"
+                )
+
+            normalized_question_numbers.append(
+                value
+            )
+
+        normalized_question_numbers = sorted(
+            set(
+                normalized_question_numbers
+            )
+        )
+
         title = concept.get("title")
 
         if (
@@ -382,6 +426,9 @@ def validate_webdesign_knowledge(
                 ),
                 "questionGenerationEligible": (
                     generation_eligible
+                ),
+                "sourceQuestionNumbers": (
+                    normalized_question_numbers
                 ),
                 "title": title.strip(),
                 "keywords": [

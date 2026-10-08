@@ -133,6 +133,9 @@ def concept_to_knowledge_item(
         "knowledgeType": concept[
             "knowledgeType"
         ],
+        "sourceQuestionNumbers": concept[
+            "sourceQuestionNumbers"
+        ],
         "questionGenerationEligible": (
             concept[
                 "questionGenerationEligible"
