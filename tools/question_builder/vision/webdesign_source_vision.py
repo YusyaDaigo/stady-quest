@@ -95,6 +95,20 @@ sectionは必ず次のいずれかです:
 - accessibility
 - operation
 
+knowledgeType:
+- exam_content:
+  ウェブデザイン技能検定で学習・理解すべき
+  技術、知識、技能、概念
+- exam_meta:
+  試験時間、等級、受検制度、称号、
+  試験実施方法など試験そのものの案内情報
+
+questionGenerationEligible:
+- exam_content のうち、
+  学習問題として出題する価値があるものは true
+- exam_meta は必ず false
+- 表紙、目次、案内だけの場合も false
+
 sectionの目安:
 internet:
 インターネット、Web、HTTP、URL、
@@ -124,6 +138,8 @@ operation:
   "concepts": [
     {{
       "section": "html_css",
+      "knowledgeType": "exam_content",
+      "questionGenerationEligible": true,
       "title": "短い学習論点名",
       "keywords": [
         "keyword1",
@@ -216,6 +232,41 @@ def validate_webdesign_knowledge(
                 f"section: {section}"
             )
 
+        knowledge_type = concept.get(
+            "knowledgeType"
+        )
+
+        if knowledge_type not in {
+            "exam_content",
+            "exam_meta",
+        }:
+            raise ValueError(
+                f"concept {index} has invalid "
+                f"knowledgeType: {knowledge_type}"
+            )
+
+        generation_eligible = concept.get(
+            "questionGenerationEligible"
+        )
+
+        if not isinstance(
+            generation_eligible,
+            bool,
+        ):
+            raise ValueError(
+                f"concept {index} requires "
+                "questionGenerationEligible"
+            )
+
+        if (
+            knowledge_type == "exam_meta"
+            and generation_eligible
+        ):
+            raise ValueError(
+                f"concept {index}: exam_meta "
+                "cannot be generation eligible"
+            )
+
         title = concept.get("title")
 
         if (
@@ -288,6 +339,12 @@ def validate_webdesign_knowledge(
         normalized_concepts.append(
             {
                 "section": section,
+                "knowledgeType": (
+                    knowledge_type
+                ),
+                "questionGenerationEligible": (
+                    generation_eligible
+                ),
                 "title": title.strip(),
                 "keywords": [
                     item.strip()
