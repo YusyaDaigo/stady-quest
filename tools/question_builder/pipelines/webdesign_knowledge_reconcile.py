@@ -184,17 +184,15 @@ def build_reconciled_item(
     }
 
 
-def reconcile_question_and_answer(
+def reconcile_question_and_answers(
     question_data: Dict[str, Any],
-    answer_data: Dict[str, Any],
+    answer_data_list: List[
+        Dict[str, Any]
+    ],
     *,
     document_id: str,
 ) -> Dict[str, Any]:
     question_page = question_data.get(
-        "page"
-    )
-
-    answer_page = answer_data.get(
         "page"
     )
 
@@ -205,20 +203,44 @@ def reconcile_question_and_answer(
         )
     )
 
-    validated_answers = (
-        validate_webdesign_answers(
-            answer_data,
-            expected_page=answer_page,
-        )
-    )
+    answer_map = {}
+    answer_pages = []
 
-    answer_map = {
-        item["questionNo"]: item
-        for item
-        in validated_answers[
+    for answer_data in (
+        answer_data_list
+    ):
+        answer_page = answer_data.get(
+            "page"
+        )
+
+        validated_answers = (
+            validate_webdesign_answers(
+                answer_data,
+                expected_page=answer_page,
+            )
+        )
+
+        answer_pages.append(
+            answer_page
+        )
+
+        for item in validated_answers[
             "answers"
-        ]
-    }
+        ]:
+            question_no = item[
+                "questionNo"
+            ]
+
+            if question_no in answer_map:
+                raise ValueError(
+                    "Duplicate answer question "
+                    f"number across pages: "
+                    f"{question_no}"
+                )
+
+            answer_map[
+                question_no
+            ] = item
 
     items: List[
         Dict[str, Any]
@@ -301,6 +323,12 @@ def reconcile_question_and_answer(
         }
     )
 
+    answer_pages = sorted(
+        set(
+            answer_pages
+        )
+    )
+
     return {
         "exam": "webdesign",
         "materialType": (
@@ -308,7 +336,12 @@ def reconcile_question_and_answer(
         ),
         "documentId": document_id,
         "questionPage": question_page,
-        "answerPage": answer_page,
+        "answerPage": (
+            answer_pages[0]
+            if len(answer_pages) == 1
+            else None
+        ),
+        "answerPages": answer_pages,
         "matchedCount": len(
             items
         ),
@@ -331,6 +364,18 @@ def reconcile_question_and_answer(
     }
 
 
+def reconcile_question_and_answer(
+    question_data: Dict[str, Any],
+    answer_data: Dict[str, Any],
+    *,
+    document_id: str,
+) -> Dict[str, Any]:
+    return reconcile_question_and_answers(
+        question_data,
+        [answer_data],
+        document_id=document_id,
+    )
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description=(
@@ -347,6 +392,11 @@ def main() -> None:
     parser.add_argument(
         "--answer-json",
         required=True,
+        action="append",
+        help=(
+            "Answer JSON path. "
+            "Repeat for multiple pages."
+        ),
     )
 
     parser.add_argument(
@@ -367,16 +417,20 @@ def main() -> None:
         )
     )
 
-    answer_data = load_json_object(
-        Path(
-            args.answer_json
+    answer_data_list = [
+        load_json_object(
+            Path(
+                answer_json
+            )
         )
-    )
+        for answer_json
+        in args.answer_json
+    ]
 
     result = (
-        reconcile_question_and_answer(
+        reconcile_question_and_answers(
             question_data,
-            answer_data,
+            answer_data_list,
             document_id=(
                 args.document_id
             ),
