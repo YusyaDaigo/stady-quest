@@ -95,6 +95,15 @@ sectionは必ず次のいずれかです:
 - accessibility
 - operation
 
+- facts には、画像から直接確認できる、
+  問題生成時に正答を支える具体的な事実を
+  簡潔に記録してください。
+- facts に一般知識や推測で情報を補わないでください。
+- exam_content かつ questionGenerationEligible=true の
+  concept には、facts を1件以上必ず含めてください。
+- 原文の長い文章を facts にコピーせず、
+  独立した短い事実文へ抽象化してください。
+
 knowledgeType:
 - exam_content:
   ウェブデザイン技能検定で学習・理解すべき
@@ -144,6 +153,9 @@ operation:
       "keywords": [
         "keyword1",
         "keyword2"
+      ],
+      "facts": [
+        "画像から確認できる具体的な事実"
       ],
       "summary": "原文を複製しない簡潔な概念要約",
       "learningObjectives": [
@@ -277,6 +289,32 @@ def validate_webdesign_knowledge(
                 f"concept {index} requires title"
             )
 
+        facts = concept.get("facts")
+
+        if not isinstance(facts, list):
+            raise ValueError(
+                f"concept {index} requires facts"
+            )
+
+        if any(
+            not isinstance(item, str)
+            or not item.strip()
+            for item in facts
+        ):
+            raise ValueError(
+                f"concept {index} has invalid facts"
+            )
+
+        if (
+            knowledge_type == "exam_content"
+            and generation_eligible
+            and not facts
+        ):
+            raise ValueError(
+                f"concept {index}: eligible "
+                "exam_content requires facts"
+            )
+
         summary = concept.get("summary")
 
         if (
@@ -349,6 +387,10 @@ def validate_webdesign_knowledge(
                 "keywords": [
                     item.strip()
                     for item in keywords
+                ],
+                "facts": [
+                    item.strip()
+                    for item in facts
                 ],
                 "summary": summary.strip(),
                 "learningObjectives": [

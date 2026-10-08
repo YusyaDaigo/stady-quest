@@ -95,9 +95,19 @@ def concept_to_knowledge_item(
         "learningObjectives"
     ]
 
+    facts = concept["facts"]
+
     text_parts = [
         concept["summary"],
     ]
+
+    if facts:
+        text_parts.append(
+            "確認事項: "
+            + " / ".join(
+                facts
+            )
+        )
 
     if learning_objectives:
         text_parts.append(
@@ -113,6 +123,7 @@ def concept_to_knowledge_item(
         "title": concept["title"],
         "pages": concept["sourcePages"],
         "keywords": concept["keywords"],
+        "facts": facts,
         "text": "\n".join(
             text_parts
         ),
