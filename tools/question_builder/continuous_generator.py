@@ -8,12 +8,20 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+from tools.question_builder.continuous_planner import (
+    create_planner_state,
+    record_knowledge_use,
+    select_next_knowledge,
+)
 from tools.question_builder.exam_generation_profiles import (
     get_exam_generation_profile,
 )
+from tools.question_builder.knowledge.loader import (
+    load_knowledge,
+)
 
 
-SESSION_STATE_VERSION = 1
+SESSION_STATE_VERSION = 2
 
 DEFAULT_STATE_ROOT = Path(
     "generated_materials"
@@ -266,10 +274,13 @@ def create_session_state(
         "createdAt": created_at,
         "updatedAt": created_at,
         "iterationCount": 0,
+        "plannedCount": 0,
         "generatedCount": 0,
         "approvedCount": 0,
         "reviewCount": 0,
         "rejectedCount": 0,
+        "planner": create_planner_state(),
+        "currentKnowledge": None,
         "currentQuestion": None,
         "lastEvent": {
             "type": "session_created",
@@ -328,6 +339,17 @@ def run_continuous_session(
     )
 
     try:
+        knowledge_items = load_knowledge(
+            state["exam"]
+        )
+
+        print(
+            "Knowledge loaded:",
+            len(knowledge_items),
+        )
+
+        print()
+
         while True:
             state[
                 "iterationCount"
@@ -337,15 +359,55 @@ def run_continuous_session(
                 "iterationCount"
             ]
 
+            selected = select_next_knowledge(
+                knowledge_items,
+                section=state["section"],
+                planner_state=state[
+                    "planner"
+                ],
+            )
+
+            state[
+                "planner"
+            ] = record_knowledge_use(
+                state["planner"],
+                selected["id"],
+            )
+
+            state[
+                "plannedCount"
+            ] += 1
+
+            state[
+                "currentKnowledge"
+            ] = {
+                "id": selected["id"],
+                "section": selected[
+                    "section"
+                ],
+                "title": selected[
+                    "title"
+                ],
+                "sourceQuestionNumbers": (
+                    selected.get(
+                        "sourceQuestionNumbers",
+                        [],
+                    )
+                ),
+            }
+
             event_time = now_iso()
 
             state[
                 "lastEvent"
             ] = {
                 "type": (
-                    "scaffold_iteration"
+                    "knowledge_selected"
                 ),
                 "iteration": iteration,
+                "knowledgeId": (
+                    selected["id"]
+                ),
                 "at": event_time,
             }
 
@@ -355,9 +417,22 @@ def run_continuous_session(
             )
 
             print(
-                "[LOOP]",
+                "[PLAN]",
                 f"iteration={iteration}",
-                "generation stage "
+            )
+
+            print(
+                " knowledge:",
+                selected["id"],
+            )
+
+            print(
+                " title:",
+                selected["title"],
+            )
+
+            print(
+                " generation stage "
                 "not connected yet",
             )
 
