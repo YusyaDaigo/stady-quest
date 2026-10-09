@@ -331,6 +331,212 @@ def get_candidate_path(
     )
 
 
+def load_session_state(
+    *,
+    path: Path,
+) -> dict[str, Any]:
+    if not path.is_file():
+        raise FileNotFoundError(
+            f"session file not found: {path}"
+        )
+
+    try:
+        state = json.loads(
+            path.read_text(
+                encoding="utf-8"
+            )
+        )
+    except json.JSONDecodeError as exc:
+        raise ValueError(
+            "session state is invalid JSON"
+        ) from exc
+
+    if not isinstance(
+        state,
+        dict,
+    ):
+        raise ValueError(
+            "session state must be an object"
+        )
+
+    return state
+
+
+def validate_resume_state(
+    *,
+    state: dict[str, Any],
+    session_id: str,
+    config: dict[str, Any],
+) -> None:
+    if state.get(
+        "stateVersion"
+    ) != SESSION_STATE_VERSION:
+        raise ValueError(
+            "unsupported session state version: "
+            f'{state.get("stateVersion")}. '
+            f"expected={SESSION_STATE_VERSION}"
+        )
+
+    if state.get(
+        "sessionId"
+    ) != session_id:
+        raise ValueError(
+            "sessionId does not match "
+            "checkpoint"
+        )
+
+    expected = {
+        "exam": config["exam"],
+        "section": config["section"],
+        "difficultyMin": (
+            config["difficultyMin"]
+        ),
+        "difficultyMax": (
+            config["difficultyMax"]
+        ),
+        "questionTypes": list(
+            config["questionTypes"]
+        ),
+    }
+
+    actual = {
+        key: state.get(
+            key
+        )
+        for key in expected
+    }
+
+    if actual != expected:
+        raise ValueError(
+            "resume configuration does "
+            "not match checkpoint. "
+            f"expected={expected}, "
+            f"actual={actual}"
+        )
+
+    planner = state.get(
+        "planner"
+    )
+
+    if not isinstance(
+        planner,
+        dict,
+    ):
+        raise ValueError(
+            "checkpoint planner state "
+            "is invalid"
+        )
+
+
+def prepare_resumed_session_state(
+    *,
+    state: dict[str, Any],
+    session_id: str,
+    config: dict[str, Any],
+) -> dict[str, Any]:
+    validate_resume_state(
+        state=state,
+        session_id=session_id,
+        config=config,
+    )
+
+    state[
+        "status"
+    ] = "running"
+
+    state[
+        "lastEvent"
+    ] = {
+        "type": "session_resumed",
+        "iteration": state.get(
+            "iterationCount",
+            0,
+        ),
+        "at": now_iso(),
+    }
+
+    return state
+
+
+def load_session_comparison_records(
+    *,
+    state_path: Path,
+    session_id: str,
+) -> list[dict[str, Any]]:
+    candidate_directory = (
+        get_candidate_path(
+            state_path=state_path,
+            session_id=session_id,
+            iteration=1,
+        ).parent
+    )
+
+    if not candidate_directory.exists():
+        return []
+
+    records = []
+
+    for candidate_path in sorted(
+        candidate_directory.glob(
+            "candidate-*.json"
+        )
+    ):
+        try:
+            payload = json.loads(
+                candidate_path.read_text(
+                    encoding="utf-8"
+                )
+            )
+        except json.JSONDecodeError as exc:
+            raise ValueError(
+                "invalid candidate JSON: "
+                f"{candidate_path}"
+            ) from exc
+
+        if not isinstance(
+            payload,
+            dict,
+        ):
+            raise ValueError(
+                "candidate must be an object: "
+                f"{candidate_path}"
+            )
+
+        if payload.get(
+            "sessionId"
+        ) != session_id:
+            raise ValueError(
+                "candidate sessionId mismatch: "
+                f"{candidate_path}"
+            )
+
+        question = payload.get(
+            "question"
+        )
+
+        if not isinstance(
+            question,
+            dict,
+        ):
+            raise ValueError(
+                "candidate question missing: "
+                f"{candidate_path}"
+            )
+
+        records.append(
+            build_comparison_record(
+                question=question,
+                source="session",
+                record_id=(
+                    f"{session_id}:"
+                    f"{candidate_path.stem}"
+                ),
+            )
+        )
+
+    return records
+
+
 def create_session_state(
     *,
     session_id: str,
@@ -473,6 +679,22 @@ def run_continuous_session(
                 "Semantic app pool:",
                 len(
                     app_comparison_records
+                ),
+            )
+
+            session_comparison_records = (
+                load_session_comparison_records(
+                    state_path=state_path,
+                    session_id=state[
+                        "sessionId"
+                    ],
+                )
+            )
+
+            print(
+                "Semantic session pool:",
+                len(
+                    session_comparison_records
                 ),
             )
 
@@ -1336,6 +1558,16 @@ def build_parser() -> (
         ),
     )
 
+    parser.add_argument(
+        "--resume",
+        action="store_true",
+        help=(
+            "Resume an existing session "
+            "checkpoint. Requires "
+            "--session-id."
+        ),
+    )
+
     return parser
 
 
@@ -1387,6 +1619,15 @@ def main() -> None:
             str(exc)
         )
 
+    if (
+        args.resume
+        and not args.session_id
+    ):
+        parser.error(
+            "--resume requires "
+            "--session-id"
+        )
+
     session_id = (
         args.session_id
         or build_session_id()
@@ -1402,16 +1643,60 @@ def main() -> None:
         session_id=session_id,
     )
 
-    if state_path.exists():
-        parser.error(
-            "session already exists: "
-            f"{state_path}"
+    if args.resume:
+        if not state_path.exists():
+            parser.error(
+                "session does not exist: "
+                f"{state_path}"
+            )
+
+        try:
+            state = load_session_state(
+                path=state_path
+            )
+
+            state = (
+                prepare_resumed_session_state(
+                    state=state,
+                    session_id=session_id,
+                    config=config,
+                )
+            )
+        except (
+            FileNotFoundError,
+            ValueError,
+        ) as exc:
+            parser.error(
+                str(exc)
+            )
+
+        save_session_state(
+            path=state_path,
+            state=state,
         )
 
-    state = create_session_state(
-        session_id=session_id,
-        config=config,
-    )
+        print(
+            "RESUMING SESSION"
+        )
+
+        print(
+            "iteration:",
+            state[
+                "iterationCount"
+            ],
+        )
+
+    else:
+        if state_path.exists():
+            parser.error(
+                "session already exists: "
+                f"{state_path}"
+            )
+
+        state = create_session_state(
+            session_id=session_id,
+            config=config,
+        )
 
     run_continuous_session(
         state=state,
