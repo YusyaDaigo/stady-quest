@@ -1,0 +1,225 @@
+[
+  {
+    "id": "webdesign-ウェブデザイン検定模擬試験-q001-c02",
+    "section": "html_css",
+    "title": "HTMLリンクのtarget属性",
+    "pages": [
+      1
+    ],
+    "keywords": [
+      "HTML",
+      "リンク",
+      "target属性",
+      "新しいタブ"
+    ],
+    "facts": [
+      "リンク先を新しいウィンドウやタブで開くための属性はtarget属性である。",
+      "a要素にtarget属性を記述し、値に_blankを指定すると新しいタブが生成される。",
+      "_blankを指定すると、新しいタブにリンク先の内容が表示される。"
+    ],
+    "candidateFacts": [
+      "target属性は、リンク先をどの閲覧コンテキストで開くかに関係するHTML属性である。",
+      "リンク先を新しいタブで開く指定にtarget属性が関係する。"
+    ],
+    "text": "HTMLのリンクでは、target属性によってリンク先の開き方を制御できる。\n確認済み事項: リンク先を新しいウィンドウやタブで開くための属性はtarget属性である。 / a要素にtarget属性を記述し、値に_blankを指定すると新しいタブが生成される。 / _blankを指定すると、新しいタブにリンク先の内容が表示される。\n解答解説要約: a要素でリンク先を新しいタブなどに開くには、target属性に_blankを指定する。\n学習目標: リンク先の表示先を制御するHTML属性を識別できる / 新しいタブでリンクを開く指定に関係する属性を理解する",
+    "learningObjectives": [
+      "リンク先の表示先を制御するHTML属性を識別できる",
+      "新しいタブでリンクを開く指定に関係する属性を理解する"
+    ],
+    "knowledgeType": "exam_content",
+    "questionGenerationEligible": true,
+    "sourceQuestionNumbers": [
+      1
+    ],
+    "correctAnswer": 1,
+    "answerExplanationSummary": "a要素でリンク先を新しいタブなどに開くには、target属性に_blankを指定する。",
+    "answerSourcePages": [
+      1
+    ],
+    "answerSection": "html_css",
+    "sectionMatch": true,
+    "verificationStatus": "verified_from_answer",
+    "reviewStatus": "approved",
+    "sourceDocument": "ウェブデザイン検定模擬試験",
+    "reviewNote": "解答・解説資料と照合済み。"
+  },
+  {
+    "id": "webdesign-ウェブデザイン検定模擬試験-q002-c03",
+    "section": "internet",
+    "title": "HTTPステータスコード404とForbiddenの区別",
+    "pages": [
+      1
+    ],
+    "keywords": [
+      "HTTP",
+      "ステータスコード",
+      "404",
+      "Forbidden"
+    ],
+    "facts": [
+      "HTTPステータスコード404はNot Foundを意味する。",
+      "404は、リクエストされたURLに該当するウェブページが見つからないことを示す。",
+      "ForbiddenはHTTPステータスコード403である。",
+      "403は、ウェブページは存在するが閲覧が禁止されていることを示す。"
+    ],
+    "candidateFacts": [
+      "HTTPステータスコード404とForbiddenの意味の対応関係が問われている。",
+      "HTTP 404はForbiddenを意味しない。"
+    ],
+    "text": "HTTPステータスコードは番号ごとに意味が異なるため、404とForbiddenを混同しないことが重要である。\n確認済み事項: HTTPステータスコード404はNot Foundを意味する。 / 404は、リクエストされたURLに該当するウェブページが見つからないことを示す。 / ForbiddenはHTTPステータスコード403である。 / 403は、ウェブページは存在するが閲覧が禁止されていることを示す。\n解答解説要約: HTTPの404はNot Foundであり、要求されたページが見つからない状態を表す。\n学習目標: HTTPステータスコードの意味を識別できる / 404とForbiddenの対応関係を正しく判断できる",
+    "learningObjectives": [
+      "HTTPステータスコードの意味を識別できる",
+      "404とForbiddenの対応関係を正しく判断できる"
+    ],
+    "knowledgeType": "exam_content",
+    "questionGenerationEligible": true,
+    "sourceQuestionNumbers": [
+      2
+    ],
+    "correctAnswer": 2,
+    "answerExplanationSummary": "HTTPの404はNot Foundであり、要求されたページが見つからない状態を表す。",
+    "answerSourcePages": [
+      1
+    ],
+    "answerSection": "internet",
+    "sectionMatch": true,
+    "verificationStatus": "verified_from_answer",
+    "reviewStatus": "approved",
+    "sourceDocument": "ウェブデザイン検定模擬試験",
+    "reviewNote": "解答・解説資料と照合済み。"
+  },
+  {
+    "id": "webdesign-ウェブデザイン検定模擬試験-q003-c04",
+    "section": "internet",
+    "title": "SFTPにおける通信の暗号化",
+    "pages": [
+      1
+    ],
+    "keywords": [
+      "SFTP",
+      "ファイル転送",
+      "暗号化",
+      "サーバ"
+    ],
+    "facts": [
+      "SFTPやSCPを使用したサーバとの送受信ではデータが暗号化される。",
+      "FTPを使用したサーバとの送受信ではデータが暗号化されず平文で行われる。",
+      "暗号化されないFTP送受信では、サーバアクセス時のIDやパスワードが盗まれる可能性がある。",
+      "IDやパスワードが盗まれると、ウェブページの改ざんをされる可能性がある。"
+    ],
+    "candidateFacts": [
+      "SFTPを使ったサーバとの送受信における暗号化の有無が問われている。",
+      "SFTPでは通信内容の保護が論点になる。"
+    ],
+    "text": "SFTPはサーバとのファイル送受信時の安全性に関係する技術であり、暗号化の有無を理解する必要がある。\n確認済み事項: SFTPやSCPを使用したサーバとの送受信ではデータが暗号化される。 / FTPを使用したサーバとの送受信ではデータが暗号化されず平文で行われる。 / 暗号化されないFTP送受信では、サーバアクセス時のIDやパスワードが盗まれる可能性がある。 / IDやパスワードが盗まれると、ウェブページの改ざんをされる可能性がある。\n解答解説要約: FTPは通信が暗号化されないため、認証情報の漏えいや改ざん被害につながる危険がある。\n学習目標: SFTPの特徴を説明できる / ファイル転送時に通信が保護されるかを判断できる",
+    "learningObjectives": [
+      "SFTPの特徴を説明できる",
+      "ファイル転送時に通信が保護されるかを判断できる"
+    ],
+    "knowledgeType": "exam_content",
+    "questionGenerationEligible": true,
+    "sourceQuestionNumbers": [
+      3
+    ],
+    "correctAnswer": 2,
+    "answerExplanationSummary": "FTPは通信が暗号化されないため、認証情報の漏えいや改ざん被害につながる危険がある。",
+    "answerSourcePages": [
+      1
+    ],
+    "answerSection": "internet",
+    "sectionMatch": true,
+    "verificationStatus": "verified_from_answer",
+    "reviewStatus": "approved",
+    "sourceDocument": "ウェブデザイン検定模擬試験",
+    "reviewNote": "解答・解説資料と照合済み。"
+  },
+  {
+    "id": "webdesign-ウェブデザイン検定模擬試験-q004-c05",
+    "section": "internet",
+    "title": "NATとNAPTによるIPアドレス変換",
+    "pages": [
+      1
+    ],
+    "keywords": [
+      "NAT",
+      "NAPT",
+      "プライベートIPアドレス",
+      "グローバルIPアドレス"
+    ],
+    "facts": [
+      "インターネットに接続するには、重複しないグローバルIPアドレスが必要である。",
+      "LAN内部に接続された各端末はプライベートIPアドレスを利用している。",
+      "プライベートIPアドレスとグローバルIPアドレスを変換する技術をNAT/NAPTという。",
+      "NATはNetwork Address Translationの略である。",
+      "NAPTはNetwork Address Port Translationの略である。"
+    ],
+    "candidateFacts": [
+      "NAT/NAPTは、プライベートIPアドレスとグローバルIPアドレスの変換に関係する技術である。"
+    ],
+    "text": "NATやNAPTは、内部ネットワークのアドレスとインターネット側のアドレスを変換する仕組みとして理解する。\n確認済み事項: インターネットに接続するには、重複しないグローバルIPアドレスが必要である。 / LAN内部に接続された各端末はプライベートIPアドレスを利用している。 / プライベートIPアドレスとグローバルIPアドレスを変換する技術をNAT/NAPTという。 / NATはNetwork Address Translationの略である。 / NAPTはNetwork Address Port Translationの略である。\n解答解説要約: LAN内の端末が使うプライベートIPアドレスとグローバルIPアドレスを変換する技術がNAT/NAPTである。\n学習目標: NAT/NAPTの役割を説明できる / プライベートIPアドレスとグローバルIPアドレスの変換技術を識別できる",
+    "learningObjectives": [
+      "NAT/NAPTの役割を説明できる",
+      "プライベートIPアドレスとグローバルIPアドレスの変換技術を識別できる"
+    ],
+    "knowledgeType": "exam_content",
+    "questionGenerationEligible": true,
+    "sourceQuestionNumbers": [
+      4
+    ],
+    "correctAnswer": 1,
+    "answerExplanationSummary": "LAN内の端末が使うプライベートIPアドレスとグローバルIPアドレスを変換する技術がNAT/NAPTである。",
+    "answerSourcePages": [
+      1
+    ],
+    "answerSection": "internet",
+    "sectionMatch": true,
+    "verificationStatus": "verified_from_answer",
+    "reviewStatus": "approved",
+    "sourceDocument": "ウェブデザイン検定模擬試験",
+    "reviewNote": "解答・解説資料と照合済み。"
+  },
+  {
+    "id": "webdesign-ウェブデザイン検定模擬試験-q005-c06",
+    "section": "internet",
+    "title": "標準ポート番号443とHTTPの区別",
+    "pages": [
+      1
+    ],
+    "keywords": [
+      "ポート番号",
+      "443",
+      "HTTP",
+      "標準ポート"
+    ],
+    "facts": [
+      "HTTPの標準ポート番号は80である。",
+      "443はHTTPSのポート番号である。",
+      "ポート番号はサービスやプロトコルを識別するためのものである。"
+    ],
+    "candidateFacts": [
+      "標準ポート番号443とHTTPの対応関係が問われている。",
+      "443番ポートはHTTPの標準ポートとして扱わない。"
+    ],
+    "text": "Web通信で使われるプロトコルと標準ポート番号の対応を正しく区別する必要がある。\n確認済み事項: HTTPの標準ポート番号は80である。 / 443はHTTPSのポート番号である。 / ポート番号はサービスやプロトコルを識別するためのものである。\n解答解説要約: HTTPの標準ポート番号は80であり、443はHTTPSで使用される。\n学習目標: 代表的なWeb関連ポート番号を識別できる / 443番ポートとHTTPの関係を正誤判断できる",
+    "learningObjectives": [
+      "代表的なWeb関連ポート番号を識別できる",
+      "443番ポートとHTTPの関係を正誤判断できる"
+    ],
+    "knowledgeType": "exam_content",
+    "questionGenerationEligible": true,
+    "sourceQuestionNumbers": [
+      5
+    ],
+    "correctAnswer": 2,
+    "answerExplanationSummary": "HTTPの標準ポート番号は80であり、443はHTTPSで使用される。",
+    "answerSourcePages": [
+      2
+    ],
+    "answerSection": "internet",
+    "sectionMatch": true,
+    "verificationStatus": "verified_from_answer",
+    "reviewStatus": "approved",
+    "sourceDocument": "ウェブデザイン検定模擬試験",
+    "reviewNote": "解答・解説資料と照合済み。"
+  }
+]
