@@ -24,6 +24,9 @@ DEFAULT_EMBEDDING_MODEL = (
     "text-embedding-3-small"
 )
 
+WEBDESIGN_DUPLICATE_THRESHOLD = 0.88
+WEBDESIGN_REVIEW_THRESHOLD = 0.80
+
 
 def normalize_exact_text(
     value: str,
@@ -256,6 +259,30 @@ def classify_similarity(
         return "review"
 
     return "pass"
+
+
+def classify_webdesign_similarity(
+    similarity: float,
+) -> str:
+    """
+    Classify semantic similarity using the
+    provisional WebDesign thresholds.
+
+    These values were calibrated against
+    same-concept and different-concept
+    WebDesign question samples and should be
+    re-evaluated as the sample set grows.
+    """
+
+    return classify_similarity(
+        similarity,
+        duplicate_threshold=(
+            WEBDESIGN_DUPLICATE_THRESHOLD
+        ),
+        review_threshold=(
+            WEBDESIGN_REVIEW_THRESHOLD
+        ),
+    )
 
 
 def rank_embedding_matches(
