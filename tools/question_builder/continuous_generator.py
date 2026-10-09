@@ -17,15 +17,23 @@ from tools.question_builder.continuous_planner import (
 from tools.question_builder.continuous_question_cycle import (
     run_webdesign_question_cycle,
 )
+from tools.question_builder.continuous_semantic_gate import (
+    build_app_comparison_records,
+    build_comparison_record,
+    evaluate_webdesign_semantic_gate,
+)
 from tools.question_builder.exam_generation_profiles import (
     get_exam_generation_profile,
 )
 from tools.question_builder.knowledge.loader import (
     load_knowledge,
 )
+from tools.question_builder.webdesign_question_pool_loader import (
+    load_webdesign_question_pool,
+)
 
 
-SESSION_STATE_VERSION = 3
+SESSION_STATE_VERSION = 4
 
 DEFAULT_STATE_ROOT = Path(
     "generated_materials"
@@ -356,6 +364,8 @@ def create_session_state(
         "approvedCount": 0,
         "reviewCount": 0,
         "rejectedCount": 0,
+        "semanticDuplicateCount": 0,
+        "semanticReviewCount": 0,
         "planner": create_planner_state(),
         "currentKnowledge": None,
         "currentQuestion": None,
@@ -375,6 +385,7 @@ def run_continuous_session(
     allow_api: bool = False,
     max_attempts: int = 3,
     cycle_runner: Any = None,
+    semantic_gate_runner: Any = None,
 ) -> dict[str, Any]:
     print(
         "SESSION START"
@@ -434,6 +445,38 @@ def run_continuous_session(
             cycle_runner = (
                 run_webdesign_question_cycle
             )
+
+        if semantic_gate_runner is None:
+            semantic_gate_runner = (
+                evaluate_webdesign_semantic_gate
+            )
+
+        app_comparison_records = []
+        session_comparison_records = []
+
+        if (
+            allow_api
+            and state["exam"]
+            == "webdesign"
+        ):
+            app_questions = (
+                load_webdesign_question_pool()
+            )
+
+            app_comparison_records = (
+                build_app_comparison_records(
+                    app_questions
+                )
+            )
+
+            print(
+                "Semantic app pool:",
+                len(
+                    app_comparison_records
+                ),
+            )
+
+            print()
 
         while True:
             try:
@@ -742,129 +785,306 @@ def run_continuous_session(
                         ]
                     )
 
-                    candidate_path = (
-                        get_candidate_path(
-                            state_path=(
-                                state_path
+                    comparison_records = [
+                        *app_comparison_records,
+                        *session_comparison_records,
+                    ]
+
+                    semantic_result = (
+                        semantic_gate_runner(
+                            candidate=(
+                                final_question
                             ),
-                            session_id=state[
-                                "sessionId"
-                            ],
-                            iteration=(
-                                iteration
+                            comparison_records=(
+                                comparison_records
                             ),
+                            allow_api=True,
                         )
                     )
 
-                    candidate = {
-                        "reviewStatus": (
-                            "pending"
-                        ),
-                        "sessionId": state[
-                            "sessionId"
-                        ],
-                        "iteration": (
-                            iteration
-                        ),
-                        "exam": state[
-                            "exam"
-                        ],
-                        "section": state[
-                            "section"
-                        ],
-                        "knowledgeId": (
-                            selected["id"]
-                        ),
-                        "questionType": (
-                            question_type
-                        ),
-                        "targetDifficulty": (
-                            target_difficulty
-                        ),
-                        "attemptsUsed": (
-                            cycle_result[
-                                "attemptsUsed"
-                            ]
-                        ),
-                        "question": (
-                            final_question
-                        ),
-                        "qualityReview": (
-                            final_review
-                        ),
-                        "cycleResultPath": (
-                            str(
-                                cycle_result_path
-                            )
-                        ),
-                        "createdAt": (
-                            now_iso()
-                        ),
-                    }
+                    semantic_status = (
+                        semantic_result.get(
+                            "status"
+                        )
+                    )
 
                     save_json_atomic(
-                        path=candidate_path,
-                        payload=candidate,
+                        path=cycle_result_path,
+                        payload={
+                            "sessionId": state[
+                                "sessionId"
+                            ],
+                            "iteration": (
+                                iteration
+                            ),
+                            "savedAt": (
+                                now_iso()
+                            ),
+                            "result": (
+                                cycle_result
+                            ),
+                            "semanticGate": (
+                                semantic_result
+                            ),
+                        },
                     )
 
-                    state[
-                        "generatedCount"
-                    ] += 1
+                    if (
+                        semantic_status
+                        == "duplicate"
+                    ):
+                        state[
+                            "planner"
+                        ] = block_knowledge(
+                            state[
+                                "planner"
+                            ],
+                            selected["id"],
+                        )
 
-                    state[
-                        "reviewCount"
-                    ] += 1
+                        state[
+                            "semanticDuplicateCount"
+                        ] += 1
 
-                    state[
-                        "currentQuestion"
-                    ] = {
-                        "reviewStatus": (
-                            "pending"
-                        ),
-                        "candidatePath": (
-                            str(
-                                candidate_path
+                        state[
+                            "currentQuestion"
+                        ] = None
+
+                        state[
+                            "lastEvent"
+                        ] = {
+                            "type": (
+                                "semantic_duplicate_"
+                                "blocked"
+                            ),
+                            "iteration": (
+                                iteration
+                            ),
+                            "knowledgeId": (
+                                selected["id"]
+                            ),
+                            "topMatch": (
+                                semantic_result.get(
+                                    "topMatch"
+                                )
+                            ),
+                            "cycleResultPath": (
+                                str(
+                                    cycle_result_path
+                                )
+                            ),
+                            "at": now_iso(),
+                        }
+
+                        print(
+                            " semantic gate: "
+                            "DUPLICATE"
+                        )
+
+                        top_match = (
+                            semantic_result.get(
+                                "topMatch"
                             )
-                        ),
-                        "question": (
-                            final_question
-                        ),
-                    }
+                        )
 
-                    state[
-                        "lastEvent"
-                    ] = {
-                        "type": (
+                        if top_match:
+                            print(
+                                " top match:",
+                                top_match.get(
+                                    "id"
+                                ),
+                            )
+
+                    elif (
+                        semantic_status
+                        in {
+                            "pass",
+                            "review",
+                        }
+                    ):
+                        review_status = (
+                            "semantic_review"
+                            if semantic_status
+                            == "review"
+                            else "pending"
+                        )
+
+                        candidate_path = (
+                            get_candidate_path(
+                                state_path=(
+                                    state_path
+                                ),
+                                session_id=state[
+                                    "sessionId"
+                                ],
+                                iteration=(
+                                    iteration
+                                ),
+                            )
+                        )
+
+                        candidate = {
+                            "reviewStatus": (
+                                review_status
+                            ),
+                            "sessionId": state[
+                                "sessionId"
+                            ],
+                            "iteration": (
+                                iteration
+                            ),
+                            "exam": state[
+                                "exam"
+                            ],
+                            "section": state[
+                                "section"
+                            ],
+                            "knowledgeId": (
+                                selected["id"]
+                            ),
+                            "questionType": (
+                                question_type
+                            ),
+                            "targetDifficulty": (
+                                target_difficulty
+                            ),
+                            "attemptsUsed": (
+                                cycle_result[
+                                    "attemptsUsed"
+                                ]
+                            ),
+                            "question": (
+                                final_question
+                            ),
+                            "qualityReview": (
+                                final_review
+                            ),
+                            "semanticGate": (
+                                semantic_result
+                            ),
+                            "cycleResultPath": (
+                                str(
+                                    cycle_result_path
+                                )
+                            ),
+                            "createdAt": (
+                                now_iso()
+                            ),
+                        }
+
+                        save_json_atomic(
+                            path=candidate_path,
+                            payload=candidate,
+                        )
+
+                        state[
+                            "generatedCount"
+                        ] += 1
+
+                        state[
+                            "reviewCount"
+                        ] += 1
+
+                        if (
+                            semantic_status
+                            == "review"
+                        ):
+                            state[
+                                "semanticReviewCount"
+                            ] += 1
+
+                        state[
+                            "currentQuestion"
+                        ] = {
+                            "reviewStatus": (
+                                review_status
+                            ),
+                            "candidatePath": (
+                                str(
+                                    candidate_path
+                                )
+                            ),
+                            "question": (
+                                final_question
+                            ),
+                        }
+
+                        record_id = (
+                            f'{state["sessionId"]}:'
+                            f'candidate-'
+                            f'{iteration:06d}'
+                        )
+
+                        session_comparison_records.append(
+                            build_comparison_record(
+                                question=(
+                                    final_question
+                                ),
+                                source="session",
+                                record_id=(
+                                    record_id
+                                ),
+                            )
+                        )
+
+                        event_type = (
+                            "candidate_semantic_"
+                            "review"
+                            if semantic_status
+                            == "review"
+                            else
                             "candidate_pending_"
                             "review"
-                        ),
-                        "iteration": (
-                            iteration
-                        ),
-                        "knowledgeId": (
-                            selected["id"]
-                        ),
-                        "candidatePath": (
-                            str(
-                                candidate_path
-                            )
-                        ),
-                        "cycleResultPath": (
-                            str(
-                                cycle_result_path
-                            )
-                        ),
-                        "at": now_iso(),
-                    }
+                        )
 
-                    print(
-                        " cycle result: PASS"
-                    )
+                        state[
+                            "lastEvent"
+                        ] = {
+                            "type": event_type,
+                            "iteration": (
+                                iteration
+                            ),
+                            "knowledgeId": (
+                                selected["id"]
+                            ),
+                            "candidatePath": (
+                                str(
+                                    candidate_path
+                                )
+                            ),
+                            "cycleResultPath": (
+                                str(
+                                    cycle_result_path
+                                )
+                            ),
+                            "semanticTopMatch": (
+                                semantic_result.get(
+                                    "topMatch"
+                                )
+                            ),
+                            "at": now_iso(),
+                        }
 
-                    print(
-                        " candidate:",
-                        candidate_path,
-                    )
+                        print(
+                            " cycle result: PASS"
+                        )
+
+                        print(
+                            " semantic gate:",
+                            semantic_status.upper(),
+                        )
+
+                        print(
+                            " candidate:",
+                            candidate_path,
+                        )
+
+                    else:
+                        raise ValueError(
+                            "unsupported semantic "
+                            "gate status: "
+                            f"{semantic_status}"
+                        )
 
                 elif cycle_status in {
                     "rejected",
