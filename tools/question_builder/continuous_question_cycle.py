@@ -114,6 +114,45 @@ def build_revision_prompt(
     )
 
 
+def classify_exhaustion(
+    *,
+    attempts: list[dict[str, Any]],
+    difficulty_min: int,
+) -> str:
+    if not attempts:
+        return "no_attempts"
+
+    reviews = [
+        attempt["review"]
+        for attempt in attempts
+    ]
+
+    grounding_remained_valid = all(
+        review["factualAccuracy"] == "pass"
+        and review["answerUniqueness"] == "pass"
+        and review["grounding"] == "pass"
+        and review["explanationQuality"] == "pass"
+        for review in reviews
+    )
+
+    difficulty_remained_below_target = all(
+        review["difficultyMatch"] is False
+        and review["difficultyEstimate"]
+        < difficulty_min
+        for review in reviews
+    )
+
+    if (
+        grounding_remained_valid
+        and difficulty_remained_below_target
+    ):
+        return (
+            "knowledge_difficulty_ceiling"
+        )
+
+    return "quality_exhausted"
+
+
 def _validate_cycle_request(
     *,
     knowledge: dict[str, Any],
@@ -448,6 +487,14 @@ def run_webdesign_question_cycle(
 
     return {
         "status": "exhausted",
+        "exhaustedReason": (
+            classify_exhaustion(
+                attempts=attempts,
+                difficulty_min=(
+                    difficulty_min
+                ),
+            )
+        ),
         "knowledgeId": knowledge_id,
         "section": section,
         "targetDifficulty": (
