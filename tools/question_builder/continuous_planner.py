@@ -22,6 +22,7 @@ def create_planner_state() -> dict[str, Any]:
         "knowledgeUsage": {},
         "recentKnowledgeIds": [],
         "lastKnowledgeId": None,
+        "blockedKnowledgeIds": [],
     }
 
 
@@ -117,6 +118,57 @@ def _normalize_usage_count(
     )
 
 
+def block_knowledge(
+    planner_state: dict[
+        str,
+        Any,
+    ] | None,
+    knowledge_id: str,
+) -> dict[str, Any]:
+    normalized_id = str(
+        knowledge_id
+    ).strip()
+
+    if not normalized_id:
+        raise ValueError(
+            "knowledge_id must not be empty"
+        )
+
+    state = deepcopy(
+        planner_state
+        or create_planner_state()
+    )
+
+    raw_blocked = state.get(
+        "blockedKnowledgeIds",
+        [],
+    )
+
+    blocked = (
+        [
+            str(item).strip()
+            for item in raw_blocked
+            if str(item).strip()
+        ]
+        if isinstance(
+            raw_blocked,
+            list,
+        )
+        else []
+    )
+
+    if normalized_id not in blocked:
+        blocked.append(
+            normalized_id
+        )
+
+    state[
+        "blockedKnowledgeIds"
+    ] = blocked
+
+    return state
+
+
 def rank_knowledge_candidates(
     knowledge_items: list[
         dict[str, Any]
@@ -188,12 +240,43 @@ def rank_knowledge_candidates(
         recent
     )
 
+    raw_blocked = state.get(
+        "blockedKnowledgeIds",
+        [],
+    )
+
+    blocked = (
+        [
+            str(
+                knowledge_id
+            ).strip()
+            for knowledge_id
+            in raw_blocked
+            if str(
+                knowledge_id
+            ).strip()
+        ]
+        if isinstance(
+            raw_blocked,
+            list,
+        )
+        else []
+    )
+
+    blocked_set = set(
+        blocked
+    )
+
     candidates = [
         item
         for item in knowledge_items
-        if is_plannable_knowledge(
-            item,
-            section=section,
+        if (
+            is_plannable_knowledge(
+                item,
+                section=section,
+            )
+            and item["id"]
+            not in blocked_set
         )
     ]
 
