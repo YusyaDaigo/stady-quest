@@ -23,6 +23,8 @@ def create_planner_state() -> dict[str, Any]:
         "recentKnowledgeIds": [],
         "lastKnowledgeId": None,
         "blockedKnowledgeIds": [],
+        "difficultyUsage": {},
+        "knowledgeDifficulty": {},
     }
 
 
@@ -165,6 +167,484 @@ def block_knowledge(
     state[
         "blockedKnowledgeIds"
     ] = blocked
+
+    return state
+
+
+def _validate_difficulty_range(
+    difficulty_min: int,
+    difficulty_max: int,
+) -> None:
+    if (
+        not isinstance(
+            difficulty_min,
+            int,
+        )
+        or isinstance(
+            difficulty_min,
+            bool,
+        )
+    ):
+        raise ValueError(
+            "difficulty_min must be an integer"
+        )
+
+    if (
+        not isinstance(
+            difficulty_max,
+            int,
+        )
+        or isinstance(
+            difficulty_max,
+            bool,
+        )
+    ):
+        raise ValueError(
+            "difficulty_max must be an integer"
+        )
+
+    if difficulty_min > difficulty_max:
+        raise ValueError(
+            "difficulty_min must not exceed "
+            "difficulty_max"
+        )
+
+
+def _normalize_difficulty_counts(
+    value: Any,
+) -> dict[str, int]:
+    if not isinstance(
+        value,
+        dict,
+    ):
+        return {}
+
+    normalized = {}
+
+    for raw_level, raw_count in value.items():
+        try:
+            level = int(
+                raw_level
+            )
+
+            count = int(
+                raw_count
+            )
+        except (
+            TypeError,
+            ValueError,
+        ):
+            continue
+
+        if count <= 0:
+            continue
+
+        normalized[
+            str(level)
+        ] = count
+
+    return normalized
+
+
+def select_target_difficulty(
+    planner_state: dict[
+        str,
+        Any,
+    ] | None,
+    knowledge_id: str,
+    *,
+    difficulty_min: int,
+    difficulty_max: int,
+) -> int:
+    _validate_difficulty_range(
+        difficulty_min,
+        difficulty_max,
+    )
+
+    normalized_id = str(
+        knowledge_id
+    ).strip()
+
+    if not normalized_id:
+        raise ValueError(
+            "knowledge_id must not be empty"
+        )
+
+    state = (
+        planner_state
+        or create_planner_state()
+    )
+
+    raw_knowledge_difficulty = state.get(
+        "knowledgeDifficulty",
+        {},
+    )
+
+    knowledge_difficulty = (
+        raw_knowledge_difficulty
+        if isinstance(
+            raw_knowledge_difficulty,
+            dict,
+        )
+        else {}
+    )
+
+    record = knowledge_difficulty.get(
+        normalized_id,
+        {},
+    )
+
+    if not isinstance(
+        record,
+        dict,
+    ):
+        record = {}
+
+    pass_counts = (
+        _normalize_difficulty_counts(
+            record.get(
+                "passCounts",
+                {},
+            )
+        )
+    )
+
+    blocked_from = record.get(
+        "blockedFrom"
+    )
+
+    try:
+        blocked_from = (
+            int(
+                blocked_from
+            )
+            if blocked_from is not None
+            else None
+        )
+    except (
+        TypeError,
+        ValueError,
+    ):
+        blocked_from = None
+
+    available = [
+        difficulty
+        for difficulty in range(
+            difficulty_min,
+            difficulty_max + 1,
+        )
+        if (
+            blocked_from is None
+            or difficulty
+            < blocked_from
+        )
+    ]
+
+    if not available:
+        raise ValueError(
+            "No available difficulty found "
+            f"for Knowledge: {normalized_id}"
+        )
+
+    unconfirmed = [
+        difficulty
+        for difficulty in available
+        if pass_counts.get(
+            str(
+                difficulty
+            ),
+            0,
+        )
+        == 0
+    ]
+
+    if unconfirmed:
+        return min(
+            unconfirmed
+        )
+
+    return min(
+        available,
+        key=lambda difficulty: (
+            pass_counts.get(
+                str(
+                    difficulty
+                ),
+                0,
+            ),
+            -difficulty,
+        ),
+    )
+
+
+def record_difficulty_pass(
+    planner_state: dict[
+        str,
+        Any,
+    ] | None,
+    knowledge_id: str,
+    difficulty: int,
+) -> dict[str, Any]:
+    normalized_id = str(
+        knowledge_id
+    ).strip()
+
+    if not normalized_id:
+        raise ValueError(
+            "knowledge_id must not be empty"
+        )
+
+    if (
+        not isinstance(
+            difficulty,
+            int,
+        )
+        or isinstance(
+            difficulty,
+            bool,
+        )
+    ):
+        raise ValueError(
+            "difficulty must be an integer"
+        )
+
+    state = deepcopy(
+        planner_state
+        or create_planner_state()
+    )
+
+    knowledge_difficulty = state.get(
+        "knowledgeDifficulty"
+    )
+
+    if not isinstance(
+        knowledge_difficulty,
+        dict,
+    ):
+        knowledge_difficulty = {}
+
+    record = knowledge_difficulty.get(
+        normalized_id,
+        {},
+    )
+
+    if not isinstance(
+        record,
+        dict,
+    ):
+        record = {}
+
+    pass_counts = (
+        _normalize_difficulty_counts(
+            record.get(
+                "passCounts",
+                {},
+            )
+        )
+    )
+
+    key = str(
+        difficulty
+    )
+
+    pass_counts[key] = (
+        pass_counts.get(
+            key,
+            0,
+        )
+        + 1
+    )
+
+    record[
+        "passCounts"
+    ] = pass_counts
+
+    blocked_from = record.get(
+        "blockedFrom"
+    )
+
+    try:
+        blocked_from = (
+            int(
+                blocked_from
+            )
+            if blocked_from is not None
+            else None
+        )
+    except (
+        TypeError,
+        ValueError,
+    ):
+        blocked_from = None
+
+    if (
+        blocked_from is not None
+        and difficulty
+        >= blocked_from
+    ):
+        record.pop(
+            "blockedFrom",
+            None,
+        )
+
+    knowledge_difficulty[
+        normalized_id
+    ] = record
+
+    difficulty_usage = state.get(
+        "difficultyUsage"
+    )
+
+    if not isinstance(
+        difficulty_usage,
+        dict,
+    ):
+        difficulty_usage = {}
+
+    difficulty_usage[key] = (
+        _normalize_usage_count(
+            difficulty_usage.get(
+                key,
+                0,
+            )
+        )
+        + 1
+    )
+
+    state[
+        "knowledgeDifficulty"
+    ] = knowledge_difficulty
+
+    state[
+        "difficultyUsage"
+    ] = difficulty_usage
+
+    return state
+
+
+def record_difficulty_ceiling(
+    planner_state: dict[
+        str,
+        Any,
+    ] | None,
+    knowledge_id: str,
+    difficulty: int,
+    *,
+    difficulty_min: int,
+) -> dict[str, Any]:
+    normalized_id = str(
+        knowledge_id
+    ).strip()
+
+    if not normalized_id:
+        raise ValueError(
+            "knowledge_id must not be empty"
+        )
+
+    if (
+        not isinstance(
+            difficulty,
+            int,
+        )
+        or isinstance(
+            difficulty,
+            bool,
+        )
+    ):
+        raise ValueError(
+            "difficulty must be an integer"
+        )
+
+    state = deepcopy(
+        planner_state
+        or create_planner_state()
+    )
+
+    knowledge_difficulty = state.get(
+        "knowledgeDifficulty"
+    )
+
+    if not isinstance(
+        knowledge_difficulty,
+        dict,
+    ):
+        knowledge_difficulty = {}
+
+    record = knowledge_difficulty.get(
+        normalized_id,
+        {},
+    )
+
+    if not isinstance(
+        record,
+        dict,
+    ):
+        record = {}
+
+    pass_counts = (
+        _normalize_difficulty_counts(
+            record.get(
+                "passCounts",
+                {},
+            )
+        )
+    )
+
+    if (
+        pass_counts.get(
+            str(
+                difficulty
+            ),
+            0,
+        )
+        > 0
+    ):
+        return state
+
+    old_blocked_from = record.get(
+        "blockedFrom"
+    )
+
+    try:
+        old_blocked_from = (
+            int(
+                old_blocked_from
+            )
+            if old_blocked_from is not None
+            else None
+        )
+    except (
+        TypeError,
+        ValueError,
+    ):
+        old_blocked_from = None
+
+    new_blocked_from = (
+        difficulty
+        if old_blocked_from is None
+        else min(
+            old_blocked_from,
+            difficulty,
+        )
+    )
+
+    record[
+        "blockedFrom"
+    ] = new_blocked_from
+
+    knowledge_difficulty[
+        normalized_id
+    ] = record
+
+    state[
+        "knowledgeDifficulty"
+    ] = knowledge_difficulty
+
+    if difficulty <= difficulty_min:
+        state = block_knowledge(
+            state,
+            normalized_id,
+        )
 
     return state
 
