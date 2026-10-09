@@ -9,9 +9,13 @@ from pathlib import Path
 from typing import Any
 
 from tools.question_builder.continuous_planner import (
+    block_knowledge,
     create_planner_state,
     record_knowledge_use,
     select_next_knowledge,
+)
+from tools.question_builder.continuous_question_cycle import (
+    run_webdesign_question_cycle,
 )
 from tools.question_builder.exam_generation_profiles import (
     get_exam_generation_profile,
@@ -21,7 +25,7 @@ from tools.question_builder.knowledge.loader import (
 )
 
 
-SESSION_STATE_VERSION = 2
+SESSION_STATE_VERSION = 3
 
 DEFAULT_STATE_ROOT = Path(
     "generated_materials"
@@ -246,6 +250,79 @@ def save_session_state(
     )
 
 
+def save_json_atomic(
+    *,
+    path: Path,
+    payload: dict[str, Any],
+) -> None:
+    path.parent.mkdir(
+        parents=True,
+        exist_ok=True,
+    )
+
+    temporary_path = (
+        path.with_suffix(
+            path.suffix + ".tmp"
+        )
+    )
+
+    temporary_path.write_text(
+        json.dumps(
+            payload,
+            ensure_ascii=False,
+            indent=2,
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    temporary_path.replace(
+        path
+    )
+
+
+def get_cycle_result_path(
+    *,
+    state_path: Path,
+    session_id: str,
+    iteration: int,
+) -> Path:
+    exam_root = (
+        state_path.parent.parent
+    )
+
+    return (
+        exam_root
+        / "continuous_results"
+        / session_id
+        / (
+            f"iteration-"
+            f"{iteration:06d}.json"
+        )
+    )
+
+
+def get_candidate_path(
+    *,
+    state_path: Path,
+    session_id: str,
+    iteration: int,
+) -> Path:
+    exam_root = (
+        state_path.parent.parent
+    )
+
+    return (
+        exam_root
+        / "continuous_candidates"
+        / session_id
+        / (
+            f"candidate-"
+            f"{iteration:06d}.json"
+        )
+    )
+
+
 def create_session_state(
     *,
     session_id: str,
@@ -295,6 +372,9 @@ def run_continuous_session(
     state_path: Path,
     max_iterations: int | None,
     poll_seconds: float,
+    allow_api: bool = False,
+    max_attempts: int = 3,
+    cycle_runner: Any = None,
 ) -> dict[str, Any]:
     print(
         "SESSION START"
@@ -350,7 +430,69 @@ def run_continuous_session(
 
         print()
 
+        if cycle_runner is None:
+            cycle_runner = (
+                run_webdesign_question_cycle
+            )
+
         while True:
+            try:
+                selected = select_next_knowledge(
+                    knowledge_items,
+                    section=state["section"],
+                    planner_state=state[
+                        "planner"
+                    ],
+                )
+
+            except ValueError as exc:
+                if (
+                    "No plannable Knowledge found"
+                    not in str(exc)
+                ):
+                    raise
+
+                state[
+                    "status"
+                ] = "stopped"
+
+                state[
+                    "currentKnowledge"
+                ] = None
+
+                state[
+                    "currentQuestion"
+                ] = None
+
+                state[
+                    "lastEvent"
+                ] = {
+                    "type": (
+                        "no_plannable_knowledge"
+                    ),
+                    "iteration": state[
+                        "iterationCount"
+                    ],
+                    "at": now_iso(),
+                }
+
+                save_session_state(
+                    path=state_path,
+                    state=state,
+                )
+
+                print()
+                print(
+                    "SESSION STOP"
+                )
+
+                print(
+                    "reason: "
+                    "no plannable Knowledge"
+                )
+
+                return state
+
             state[
                 "iterationCount"
             ] += 1
@@ -358,14 +500,6 @@ def run_continuous_session(
             iteration = state[
                 "iterationCount"
             ]
-
-            selected = select_next_knowledge(
-                knowledge_items,
-                section=state["section"],
-                planner_state=state[
-                    "planner"
-                ],
-            )
 
             state[
                 "planner"
@@ -396,8 +530,6 @@ def run_continuous_session(
                 ),
             }
 
-            event_time = now_iso()
-
             state[
                 "lastEvent"
             ] = {
@@ -408,7 +540,7 @@ def run_continuous_session(
                 "knowledgeId": (
                     selected["id"]
                 ),
-                "at": event_time,
+                "at": now_iso(),
             }
 
             save_session_state(
@@ -431,10 +563,389 @@ def run_continuous_session(
                 selected["title"],
             )
 
-            print(
-                " generation stage "
-                "not connected yet",
-            )
+            if not allow_api:
+                state[
+                    "lastEvent"
+                ] = {
+                    "type": (
+                        "generation_skipped_"
+                        "api_disabled"
+                    ),
+                    "iteration": iteration,
+                    "knowledgeId": (
+                        selected["id"]
+                    ),
+                    "at": now_iso(),
+                }
+
+                save_session_state(
+                    path=state_path,
+                    state=state,
+                )
+
+                print(
+                    " generation skipped: "
+                    "API disabled"
+                )
+
+            else:
+                if (
+                    state["exam"]
+                    != "webdesign"
+                ):
+                    state[
+                        "status"
+                    ] = "stopped"
+
+                    state[
+                        "lastEvent"
+                    ] = {
+                        "type": (
+                            "unsupported_"
+                            "generation_exam"
+                        ),
+                        "iteration": (
+                            iteration
+                        ),
+                        "exam": state[
+                            "exam"
+                        ],
+                        "at": now_iso(),
+                    }
+
+                    save_session_state(
+                        path=state_path,
+                        state=state,
+                    )
+
+                    print()
+                    print(
+                        "SESSION STOP"
+                    )
+
+                    print(
+                        "reason: generation "
+                        "currently supports "
+                        "webdesign only"
+                    )
+
+                    return state
+
+                question_types = (
+                    state[
+                        "questionTypes"
+                    ]
+                )
+
+                if not question_types:
+                    raise ValueError(
+                        "questionTypes "
+                        "must not be empty"
+                    )
+
+                question_type = (
+                    question_types[
+                        (
+                            iteration - 1
+                        )
+                        % len(
+                            question_types
+                        )
+                    ]
+                )
+
+                target_difficulty = (
+                    state[
+                        "difficultyMin"
+                    ]
+                )
+
+                print(
+                    "[CYCLE]",
+                    f"question_type="
+                    f"{question_type}",
+                    f"difficulty="
+                    f"{target_difficulty}",
+                )
+
+                cycle_result = (
+                    cycle_runner(
+                        knowledge=selected,
+                        section=state[
+                            "section"
+                        ],
+                        difficulty_min=state[
+                            "difficultyMin"
+                        ],
+                        difficulty_max=state[
+                            "difficultyMax"
+                        ],
+                        target_difficulty=(
+                            target_difficulty
+                        ),
+                        question_type=(
+                            question_type
+                        ),
+                        max_attempts=(
+                            max_attempts
+                        ),
+                        allow_api=True,
+                        use_cache=False,
+                    )
+                )
+
+                cycle_result_path = (
+                    get_cycle_result_path(
+                        state_path=state_path,
+                        session_id=state[
+                            "sessionId"
+                        ],
+                        iteration=iteration,
+                    )
+                )
+
+                save_json_atomic(
+                    path=cycle_result_path,
+                    payload={
+                        "sessionId": state[
+                            "sessionId"
+                        ],
+                        "iteration": (
+                            iteration
+                        ),
+                        "savedAt": now_iso(),
+                        "result": (
+                            cycle_result
+                        ),
+                    },
+                )
+
+                cycle_status = (
+                    cycle_result.get(
+                        "status"
+                    )
+                )
+
+                if (
+                    cycle_status
+                    == "pass"
+                ):
+                    final_question = (
+                        cycle_result[
+                            "finalQuestion"
+                        ]
+                    )
+
+                    final_review = (
+                        cycle_result[
+                            "finalReview"
+                        ]
+                    )
+
+                    candidate_path = (
+                        get_candidate_path(
+                            state_path=(
+                                state_path
+                            ),
+                            session_id=state[
+                                "sessionId"
+                            ],
+                            iteration=(
+                                iteration
+                            ),
+                        )
+                    )
+
+                    candidate = {
+                        "reviewStatus": (
+                            "pending"
+                        ),
+                        "sessionId": state[
+                            "sessionId"
+                        ],
+                        "iteration": (
+                            iteration
+                        ),
+                        "exam": state[
+                            "exam"
+                        ],
+                        "section": state[
+                            "section"
+                        ],
+                        "knowledgeId": (
+                            selected["id"]
+                        ),
+                        "questionType": (
+                            question_type
+                        ),
+                        "targetDifficulty": (
+                            target_difficulty
+                        ),
+                        "attemptsUsed": (
+                            cycle_result[
+                                "attemptsUsed"
+                            ]
+                        ),
+                        "question": (
+                            final_question
+                        ),
+                        "qualityReview": (
+                            final_review
+                        ),
+                        "cycleResultPath": (
+                            str(
+                                cycle_result_path
+                            )
+                        ),
+                        "createdAt": (
+                            now_iso()
+                        ),
+                    }
+
+                    save_json_atomic(
+                        path=candidate_path,
+                        payload=candidate,
+                    )
+
+                    state[
+                        "generatedCount"
+                    ] += 1
+
+                    state[
+                        "reviewCount"
+                    ] += 1
+
+                    state[
+                        "currentQuestion"
+                    ] = {
+                        "reviewStatus": (
+                            "pending"
+                        ),
+                        "candidatePath": (
+                            str(
+                                candidate_path
+                            )
+                        ),
+                        "question": (
+                            final_question
+                        ),
+                    }
+
+                    state[
+                        "lastEvent"
+                    ] = {
+                        "type": (
+                            "candidate_pending_"
+                            "review"
+                        ),
+                        "iteration": (
+                            iteration
+                        ),
+                        "knowledgeId": (
+                            selected["id"]
+                        ),
+                        "candidatePath": (
+                            str(
+                                candidate_path
+                            )
+                        ),
+                        "cycleResultPath": (
+                            str(
+                                cycle_result_path
+                            )
+                        ),
+                        "at": now_iso(),
+                    }
+
+                    print(
+                        " cycle result: PASS"
+                    )
+
+                    print(
+                        " candidate:",
+                        candidate_path,
+                    )
+
+                elif cycle_status in {
+                    "rejected",
+                    "exhausted",
+                }:
+                    if (
+                        cycle_status
+                        == "exhausted"
+                    ):
+                        block_reason = (
+                            cycle_result.get(
+                                "exhaustedReason",
+                                "quality_exhausted",
+                            )
+                        )
+                    else:
+                        block_reason = (
+                            "cycle_rejected"
+                        )
+
+                    state[
+                        "planner"
+                    ] = block_knowledge(
+                        state["planner"],
+                        selected["id"],
+                    )
+
+                    state[
+                        "rejectedCount"
+                    ] += 1
+
+                    state[
+                        "currentQuestion"
+                    ] = None
+
+                    state[
+                        "lastEvent"
+                    ] = {
+                        "type": (
+                            "knowledge_blocked"
+                        ),
+                        "iteration": (
+                            iteration
+                        ),
+                        "knowledgeId": (
+                            selected["id"]
+                        ),
+                        "cycleStatus": (
+                            cycle_status
+                        ),
+                        "blockReason": (
+                            block_reason
+                        ),
+                        "cycleResultPath": (
+                            str(
+                                cycle_result_path
+                            )
+                        ),
+                        "at": now_iso(),
+                    }
+
+                    print(
+                        " cycle result:",
+                        cycle_status,
+                    )
+
+                    print(
+                        " Knowledge blocked:",
+                        block_reason,
+                    )
+
+                else:
+                    raise ValueError(
+                        "unsupported cycle status: "
+                        f"{cycle_status}"
+                    )
+
+                save_session_state(
+                    path=state_path,
+                    state=state,
+                )
 
             if (
                 max_iterations
@@ -586,6 +1097,25 @@ def build_parser() -> (
         default=1.0,
     )
 
+    parser.add_argument(
+        "--max-attempts",
+        type=int,
+        default=3,
+        help=(
+            "Maximum generate-review "
+            "attempts per Knowledge."
+        ),
+    )
+
+    parser.add_argument(
+        "--allow-api",
+        action="store_true",
+        help=(
+            "Explicitly allow question "
+            "generation API calls."
+        ),
+    )
+
     return parser
 
 
@@ -608,6 +1138,12 @@ def main() -> None:
         parser.error(
             "--poll-seconds "
             "must not be negative"
+        )
+
+    if args.max_attempts <= 0:
+        parser.error(
+            "--max-attempts "
+            "must be greater than zero"
         )
 
     try:
@@ -665,6 +1201,12 @@ def main() -> None:
         ),
         poll_seconds=(
             args.poll_seconds
+        ),
+        allow_api=(
+            args.allow_api
+        ),
+        max_attempts=(
+            args.max_attempts
         ),
     )
 
