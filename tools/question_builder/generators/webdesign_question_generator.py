@@ -94,6 +94,51 @@ class WebDesignQuestionGenerator(
                 f"{question_type}"
             )
 
+        allowed_source_knowledge_ids = (
+            input_data.get(
+                "allowed_source_knowledge_ids"
+            )
+        )
+
+        if (
+            not isinstance(
+                allowed_source_knowledge_ids,
+                list,
+            )
+            or not allowed_source_knowledge_ids
+            or any(
+                not isinstance(
+                    source_id,
+                    str,
+                )
+                or not source_id.strip()
+                for source_id
+                in allowed_source_knowledge_ids
+            )
+        ):
+            raise ValueError(
+                "allowed_source_knowledge_ids "
+                "must be a non-empty "
+                "list of strings"
+            )
+
+        if (
+            len(
+                {
+                    source_id.strip()
+                    for source_id
+                    in allowed_source_knowledge_ids
+                }
+            )
+            != len(
+                allowed_source_knowledge_ids
+            )
+        ):
+            raise ValueError(
+                "allowed_source_knowledge_ids "
+                "must not contain duplicates"
+            )
+
         return {
             "PROMPT": prompt,
         }
@@ -110,6 +155,9 @@ class WebDesignQuestionGenerator(
             ],
             expected_question_type=input_data[
                 "question_type"
+            ],
+            allowed_source_knowledge_ids=input_data[
+                "allowed_source_knowledge_ids"
             ],
         )
 
@@ -162,6 +210,11 @@ class WebDesignQuestionGenerator(
                 index=index,
                 expected_question_type=(
                     question_type
+                ),
+                allowed_source_knowledge_ids=(
+                    input_data[
+                        "allowed_source_knowledge_ids"
+                    ]
                 ),
             )
 

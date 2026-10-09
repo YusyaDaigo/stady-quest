@@ -164,6 +164,62 @@ def build_rag_question_generation_prompt(
         )
     )
 
+    source_knowledge_rule = ""
+    source_knowledge_json = ""
+
+    if (
+        str(exam).strip().lower()
+        == "webdesign"
+    ):
+        knowledge_ids = [
+            str(
+                item.get(
+                    "id",
+                    "",
+                )
+            ).strip()
+            for item
+            in knowledge_items
+        ]
+
+        if (
+            not knowledge_ids
+            or any(
+                not knowledge_id
+                for knowledge_id
+                in knowledge_ids
+            )
+        ):
+            raise ValueError(
+                "WebDesign Knowledge items "
+                "must have non-empty ids"
+            )
+
+        allowed_ids_text = json.dumps(
+            knowledge_ids,
+            ensure_ascii=False,
+        )
+
+        source_knowledge_rule = (
+            "・sourceKnowledgeIdsは、"
+            "正答と解説の根拠として"
+            "実際に使用したKnowledgeの"
+            "idを1件以上記録する\n"
+            "・sourceKnowledgeIdsには、"
+            "今回渡されたKnowledge以外の"
+            "idを記録しない\n"
+            "・使用していないKnowledgeの"
+            "idを水増ししない\n"
+            "・使用可能なKnowledge ID: "
+            f"{allowed_ids_text}"
+        )
+
+        source_knowledge_json = (
+            '  "sourceKnowledgeIds": [\n'
+            '    "実際に使用したKnowledgeのid"\n'
+            '  ],\n'
+        )
+
     generation_rules = "\n".join(
         f"・{rule}"
         for rule in profile[
@@ -260,11 +316,12 @@ section: {section}
 ・問題文にKnowledge IDを記載しない
 ・figureTypeは次から選択する: {supported_figure_types}
 {question_type_rule}
+{source_knowledge_rule}
 ・JSON以外の文章を出力しない
 
 【各問題のJSON形式】
 {{
-{question_type_json}  "question": "問題文",
+{question_type_json}{source_knowledge_json}  "question": "問題文",
   "choices": [
 {choices_json}
   ],

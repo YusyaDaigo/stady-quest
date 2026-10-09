@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, Iterable
 
 from tools.question_builder.exam_generation_profiles import (
     get_exam_generation_profile,
@@ -33,6 +33,9 @@ def validate_webdesign_generated_question(
     *,
     index: int | None = None,
     expected_question_type: str | None = None,
+    allowed_source_knowledge_ids: (
+        Iterable[str] | None
+    ) = None,
 ) -> None:
     """
     AIが生成したウェブデザイン技能検定3級の
@@ -115,3 +118,83 @@ def validate_webdesign_generated_question(
         raise ValueError(
             f"{context}: figureData must be an object"
         )
+
+    source_knowledge_ids = question.get(
+        "sourceKnowledgeIds"
+    )
+
+    if (
+        not isinstance(
+            source_knowledge_ids,
+            list,
+        )
+        or not source_knowledge_ids
+    ):
+        raise ValueError(
+            f"{context}: "
+            "sourceKnowledgeIds must be "
+            "a non-empty array"
+        )
+
+    normalized_source_ids = []
+
+    for source_id in source_knowledge_ids:
+        if (
+            not isinstance(
+                source_id,
+                str,
+            )
+            or not source_id.strip()
+        ):
+            raise ValueError(
+                f"{context}: "
+                "sourceKnowledgeIds must "
+                "contain non-empty strings"
+            )
+
+        normalized_source_ids.append(
+            source_id.strip()
+        )
+
+    if (
+        len(
+            set(
+                normalized_source_ids
+            )
+        )
+        != len(
+            normalized_source_ids
+        )
+    ):
+        raise ValueError(
+            f"{context}: "
+            "sourceKnowledgeIds contains "
+            "duplicates"
+        )
+
+    if (
+        allowed_source_knowledge_ids
+        is not None
+    ):
+        allowed_ids = {
+            str(source_id).strip()
+            for source_id
+            in allowed_source_knowledge_ids
+            if str(source_id).strip()
+        }
+
+        invalid_ids = [
+            source_id
+            for source_id
+            in normalized_source_ids
+            if source_id
+            not in allowed_ids
+        ]
+
+        if invalid_ids:
+            raise ValueError(
+                f"{context}: "
+                "sourceKnowledgeIds contains "
+                "unknown ids: "
+                f"{invalid_ids}"
+            )
