@@ -124,6 +124,7 @@ def build_quality_review_prompt(
     question: dict[str, Any],
     difficulty_min: int,
     difficulty_max: int,
+    target_difficulty: int,
 ) -> str:
     knowledge_json = json.dumps(
         knowledge,
@@ -147,9 +148,22 @@ def build_quality_review_prompt(
 Knowledgeに書かれていない事実を
 正しいものとして扱わないでください。
 
-目標難易度:
+設定上の難易度範囲:
 {difficulty_min}〜{difficulty_max}
+
+今回の生成目標難易度:
+{target_difficulty}
+
 （1=非常に易しい、5=非常に難しい）
+
+difficultyMatch=true にしてよいのは、
+difficultyEstimate が
+今回の生成目標難易度
+{target_difficulty}
+と完全に一致する場合だけです。
+
+範囲内に入っているだけでは
+difficultyMatch=true にしてはいけません。
 
 特に次を確認してください。
 
@@ -277,6 +291,7 @@ class ContinuousQualityReviewer:
         question: dict[str, Any],
         difficulty_min: int,
         difficulty_max: int,
+        target_difficulty: int,
         allow_api: bool = False,
     ) -> dict[str, Any]:
         prompt = (
@@ -288,6 +303,9 @@ class ContinuousQualityReviewer:
                 ),
                 difficulty_max=(
                     difficulty_max
+                ),
+                target_difficulty=(
+                    target_difficulty
                 ),
             )
         )

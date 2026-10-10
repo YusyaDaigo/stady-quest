@@ -30,8 +30,94 @@ QUALITY_PASS_FIELDS = (
 )
 
 
+def normalize_quality_review_for_target(
+    review: dict[str, Any],
+    *,
+    target_difficulty: int,
+) -> dict[str, Any]:
+    validate_quality_review(
+        review
+    )
+
+    normalized = dict(
+        review
+    )
+
+    normalized[
+        "issues"
+    ] = list(
+        review["issues"]
+    )
+
+    normalized[
+        "revisionInstructions"
+    ] = list(
+        review[
+            "revisionInstructions"
+        ]
+    )
+
+    estimate = normalized[
+        "difficultyEstimate"
+    ]
+
+    exact_match = (
+        estimate
+        == target_difficulty
+    )
+
+    normalized[
+        "difficultyMatch"
+    ] = exact_match
+
+    if not exact_match:
+        issue = (
+            "推定難易度 "
+            f"{estimate} が今回の目標難易度 "
+            f"{target_difficulty} "
+            "と一致していない。"
+        )
+
+        instruction = (
+            "Knowledgeの範囲内で、"
+            f"難易度{target_difficulty}に"
+            "到達するよう問題構造を"
+            "作り直す。"
+        )
+
+        if issue not in normalized[
+            "issues"
+        ]:
+            normalized[
+                "issues"
+            ].append(
+                issue
+            )
+
+        if instruction not in normalized[
+            "revisionInstructions"
+        ]:
+            normalized[
+                "revisionInstructions"
+            ].append(
+                instruction
+            )
+
+        if (
+            normalized["decision"]
+            == "pass"
+        ):
+            normalized[
+                "decision"
+            ] = "revise"
+
+    return normalized
+
+
 def quality_review_passes(
     review: dict[str, Any],
+    *,
+    target_difficulty: int,
 ) -> bool:
     validate_quality_review(
         review
@@ -40,7 +126,18 @@ def quality_review_passes(
     if review["decision"] != "pass":
         return False
 
-    if review["difficultyMatch"] is not True:
+    if (
+        review[
+            "difficultyEstimate"
+        ]
+        != target_difficulty
+    ):
+        return False
+
+    if (
+        review["difficultyMatch"]
+        is not True
+    ):
         return False
 
     return all(
@@ -117,7 +214,7 @@ def build_revision_prompt(
 def classify_exhaustion(
     *,
     attempts: list[dict[str, Any]],
-    difficulty_min: int,
+    target_difficulty: int,
 ) -> str:
     if not attempts:
         return "no_attempts"
@@ -136,9 +233,8 @@ def classify_exhaustion(
     )
 
     difficulty_remained_below_target = all(
-        review["difficultyMatch"] is False
-        and review["difficultyEstimate"]
-        < difficulty_min
+        review["difficultyEstimate"]
+        < target_difficulty
         for review in reviews
     )
 
@@ -393,6 +489,9 @@ def run_webdesign_question_cycle(
             difficulty_max=(
                 difficulty_max
             ),
+            target_difficulty=(
+                target_difficulty
+            ),
             allow_api=allow_api,
         )
 
@@ -400,8 +499,20 @@ def run_webdesign_question_cycle(
             review
         )
 
+        review = (
+            normalize_quality_review_for_target(
+                review,
+                target_difficulty=(
+                    target_difficulty
+                ),
+            )
+        )
+
         if quality_review_passes(
-            review
+            review,
+            target_difficulty=(
+                target_difficulty
+            ),
         ):
             effective_decision = "pass"
         elif (
@@ -490,8 +601,8 @@ def run_webdesign_question_cycle(
         "exhaustedReason": (
             classify_exhaustion(
                 attempts=attempts,
-                difficulty_min=(
-                    difficulty_min
+                target_difficulty=(
+                    target_difficulty
                 ),
             )
         ),
