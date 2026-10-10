@@ -9,8 +9,11 @@ from pathlib import Path
 from typing import Any
 
 from tools.question_builder.continuous_planner import (
+    DEFAULT_DIFFICULTY_CEILING_EVIDENCE_REQUIRED,
     block_knowledge,
     create_planner_state,
+    get_difficulty_ceiling_evidence_count,
+    get_difficulty_ceiling_status,
     record_difficulty_ceiling,
     record_difficulty_pass,
     record_knowledge_use,
@@ -1352,7 +1355,9 @@ def run_continuous_session(
                         == "knowledge_difficulty_ceiling"
                     )
 
-                    ceiling_recorded = False
+                    ceiling_status = None
+                    ceiling_evidence_count = None
+                    ceiling_evidence_required = None
 
                     if is_difficulty_ceiling:
                         state[
@@ -1366,40 +1371,25 @@ def run_continuous_session(
                             ],
                         )
 
-                        difficulty_record = (
-                            state[
-                                "planner"
-                            ]
-                            .get(
-                                "knowledgeDifficulty",
-                                {},
-                            )
-                            .get(
+                        ceiling_status = (
+                            get_difficulty_ceiling_status(
+                                state["planner"],
                                 selected["id"],
-                                {},
+                                target_difficulty,
                             )
                         )
 
-                        blocked_from = (
-                            difficulty_record.get(
-                                "blockedFrom"
+                        ceiling_evidence_count = (
+                            get_difficulty_ceiling_evidence_count(
+                                state["planner"],
+                                selected["id"],
+                                target_difficulty,
                             )
-                            if isinstance(
-                                difficulty_record,
-                                dict,
-                            )
-                            else None
                         )
 
-                        ceiling_recorded = (
-                            isinstance(
-                                blocked_from,
-                                int,
-                            )
-                            and blocked_from
-                            <= target_difficulty
+                        ceiling_evidence_required = (
+                            DEFAULT_DIFFICULTY_CEILING_EVIDENCE_REQUIRED
                         )
-
                     else:
                         state[
                             "planner"
@@ -1435,13 +1425,34 @@ def run_continuous_session(
                         event_type = (
                             "knowledge_blocked"
                         )
-                    elif ceiling_recorded:
+                    elif (
+                        is_difficulty_ceiling
+                        and ceiling_status
+                        == "pending"
+                    ):
+                        event_type = (
+                            "difficulty_ceiling_pending"
+                        )
+                    elif (
+                        is_difficulty_ceiling
+                        and ceiling_status
+                        == "recorded"
+                    ):
                         event_type = (
                             "difficulty_ceiling_recorded"
                         )
-                    else:
+                    elif (
+                        is_difficulty_ceiling
+                        and ceiling_status
+                        == "ignored"
+                    ):
                         event_type = (
                             "difficulty_ceiling_ignored"
+                        )
+                    else:
+                        raise RuntimeError(
+                            "unable to classify "
+                            "difficulty ceiling outcome"
                         )
 
                     state[
@@ -1452,9 +1463,7 @@ def run_continuous_session(
                         "currentQuestion"
                     ] = None
 
-                    state[
-                        "lastEvent"
-                    ] = {
+                    event = {
                         "type": event_type,
                         "iteration": (
                             iteration
@@ -1479,6 +1488,27 @@ def run_continuous_session(
                         "at": now_iso(),
                     }
 
+                    if is_difficulty_ceiling:
+                        event[
+                            "ceilingStatus"
+                        ] = ceiling_status
+
+                        event[
+                            "ceilingEvidenceCount"
+                        ] = (
+                            ceiling_evidence_count
+                        )
+
+                        event[
+                            "ceilingEvidenceRequired"
+                        ] = (
+                            ceiling_evidence_required
+                        )
+
+                    state[
+                        "lastEvent"
+                    ] = event
+
                     print(
                         " cycle result:",
                         cycle_status,
@@ -1489,7 +1519,28 @@ def run_continuous_session(
                             " Knowledge blocked:",
                             block_reason,
                         )
-                    elif ceiling_recorded:
+
+                    elif (
+                        ceiling_status
+                        == "pending"
+                    ):
+                        print(
+                            " Difficulty ceiling "
+                            "evidence:",
+                            f"{ceiling_evidence_count}/"
+                            f"{ceiling_evidence_required}",
+                        )
+
+                        print(
+                            " Knowledge remains "
+                            "available for another "
+                            "independent cycle"
+                        )
+
+                    elif (
+                        ceiling_status
+                        == "recorded"
+                    ):
                         print(
                             " Difficulty ceiling "
                             "recorded:",
@@ -1502,7 +1553,11 @@ def run_continuous_session(
                             "difficulty",
                             target_difficulty,
                         )
-                    else:
+
+                    elif (
+                        ceiling_status
+                        == "ignored"
+                    ):
                         print(
                             " Difficulty ceiling "
                             "ignored:",

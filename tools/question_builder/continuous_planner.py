@@ -5,6 +5,7 @@ from typing import Any
 
 
 DEFAULT_RECENT_LIMIT = 5
+DEFAULT_DIFFICULTY_CEILING_EVIDENCE_REQUIRED = 2
 
 
 def normalize_section(
@@ -459,6 +460,30 @@ def record_difficulty_pass(
         "passCounts"
     ] = pass_counts
 
+    ceiling_evidence = (
+        _normalize_difficulty_counts(
+            record.get(
+                "ceilingEvidence",
+                {},
+            )
+        )
+    )
+
+    ceiling_evidence.pop(
+        key,
+        None,
+    )
+
+    if ceiling_evidence:
+        record[
+            "ceilingEvidence"
+        ] = ceiling_evidence
+    else:
+        record.pop(
+            "ceilingEvidence",
+            None,
+        )
+
     blocked_from = record.get(
         "blockedFrom"
     )
@@ -522,6 +547,171 @@ def record_difficulty_pass(
     return state
 
 
+def get_difficulty_ceiling_evidence_count(
+    planner_state: dict[
+        str,
+        Any,
+    ] | None,
+    knowledge_id: str,
+    difficulty: int,
+) -> int:
+    normalized_id = str(
+        knowledge_id
+    ).strip()
+
+    if not normalized_id:
+        raise ValueError(
+            "knowledge_id must not be empty"
+        )
+
+    state = (
+        planner_state
+        or create_planner_state()
+    )
+
+    knowledge_difficulty = state.get(
+        "knowledgeDifficulty",
+        {},
+    )
+
+    if not isinstance(
+        knowledge_difficulty,
+        dict,
+    ):
+        return 0
+
+    record = knowledge_difficulty.get(
+        normalized_id,
+        {},
+    )
+
+    if not isinstance(
+        record,
+        dict,
+    ):
+        return 0
+
+    evidence = (
+        _normalize_difficulty_counts(
+            record.get(
+                "ceilingEvidence",
+                {},
+            )
+        )
+    )
+
+    return evidence.get(
+        str(
+            difficulty
+        ),
+        0,
+    )
+
+
+def get_difficulty_ceiling_status(
+    planner_state: dict[
+        str,
+        Any,
+    ] | None,
+    knowledge_id: str,
+    difficulty: int,
+) -> str:
+    normalized_id = str(
+        knowledge_id
+    ).strip()
+
+    if not normalized_id:
+        raise ValueError(
+            "knowledge_id must not be empty"
+        )
+
+    state = (
+        planner_state
+        or create_planner_state()
+    )
+
+    knowledge_difficulty = state.get(
+        "knowledgeDifficulty",
+        {},
+    )
+
+    record = (
+        knowledge_difficulty.get(
+            normalized_id,
+            {},
+        )
+        if isinstance(
+            knowledge_difficulty,
+            dict,
+        )
+        else {}
+    )
+
+    if not isinstance(
+        record,
+        dict,
+    ):
+        record = {}
+
+    pass_counts = (
+        _normalize_difficulty_counts(
+            record.get(
+                "passCounts",
+                {},
+            )
+        )
+    )
+
+    if (
+        pass_counts.get(
+            str(
+                difficulty
+            ),
+            0,
+        )
+        > 0
+    ):
+        return "ignored"
+
+    blocked_from = record.get(
+        "blockedFrom"
+    )
+
+    try:
+        blocked_from = (
+            int(
+                blocked_from
+            )
+            if blocked_from is not None
+            else None
+        )
+    except (
+        TypeError,
+        ValueError,
+    ):
+        blocked_from = None
+
+    if (
+        blocked_from is not None
+        and blocked_from
+        <= difficulty
+    ):
+        return "recorded"
+
+    evidence_count = (
+        get_difficulty_ceiling_evidence_count(
+            state,
+            normalized_id,
+            difficulty,
+        )
+    )
+
+    if evidence_count > 0:
+        return "pending"
+
+    return "none"
+
+
 def record_difficulty_ceiling(
     planner_state: dict[
         str,
@@ -531,6 +721,9 @@ def record_difficulty_ceiling(
     difficulty: int,
     *,
     difficulty_min: int,
+    required_evidence: int = (
+        DEFAULT_DIFFICULTY_CEILING_EVIDENCE_REQUIRED
+    ),
 ) -> dict[str, Any]:
     normalized_id = str(
         knowledge_id
@@ -553,6 +746,22 @@ def record_difficulty_ceiling(
     ):
         raise ValueError(
             "difficulty must be an integer"
+        )
+
+    if (
+        not isinstance(
+            required_evidence,
+            int,
+        )
+        or isinstance(
+            required_evidence,
+            bool,
+        )
+        or required_evidence < 1
+    ):
+        raise ValueError(
+            "required_evidence must be "
+            "a positive integer"
         )
 
     state = deepcopy(
@@ -590,15 +799,49 @@ def record_difficulty_ceiling(
         )
     )
 
+    key = str(
+        difficulty
+    )
+
     if (
         pass_counts.get(
-            str(
-                difficulty
-            ),
+            key,
             0,
         )
         > 0
     ):
+        ceiling_evidence = (
+            _normalize_difficulty_counts(
+                record.get(
+                    "ceilingEvidence",
+                    {},
+                )
+            )
+        )
+
+        ceiling_evidence.pop(
+            key,
+            None,
+        )
+
+        if ceiling_evidence:
+            record[
+                "ceilingEvidence"
+            ] = ceiling_evidence
+        else:
+            record.pop(
+                "ceilingEvidence",
+                None,
+            )
+
+        knowledge_difficulty[
+            normalized_id
+        ] = record
+
+        state[
+            "knowledgeDifficulty"
+        ] = knowledge_difficulty
+
         return state
 
     old_blocked_from = record.get(
@@ -618,6 +861,50 @@ def record_difficulty_ceiling(
         ValueError,
     ):
         old_blocked_from = None
+
+    if (
+        old_blocked_from is not None
+        and old_blocked_from
+        <= difficulty
+    ):
+        return state
+
+    ceiling_evidence = (
+        _normalize_difficulty_counts(
+            record.get(
+                "ceilingEvidence",
+                {},
+            )
+        )
+    )
+
+    ceiling_evidence[
+        key
+    ] = (
+        ceiling_evidence.get(
+            key,
+            0,
+        )
+        + 1
+    )
+
+    record[
+        "ceilingEvidence"
+    ] = ceiling_evidence
+
+    knowledge_difficulty[
+        normalized_id
+    ] = record
+
+    state[
+        "knowledgeDifficulty"
+    ] = knowledge_difficulty
+
+    if (
+        ceiling_evidence[key]
+        < required_evidence
+    ):
+        return state
 
     new_blocked_from = (
         difficulty
