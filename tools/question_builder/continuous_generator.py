@@ -11,8 +11,11 @@ from typing import Any
 from tools.question_builder.continuous_planner import (
     block_knowledge,
     create_planner_state,
+    record_difficulty_ceiling,
+    record_difficulty_pass,
     record_knowledge_use,
     select_next_knowledge,
+    select_target_difficulty,
 )
 from tools.question_builder.continuous_question_cycle import (
     run_webdesign_question_cycle,
@@ -920,9 +923,16 @@ def run_continuous_session(
                 )
 
                 target_difficulty = (
-                    state[
-                        "difficultyMin"
-                    ]
+                    select_target_difficulty(
+                        state["planner"],
+                        selected["id"],
+                        difficulty_min=state[
+                            "difficultyMin"
+                        ],
+                        difficulty_max=state[
+                            "difficultyMax"
+                        ],
+                    )
                 )
 
                 print(
@@ -1200,6 +1210,14 @@ def run_continuous_session(
                         )
 
                         state[
+                            "planner"
+                        ] = record_difficulty_pass(
+                            state["planner"],
+                            selected["id"],
+                            target_difficulty,
+                        )
+
+                        state[
                             "generatedCount"
                         ] += 1
 
@@ -1327,12 +1345,104 @@ def run_continuous_session(
                             "cycle_rejected"
                         )
 
-                    state[
-                        "planner"
-                    ] = block_knowledge(
-                        state["planner"],
-                        selected["id"],
+                    is_difficulty_ceiling = (
+                        cycle_status
+                        == "exhausted"
+                        and block_reason
+                        == "knowledge_difficulty_ceiling"
                     )
+
+                    ceiling_recorded = False
+
+                    if is_difficulty_ceiling:
+                        state[
+                            "planner"
+                        ] = record_difficulty_ceiling(
+                            state["planner"],
+                            selected["id"],
+                            target_difficulty,
+                            difficulty_min=state[
+                                "difficultyMin"
+                            ],
+                        )
+
+                        difficulty_record = (
+                            state[
+                                "planner"
+                            ]
+                            .get(
+                                "knowledgeDifficulty",
+                                {},
+                            )
+                            .get(
+                                selected["id"],
+                                {},
+                            )
+                        )
+
+                        blocked_from = (
+                            difficulty_record.get(
+                                "blockedFrom"
+                            )
+                            if isinstance(
+                                difficulty_record,
+                                dict,
+                            )
+                            else None
+                        )
+
+                        ceiling_recorded = (
+                            isinstance(
+                                blocked_from,
+                                int,
+                            )
+                            and blocked_from
+                            <= target_difficulty
+                        )
+
+                    else:
+                        state[
+                            "planner"
+                        ] = block_knowledge(
+                            state["planner"],
+                            selected["id"],
+                        )
+
+                    raw_blocked_ids = (
+                        state[
+                            "planner"
+                        ].get(
+                            "blockedKnowledgeIds",
+                            [],
+                        )
+                    )
+
+                    blocked_ids = (
+                        raw_blocked_ids
+                        if isinstance(
+                            raw_blocked_ids,
+                            list,
+                        )
+                        else []
+                    )
+
+                    knowledge_blocked = (
+                        selected["id"]
+                        in blocked_ids
+                    )
+
+                    if knowledge_blocked:
+                        event_type = (
+                            "knowledge_blocked"
+                        )
+                    elif ceiling_recorded:
+                        event_type = (
+                            "difficulty_ceiling_recorded"
+                        )
+                    else:
+                        event_type = (
+                            "difficulty_ceiling_ignored"
+                        )
 
                     state[
                         "rejectedCount"
@@ -1345,9 +1455,7 @@ def run_continuous_session(
                     state[
                         "lastEvent"
                     ] = {
-                        "type": (
-                            "knowledge_blocked"
-                        ),
+                        "type": event_type,
                         "iteration": (
                             iteration
                         ),
@@ -1356,6 +1464,9 @@ def run_continuous_session(
                         ),
                         "cycleStatus": (
                             cycle_status
+                        ),
+                        "targetDifficulty": (
+                            target_difficulty
                         ),
                         "blockReason": (
                             block_reason
@@ -1373,10 +1484,36 @@ def run_continuous_session(
                         cycle_status,
                     )
 
-                    print(
-                        " Knowledge blocked:",
-                        block_reason,
-                    )
+                    if knowledge_blocked:
+                        print(
+                            " Knowledge blocked:",
+                            block_reason,
+                        )
+                    elif ceiling_recorded:
+                        print(
+                            " Difficulty ceiling "
+                            "recorded:",
+                            target_difficulty,
+                        )
+
+                        print(
+                            " Knowledge remains "
+                            "available below "
+                            "difficulty",
+                            target_difficulty,
+                        )
+                    else:
+                        print(
+                            " Difficulty ceiling "
+                            "ignored:",
+                            target_difficulty,
+                        )
+
+                        print(
+                            " prior successful "
+                            "difficulty result "
+                            "preserved"
+                        )
 
                 else:
                     raise ValueError(
