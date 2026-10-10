@@ -323,6 +323,109 @@ def _validate_cycle_request(
         )
 
 
+def _normalize_cycle_knowledge_items(
+    *,
+    knowledge: dict[str, Any],
+    knowledge_items: Optional[
+        list[dict[str, Any]]
+    ],
+    section: str,
+) -> list[dict[str, Any]]:
+    items = (
+        list(
+            knowledge_items
+        )
+        if knowledge_items is not None
+        else [
+            knowledge
+        ]
+    )
+
+    if not items:
+        raise ValueError(
+            "knowledge_items must not be empty"
+        )
+
+    if not all(
+        isinstance(
+            item,
+            dict,
+        )
+        for item in items
+    ):
+        raise ValueError(
+            "knowledge_items must contain "
+            "objects"
+        )
+
+    knowledge_ids = []
+
+    for item in items:
+        knowledge_id = str(
+            item.get(
+                "id",
+                "",
+            )
+        ).strip()
+
+        if not knowledge_id:
+            raise ValueError(
+                "each Knowledge item "
+                "requires id"
+            )
+
+        item_section = str(
+            item.get(
+                "section",
+                "",
+            )
+        ).strip()
+
+        if (
+            item_section
+            and item_section
+            != section
+        ):
+            raise ValueError(
+                "all Knowledge items must "
+                "match the requested section"
+            )
+
+        knowledge_ids.append(
+            knowledge_id
+        )
+
+    if (
+        len(
+            set(
+                knowledge_ids
+            )
+        )
+        != len(
+            knowledge_ids
+        )
+    ):
+        raise ValueError(
+            "knowledge_items must not "
+            "contain duplicate ids"
+        )
+
+    primary_id = str(
+        knowledge.get(
+            "id",
+            "",
+        )
+    ).strip()
+
+    if primary_id not in knowledge_ids:
+        raise ValueError(
+            "primary knowledge must be "
+            "included in knowledge_items"
+        )
+
+    return items
+
+
 def run_webdesign_question_cycle(
     *,
     knowledge: dict[str, Any],
@@ -331,6 +434,9 @@ def run_webdesign_question_cycle(
     difficulty_max: int,
     target_difficulty: int,
     question_type: str,
+    knowledge_items: Optional[
+        list[dict[str, Any]]
+    ] = None,
     max_attempts: int = 3,
     allow_api: bool = False,
     use_cache: bool = False,
@@ -357,6 +463,16 @@ def run_webdesign_question_cycle(
         max_attempts=max_attempts,
     )
 
+    cycle_knowledge_items = (
+        _normalize_cycle_knowledge_items(
+            knowledge=knowledge,
+            knowledge_items=(
+                knowledge_items
+            ),
+            section=section,
+        )
+    )
+
     profile = get_exam_generation_profile(
         "webdesign"
     )
@@ -366,8 +482,37 @@ def run_webdesign_question_cycle(
     ]
 
     allowed_ids = [
-        knowledge_id
+        item["id"]
+        for item
+        in cycle_knowledge_items
     ]
+
+    combined_keywords = []
+    seen_keywords = set()
+
+    for item in cycle_knowledge_items:
+        for raw_keyword in item.get(
+            "keywords",
+            [],
+        ):
+            keyword = str(
+                raw_keyword
+            ).strip()
+
+            if (
+                not keyword
+                or keyword
+                in seen_keywords
+            ):
+                continue
+
+            seen_keywords.add(
+                keyword
+            )
+
+            combined_keywords.append(
+                keyword
+            )
 
     base_prompt = (
         build_rag_question_generation_prompt(
@@ -382,18 +527,38 @@ def run_webdesign_question_cycle(
                 target_difficulty
             ),
             count=1,
-            keywords=knowledge.get(
-                "keywords",
-                [],
+            keywords=combined_keywords,
+            knowledge_items=(
+                cycle_knowledge_items
             ),
-            knowledge_items=[
-                knowledge
-            ],
             question_type=(
                 question_type
             ),
         )
     )
+
+    if (
+        len(
+            cycle_knowledge_items
+        )
+        > 1
+    ):
+        base_prompt += (
+            "\n\n"
+            "【複合問題の追加条件】\n"
+            "・渡されたKnowledgeをすべて、"
+            "正答またはその判断過程に"
+            "実質的に使用すること\n"
+            "・1件のKnowledgeだけで"
+            "正答できる問題にしないこと\n"
+            "・sourceKnowledgeIdsには"
+            "渡されたKnowledge IDを"
+            "すべて含めること\n"
+            "・複数Knowledgeを単に"
+            "問題文へ並べるだけではなく、"
+            "比較・判断・組み合わせを"
+            "必要とする問題にすること"
+        )
 
     if generator_factory is None:
         generator_factory = (
@@ -474,6 +639,14 @@ def run_webdesign_question_cycle(
             allowed_source_knowledge_ids=(
                 allowed_ids
             ),
+            required_source_knowledge_ids=(
+                allowed_ids
+                if len(
+                    allowed_ids
+                )
+                > 1
+                else None
+            ),
         )
 
         reviewer = (
@@ -481,7 +654,14 @@ def run_webdesign_question_cycle(
         )
 
         review = reviewer.review(
-            knowledge=knowledge,
+            knowledge=(
+                cycle_knowledge_items
+                if len(
+                    cycle_knowledge_items
+                )
+                > 1
+                else knowledge
+            ),
             question=question,
             difficulty_min=(
                 difficulty_min
@@ -549,6 +729,9 @@ def run_webdesign_question_cycle(
                 "knowledgeId": (
                     knowledge_id
                 ),
+                "knowledgeIds": list(
+                    allowed_ids
+                ),
                 "section": section,
                 "targetDifficulty": (
                     target_difficulty
@@ -574,6 +757,9 @@ def run_webdesign_question_cycle(
                 "status": "rejected",
                 "knowledgeId": (
                     knowledge_id
+                ),
+                "knowledgeIds": list(
+                    allowed_ids
                 ),
                 "section": section,
                 "targetDifficulty": (
@@ -607,6 +793,9 @@ def run_webdesign_question_cycle(
             )
         ),
         "knowledgeId": knowledge_id,
+        "knowledgeIds": list(
+            allowed_ids
+        ),
         "section": section,
         "targetDifficulty": (
             target_difficulty

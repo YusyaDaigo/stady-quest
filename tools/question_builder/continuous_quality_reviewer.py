@@ -120,7 +120,10 @@ def validate_quality_review(
 
 def build_quality_review_prompt(
     *,
-    knowledge: dict[str, Any],
+    knowledge: (
+        dict[str, Any]
+        | list[dict[str, Any]]
+    ),
     question: dict[str, Any],
     difficulty_min: int,
     difficulty_max: int,
@@ -137,6 +140,26 @@ def build_quality_review_prompt(
         ensure_ascii=False,
         indent=2,
     )
+
+    composite_rule = ""
+
+    if (
+        isinstance(
+            knowledge,
+            list,
+        )
+        and len(
+            knowledge
+        )
+        > 1
+    ):
+        composite_rule = """
+複合Knowledge問題として追加確認:
+- 渡されたKnowledgeをすべて実質的に使用しているか
+- 1件だけのKnowledgeで正答できる問題になっていないか
+- 複数Knowledgeの比較・判断・組み合わせが必要か
+- sourceKnowledgeIdsが根拠として使った全Knowledgeを示しているか
+""".strip()
 
     return f"""
 あなたはStudy QUESTの問題品質審査担当です。
@@ -164,6 +187,8 @@ difficultyEstimate が
 
 範囲内に入っているだけでは
 difficultyMatch=true にしてはいけません。
+
+{composite_rule}
 
 特に次を確認してください。
 
@@ -287,7 +312,10 @@ class ContinuousQualityReviewer:
     def review(
         self,
         *,
-        knowledge: dict[str, Any],
+        knowledge: (
+            dict[str, Any]
+            | list[dict[str, Any]]
+        ),
         question: dict[str, Any],
         difficulty_min: int,
         difficulty_max: int,

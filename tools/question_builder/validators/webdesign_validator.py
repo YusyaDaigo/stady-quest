@@ -36,6 +36,9 @@ def validate_webdesign_generated_question(
     allowed_source_knowledge_ids: (
         Iterable[str] | None
     ) = None,
+    required_source_knowledge_ids: (
+        Iterable[str] | None
+    ) = None,
 ) -> None:
     """
     AIが生成したウェブデザイン技能検定3級の
@@ -197,4 +200,36 @@ def validate_webdesign_generated_question(
                 "sourceKnowledgeIds contains "
                 "unknown ids: "
                 f"{invalid_ids}"
+            )
+
+
+    if (
+        required_source_knowledge_ids
+        is not None
+    ):
+        required_ids = [
+            str(
+                source_id
+            ).strip()
+            for source_id
+            in required_source_knowledge_ids
+            if str(
+                source_id
+            ).strip()
+        ]
+
+        missing_ids = [
+            source_id
+            for source_id
+            in required_ids
+            if source_id
+            not in normalized_source_ids
+        ]
+
+        if missing_ids:
+            raise ValueError(
+                f"{context}: "
+                "sourceKnowledgeIds missing "
+                "required ids: "
+                f"{missing_ids}"
             )
