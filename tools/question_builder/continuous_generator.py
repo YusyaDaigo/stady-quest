@@ -10,13 +10,17 @@ from typing import Any
 
 from tools.question_builder.continuous_planner import (
     DEFAULT_DIFFICULTY_CEILING_EVIDENCE_REQUIRED,
+    DEFAULT_SEMANTIC_DUPLICATE_EVIDENCE_REQUIRED,
     block_knowledge,
     create_planner_state,
     get_difficulty_ceiling_evidence_count,
     get_difficulty_ceiling_status,
+    get_semantic_duplicate_evidence_count,
+    get_semantic_duplicate_status,
     record_difficulty_ceiling,
     record_difficulty_pass,
     record_knowledge_use,
+    record_semantic_duplicate,
     select_next_knowledge,
     select_target_difficulty,
 )
@@ -1070,12 +1074,51 @@ def run_continuous_session(
                     ):
                         state[
                             "planner"
-                        ] = block_knowledge(
+                        ] = record_semantic_duplicate(
                             state[
                                 "planner"
                             ],
                             selected["id"],
+                            target_difficulty,
                         )
+
+                        duplicate_status = (
+                            get_semantic_duplicate_status(
+                                state["planner"],
+                                selected["id"],
+                                target_difficulty,
+                            )
+                        )
+
+                        duplicate_evidence = (
+                            get_semantic_duplicate_evidence_count(
+                                state["planner"],
+                                selected["id"],
+                                target_difficulty,
+                            )
+                        )
+
+                        if (
+                            duplicate_status
+                            == "pending"
+                        ):
+                            event_type = (
+                                "semantic_duplicate_pending"
+                            )
+                        elif (
+                            duplicate_status
+                            == "paused"
+                        ):
+                            event_type = (
+                                "semantic_duplicate_"
+                                "difficulty_paused"
+                            )
+                        else:
+                            raise RuntimeError(
+                                "unable to classify "
+                                "semantic duplicate "
+                                "outcome"
+                            )
 
                         state[
                             "semanticDuplicateCount"
@@ -1088,15 +1131,24 @@ def run_continuous_session(
                         state[
                             "lastEvent"
                         ] = {
-                            "type": (
-                                "semantic_duplicate_"
-                                "blocked"
-                            ),
+                            "type": event_type,
                             "iteration": (
                                 iteration
                             ),
                             "knowledgeId": (
                                 selected["id"]
+                            ),
+                            "targetDifficulty": (
+                                target_difficulty
+                            ),
+                            "duplicateStatus": (
+                                duplicate_status
+                            ),
+                            "duplicateEvidenceCount": (
+                                duplicate_evidence
+                            ),
+                            "duplicateEvidenceRequired": (
+                                DEFAULT_SEMANTIC_DUPLICATE_EVIDENCE_REQUIRED
                             ),
                             "topMatch": (
                                 semantic_result.get(
@@ -1115,6 +1167,26 @@ def run_continuous_session(
                             " semantic gate: "
                             "DUPLICATE"
                         )
+
+                        print(
+                            " duplicate evidence:",
+                            f"{duplicate_evidence}/"
+                            f"{DEFAULT_SEMANTIC_DUPLICATE_EVIDENCE_REQUIRED}",
+                        )
+
+                        if (
+                            duplicate_status
+                            == "paused"
+                        ):
+                            print(
+                                " difficulty paused:",
+                                target_difficulty,
+                            )
+                        else:
+                            print(
+                                " difficulty remains "
+                                "available for retry"
+                            )
 
                         top_match = (
                             semantic_result.get(

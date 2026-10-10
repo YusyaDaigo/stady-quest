@@ -6,6 +6,7 @@ from typing import Any
 
 DEFAULT_RECENT_LIMIT = 5
 DEFAULT_DIFFICULTY_CEILING_EVIDENCE_REQUIRED = 2
+DEFAULT_SEMANTIC_DUPLICATE_EVIDENCE_REQUIRED = 2
 
 
 def normalize_section(
@@ -247,6 +248,311 @@ def _normalize_difficulty_counts(
     return normalized
 
 
+def _normalize_difficulty_list(
+    value: Any,
+) -> list[int]:
+    if not isinstance(
+        value,
+        list,
+    ):
+        return []
+
+    normalized = []
+
+    for raw_value in value:
+        try:
+            difficulty = int(
+                raw_value
+            )
+        except (
+            TypeError,
+            ValueError,
+        ):
+            continue
+
+        if difficulty not in normalized:
+            normalized.append(
+                difficulty
+            )
+
+    return sorted(
+        normalized
+    )
+
+
+def get_semantic_duplicate_evidence_count(
+    planner_state: dict[
+        str,
+        Any,
+    ] | None,
+    knowledge_id: str,
+    difficulty: int,
+) -> int:
+    normalized_id = str(
+        knowledge_id
+    ).strip()
+
+    if not normalized_id:
+        raise ValueError(
+            "knowledge_id must not be empty"
+        )
+
+    state = (
+        planner_state
+        or create_planner_state()
+    )
+
+    knowledge_difficulty = state.get(
+        "knowledgeDifficulty",
+        {},
+    )
+
+    if not isinstance(
+        knowledge_difficulty,
+        dict,
+    ):
+        return 0
+
+    record = knowledge_difficulty.get(
+        normalized_id,
+        {},
+    )
+
+    if not isinstance(
+        record,
+        dict,
+    ):
+        return 0
+
+    evidence = (
+        _normalize_difficulty_counts(
+            record.get(
+                "semanticDuplicateEvidence",
+                {},
+            )
+        )
+    )
+
+    return evidence.get(
+        str(
+            difficulty
+        ),
+        0,
+    )
+
+
+def get_semantic_duplicate_status(
+    planner_state: dict[
+        str,
+        Any,
+    ] | None,
+    knowledge_id: str,
+    difficulty: int,
+) -> str:
+    normalized_id = str(
+        knowledge_id
+    ).strip()
+
+    if not normalized_id:
+        raise ValueError(
+            "knowledge_id must not be empty"
+        )
+
+    state = (
+        planner_state
+        or create_planner_state()
+    )
+
+    knowledge_difficulty = state.get(
+        "knowledgeDifficulty",
+        {},
+    )
+
+    record = (
+        knowledge_difficulty.get(
+            normalized_id,
+            {},
+        )
+        if isinstance(
+            knowledge_difficulty,
+            dict,
+        )
+        else {}
+    )
+
+    if not isinstance(
+        record,
+        dict,
+    ):
+        record = {}
+
+    paused = (
+        _normalize_difficulty_list(
+            record.get(
+                "semanticPausedDifficulties",
+                [],
+            )
+        )
+    )
+
+    if difficulty in paused:
+        return "paused"
+
+    evidence_count = (
+        get_semantic_duplicate_evidence_count(
+            state,
+            normalized_id,
+            difficulty,
+        )
+    )
+
+    if evidence_count > 0:
+        return "pending"
+
+    return "none"
+
+
+def record_semantic_duplicate(
+    planner_state: dict[
+        str,
+        Any,
+    ] | None,
+    knowledge_id: str,
+    difficulty: int,
+    *,
+    required_evidence: int = (
+        DEFAULT_SEMANTIC_DUPLICATE_EVIDENCE_REQUIRED
+    ),
+) -> dict[str, Any]:
+    normalized_id = str(
+        knowledge_id
+    ).strip()
+
+    if not normalized_id:
+        raise ValueError(
+            "knowledge_id must not be empty"
+        )
+
+    if (
+        not isinstance(
+            difficulty,
+            int,
+        )
+        or isinstance(
+            difficulty,
+            bool,
+        )
+    ):
+        raise ValueError(
+            "difficulty must be an integer"
+        )
+
+    if (
+        not isinstance(
+            required_evidence,
+            int,
+        )
+        or isinstance(
+            required_evidence,
+            bool,
+        )
+        or required_evidence < 1
+    ):
+        raise ValueError(
+            "required_evidence must be "
+            "a positive integer"
+        )
+
+    state = deepcopy(
+        planner_state
+        or create_planner_state()
+    )
+
+    knowledge_difficulty = state.get(
+        "knowledgeDifficulty"
+    )
+
+    if not isinstance(
+        knowledge_difficulty,
+        dict,
+    ):
+        knowledge_difficulty = {}
+
+    record = knowledge_difficulty.get(
+        normalized_id,
+        {},
+    )
+
+    if not isinstance(
+        record,
+        dict,
+    ):
+        record = {}
+
+    paused = (
+        _normalize_difficulty_list(
+            record.get(
+                "semanticPausedDifficulties",
+                [],
+            )
+        )
+    )
+
+    if difficulty in paused:
+        return state
+
+    evidence = (
+        _normalize_difficulty_counts(
+            record.get(
+                "semanticDuplicateEvidence",
+                {},
+            )
+        )
+    )
+
+    key = str(
+        difficulty
+    )
+
+    evidence[key] = (
+        evidence.get(
+            key,
+            0,
+        )
+        + 1
+    )
+
+    record[
+        "semanticDuplicateEvidence"
+    ] = evidence
+
+    if (
+        evidence[key]
+        >= required_evidence
+    ):
+        paused.append(
+            difficulty
+        )
+
+        record[
+            "semanticPausedDifficulties"
+        ] = sorted(
+            set(
+                paused
+            )
+        )
+
+    knowledge_difficulty[
+        normalized_id
+    ] = record
+
+    state[
+        "knowledgeDifficulty"
+    ] = knowledge_difficulty
+
+    return state
+
+
 def select_target_difficulty(
     planner_state: dict[
         str,
@@ -328,6 +634,15 @@ def select_target_difficulty(
     ):
         blocked_from = None
 
+    semantic_paused = (
+        _normalize_difficulty_list(
+            record.get(
+                "semanticPausedDifficulties",
+                [],
+            )
+        )
+    )
+
     available = [
         difficulty
         for difficulty in range(
@@ -335,9 +650,13 @@ def select_target_difficulty(
             difficulty_max + 1,
         )
         if (
-            blocked_from is None
-            or difficulty
-            < blocked_from
+            (
+                blocked_from is None
+                or difficulty
+                < blocked_from
+            )
+            and difficulty
+            not in semantic_paused
         )
     ]
 
@@ -481,6 +800,55 @@ def record_difficulty_pass(
     else:
         record.pop(
             "ceilingEvidence",
+            None,
+        )
+
+    semantic_evidence = (
+        _normalize_difficulty_counts(
+            record.get(
+                "semanticDuplicateEvidence",
+                {},
+            )
+        )
+    )
+
+    semantic_evidence.pop(
+        key,
+        None,
+    )
+
+    if semantic_evidence:
+        record[
+            "semanticDuplicateEvidence"
+        ] = semantic_evidence
+    else:
+        record.pop(
+            "semanticDuplicateEvidence",
+            None,
+        )
+
+    semantic_paused = (
+        _normalize_difficulty_list(
+            record.get(
+                "semanticPausedDifficulties",
+                [],
+            )
+        )
+    )
+
+    semantic_paused = [
+        item
+        for item in semantic_paused
+        if item != difficulty
+    ]
+
+    if semantic_paused:
+        record[
+            "semanticPausedDifficulties"
+        ] = semantic_paused
+    else:
+        record.pop(
+            "semanticPausedDifficulties",
             None,
         )
 
