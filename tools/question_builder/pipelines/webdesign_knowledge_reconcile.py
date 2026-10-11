@@ -149,6 +149,9 @@ def build_reconciled_item(
         "candidateFacts": concept[
             "facts"
         ],
+        "sourceSummary": concept[
+            "summary"
+        ],
         "text": build_reconciled_text(
             concept,
             answer,

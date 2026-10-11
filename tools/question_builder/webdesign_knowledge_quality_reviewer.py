@@ -14,7 +14,7 @@ REQUIRED_REVIEW_FIELDS = {
     "answerSupport",
     "factScope",
     "sectionConsistency",
-    "candidateCoverage",
+    "objectiveCoverage",
     "factAssessments",
     "issues",
     "recommendedFactIndexes",
@@ -25,7 +25,7 @@ def validate_knowledge_quality_review(
     review: dict[str, Any],
     *,
     fact_count: int,
-    candidate_count: int,
+    objective_count: int,
 ) -> None:
     if not isinstance(
         review,
@@ -69,88 +69,89 @@ def validate_knowledge_quality_review(
                 f"invalid {field}"
             )
 
-    candidate_coverage = review[
-        "candidateCoverage"
+    objective_coverage = review[
+        "objectiveCoverage"
     ]
 
     if not isinstance(
-        candidate_coverage,
+        objective_coverage,
         list,
     ):
         raise ValueError(
-            "candidateCoverage must be a list"
+            "objectiveCoverage must be a list"
         )
 
     if len(
-        candidate_coverage
-    ) != candidate_count:
+        objective_coverage
+    ) != objective_count:
         raise ValueError(
-            "candidateCoverage length must "
-            "match candidate fact count"
+            "objectiveCoverage length must "
+            "match learning objective count"
         )
 
-    seen_candidate_indexes = set()
+    seen_objective_indexes = set()
 
-    for item in candidate_coverage:
+    for item in objective_coverage:
         if not isinstance(
             item,
             dict,
         ):
             raise ValueError(
-                "candidateCoverage items "
+                "objectiveCoverage items "
                 "must be objects"
             )
 
         if set(item) != {
-            "candidateIndex",
+            "objectiveIndex",
             "status",
         }:
             raise ValueError(
-                "candidateCoverage item "
+                "objectiveCoverage item "
                 "has invalid fields"
             )
 
-        candidate_index = item[
-            "candidateIndex"
+        objective_index = item[
+            "objectiveIndex"
         ]
 
         if (
             not isinstance(
-                candidate_index,
+                objective_index,
                 int,
             )
             or isinstance(
-                candidate_index,
+                objective_index,
                 bool,
             )
             or not (
                 0
-                <= candidate_index
-                < candidate_count
+                <= objective_index
+                < objective_count
             )
         ):
             raise ValueError(
-                "invalid candidateIndex"
+                "invalid objectiveIndex"
             )
 
         if (
-            candidate_index
-            in seen_candidate_indexes
+            objective_index
+            in seen_objective_indexes
         ):
             raise ValueError(
-                "duplicate candidateIndex"
+                "duplicate objectiveIndex"
             )
 
-        seen_candidate_indexes.add(
-            candidate_index
+        seen_objective_indexes.add(
+            objective_index
         )
 
         if item["status"] not in {
             "supported",
+            "partial",
             "unsupported",
         }:
             raise ValueError(
-                "invalid candidateCoverage status"
+                "invalid objectiveCoverage status"
             )
 
     fact_assessments = review[
@@ -226,8 +227,8 @@ def validate_knowledge_quality_review(
 
         if item["relevance"] not in {
             "direct",
-            "background",
-            "out_of_scope",
+            "useful_background",
+            "unrelated",
         }:
             raise ValueError(
                 "invalid fact relevance"
@@ -286,16 +287,19 @@ def validate_knowledge_quality_review(
             "contains duplicates"
         )
 
-    direct_indexes = sorted(
+    usable_indexes = sorted(
         item["factIndex"]
         for item in fact_assessments
-        if item["relevance"] == "direct"
+        if item["relevance"] in {
+            "direct",
+            "useful_background",
+        }
     )
 
-    if indexes != direct_indexes:
+    if indexes != usable_indexes:
         raise ValueError(
             "recommendedFactIndexes must "
-            "exactly match direct facts"
+            "exactly match usable facts"
         )
 
     if (
@@ -328,21 +332,21 @@ def validate_knowledge_quality_review(
         if any(
             item["status"]
             != "supported"
-            for item in candidate_coverage
+            for item in objective_coverage
         ):
             raise ValueError(
-                "pass requires all candidate "
-                "facts to be supported"
+                "pass requires all learning "
+                "objectives to be supported"
             )
 
         if any(
             item["relevance"]
-            != "direct"
+            == "unrelated"
             for item in fact_assessments
         ):
             raise ValueError(
-                "pass requires every verified "
-                "fact to be direct"
+                "pass cannot contain unrelated "
+                "verified facts"
             )
 
 
@@ -354,7 +358,14 @@ def build_knowledge_quality_prompt(
         "id": knowledge.get("id"),
         "section": knowledge.get("section"),
         "title": knowledge.get("title"),
-        "candidateFacts": knowledge.get(
+        "sourceSummary": knowledge.get(
+            "sourceSummary"
+        ),
+        "learningObjectives": knowledge.get(
+            "learningObjectives",
+            [],
+        ),
+        "sourceObservations": knowledge.get(
             "candidateFacts",
             [],
         ),
@@ -409,27 +420,45 @@ WebDesign Knowledge品質審査担当です。
 判定項目:
 
 topicAlignment:
-candidateFactsの中心論点と
-verifiedFactsの中心論点が一致するか。
+title、sourceSummary、
+learningObjectivesが示す
+中心学習論点とverifiedFactsが
+一致しているか。
 
 answerSupport:
-verifiedFactsに、
-candidateFactsの論点を支える
-十分な根拠が含まれるか。
+learningObjectivesを達成するための
+根拠がverifiedFactsに
+十分含まれているか。
+
+sourceObservations:
+問題画像から抽出された
+設問・選択肢・出題形式などの
+観察情報です。
+
+sourceObservations自体が
+verifiedFactsによって再度
+証明される必要はありません。
+
+sourceObservationsにしか存在しない
+選択肢名や表現があることだけを理由に
+holdやrejectにしてはいけません。
+
+objectiveCoverage:
+learningObjectivesを
+0始まりindexごとに必ず全件評価し、
+verifiedFactsによる支援状況を
+次のいずれかで示してください。
+
+- supported:
+  学習目標を十分に支える
+- partial:
+  一部は支えるが情報不足がある
+- unsupported:
+  学習目標を支える根拠がない
 
 factScope:
-verifiedFactsの各項目が、
-元問題を判断するための根拠として
-直接必要な範囲に収まっているか。
-
-単に同じ分野・同じテーマに属するだけでは
-directと判定しないでください。
-
-candidateCoverage:
-candidateFactsを0始まりindexごとに確認し、
-verifiedFactsによって直接支えられるなら
-supported、
-直接支えられないならunsupportedとしてください。
+verifiedFactsを、
+元の学習論点との関係で評価してください。
 
 factAssessments:
 verifiedFactsを0始まりindexごとに
@@ -437,40 +466,40 @@ verifiedFactsを0始まりindexごとに
 
 relevance:
 - direct:
-  元問題の中心論点や正答判断を
-  直接支える事実
-- background:
-  内容上は関連するが、
-  元問題の判断には直接必要でない
-  周辺知識や一般説明
-- out_of_scope:
-  元問題の論点から外れる事実
+  learningObjectivesを直接支える事実
+- useful_background:
+  学習目標に直接必須ではないが、
+  同じ論点の理解・解説・問題生成に
+  有用な周辺知識
+- unrelated:
+  元の学習論点から外れており、
+  Knowledge生成に使用すべきでない事実
 
-重要:
-同じ技術分野に属するという理由だけで
-directにしてはいけません。
+同じ分野であるという理由だけで
+useful_backgroundにしてはいけません。
 
 sectionConsistency:
 section、answerSection、
 sectionMatchに矛盾がないか。
 
 recommendedFactIndexes:
-factAssessmentsでdirectと判定した
-verifiedFactsだけの0始まりindexを
-昇順で指定してください。
+factAssessmentsで
+directまたはuseful_backgroundと
+判定したverifiedFactsの
+0始まりindexを昇順で指定してください。
 
 decision:
 
 pass:
 - 4項目すべてpass
-- candidateFactsがすべてsupported
-- verifiedFactsがすべてdirect
+- learningObjectivesがすべてsupported
+- unrelatedなverifiedFactがない
 - そのまま人間レビュー候補にできる
 
 hold:
-- 使用可能なdirect根拠は存在するが、
-  backgroundやout_of_scopeの混入、
-  candidateFactの未充足、
+- 使用可能な根拠は存在するが、
+  learningObjectiveがpartialまたはunsupported、
+  unrelatedな事実の混入、
   論点ずれ、根拠不足などがあり
   人間確認が必要
 
@@ -493,16 +522,16 @@ JSONのみを返してください。
   "answerSupport": "pass|fail",
   "factScope": "pass|fail",
   "sectionConsistency": "pass|fail",
-  "candidateCoverage": [
+  "objectiveCoverage": [
     {{
-      "candidateIndex": 0,
-      "status": "supported|unsupported"
+      "objectiveIndex": 0,
+      "status": "supported|partial|unsupported"
     }}
   ],
   "factAssessments": [
     {{
       "factIndex": 0,
-      "relevance": "direct|background|out_of_scope"
+      "relevance": "direct|useful_background|unrelated"
     }}
   ],
   "issues": [
@@ -523,7 +552,7 @@ def parse_knowledge_quality_response(
     response_text: str,
     *,
     fact_count: int,
-    candidate_count: int,
+    objective_count: int,
 ) -> dict[str, Any]:
     text = str(
         response_text
@@ -552,7 +581,7 @@ def parse_knowledge_quality_response(
     validate_knowledge_quality_review(
         review,
         fact_count=fact_count,
-        candidate_count=candidate_count,
+        objective_count=objective_count,
     )
 
     return review
@@ -593,18 +622,24 @@ class WebDesignKnowledgeQualityReviewer:
                 "knowledge facts must be a list"
             )
 
-        candidate_facts = knowledge.get(
-            "candidateFacts",
+        learning_objectives = knowledge.get(
+            "learningObjectives",
             [],
         )
 
         if not isinstance(
-            candidate_facts,
+            learning_objectives,
             list,
         ):
             raise ValueError(
-                "knowledge candidateFacts "
+                "knowledge learningObjectives "
                 "must be a list"
+            )
+
+        if not learning_objectives:
+            raise ValueError(
+                "knowledge requires at least "
+                "one learning objective"
             )
 
         prompt = build_knowledge_quality_prompt(
@@ -620,8 +655,8 @@ class WebDesignKnowledgeQualityReviewer:
             parse_knowledge_quality_response(
                 response,
                 fact_count=len(facts),
-                candidate_count=(
-                    len(candidate_facts)
+                objective_count=(
+                    len(learning_objectives)
                 ),
             )
         )
