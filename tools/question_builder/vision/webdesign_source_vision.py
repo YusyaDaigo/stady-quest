@@ -105,7 +105,11 @@ sectionは必ず次のいずれかです:
   独立した短い事実文へ抽象化してください。
 
 - 問題番号が画像上にはっきり表示されている場合は、
-  sourceQuestionNumbers にその番号を整数で記録してください。
+  sourceQuestionNumbers にその番号を1件だけ整数で記録してください。
+- 1つのconceptに複数の問題番号をまとめないでください。
+- 同じ学習論点に見える複数の問題であっても、
+  問題番号ごとに別々のconceptとして出力してください。
+- sourceQuestionNumbers は空配列または要素1件の配列にしてください。
 - 問題番号がない教材・解説・試験案内では
   sourceQuestionNumbers を空配列にしてください。
 - 問題番号を推測で補わないでください。
@@ -322,6 +326,18 @@ def validate_webdesign_knowledge(
                 normalized_question_numbers
             )
         )
+
+        if (
+            len(
+                normalized_question_numbers
+            )
+            > 1
+        ):
+            raise ValueError(
+                f"concept {index} must not "
+                "combine multiple "
+                "sourceQuestionNumbers"
+            )
 
         title = concept.get("title")
 
