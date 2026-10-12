@@ -1,0 +1,63 @@
+{
+  "recordVersion": 1,
+  "knowledgeId": "webdesign-ウェブデザイン検定模擬試験-q007-c01",
+  "model": "gpt-5.5",
+  "reviewedAtUtc": "2026-10-12T13:38:32.976724+00:00",
+  "prompt": "あなたはStudy QUESTの\nWebDesign Knowledge品質審査担当です。\n\n目的:\n問題画像から抽出した論点と、\n解答・解説画像から抽出した事実が、\n同じ学習論点を適切に支えているかを\n厳格に判定してください。\n\n重要:\n- 与えられたJSONだけを根拠にしてください。\n- 外部知識を使って内容を訂正しないでください。\n- 一般知識から不足情報を補わないでください。\n- verifiedFactsが事実として正しいかを\n  外部知識で判定する仕事ではありません。\n- candidateFactsとverifiedFactsの\n  論点整合性を判定してください。\n\n判定項目:\n\ntopicAlignment:\ntitle、sourceSummary、\nlearningObjectivesが示す\n中心学習論点とverifiedFactsが\n一致しているか。\n\nanswerSupport:\nlearningObjectivesを達成するための\n根拠がverifiedFactsに\n十分含まれているか。\n\nsourceObservations:\n問題画像から抽出された\n設問・選択肢・出題形式などの\n観察情報です。\n\nsourceObservations自体が\nverifiedFactsによって再度\n証明される必要はありません。\n\nsourceObservationsにしか存在しない\n選択肢名や表現があることだけを理由に\nholdやrejectにしてはいけません。\n\nobjectiveCoverage:\nlearningObjectivesを\n0始まりindexごとに必ず全件評価し、\nverifiedFactsによる支援状況を\n次のいずれかで示してください。\n\n- supported:\n  学習目標を十分に支える\n- partial:\n  一部は支えるが情報不足がある\n- unsupported:\n  学習目標を支える根拠がない\n\nfactScope:\nverifiedFactsを、\n元の学習論点との関係で評価してください。\n\nfactAssessments:\nverifiedFactsを0始まりindexごとに\n必ず全件評価してください。\n\nrelevance:\n- direct:\n  learningObjectivesを直接支える事実\n- useful_background:\n  学習目標に直接必須ではないが、\n  同じ論点の理解・解説・問題生成に\n  有用な周辺知識\n- unrelated:\n  元の学習論点から外れており、\n  Knowledge生成に使用すべきでない事実\n\n同じ分野であるという理由だけで\nuseful_backgroundにしてはいけません。\n\nsectionConsistency:\nsection、answerSection、\nsectionMatchに矛盾がないか。\n\nrecommendedFactIndexes:\nfactAssessmentsで\ndirectまたはuseful_backgroundと\n判定したverifiedFactsの\n0始まりindexを昇順で指定してください。\n\ndecision:\n\npass:\n- 4項目すべてpass\n- learningObjectivesがすべてsupported\n- unrelatedなverifiedFactがない\n- そのまま人間レビュー候補にできる\n\nhold:\n- 使用可能な根拠は存在するが、\n  learningObjectiveがpartialまたはunsupported、\n  unrelatedな事実の混入、\n  論点ずれ、根拠不足などがあり\n  人間確認が必要\n\nreject:\n- candidateFactsとverifiedFactsが\n  実質的に対応していない、\n  またはKnowledge根拠として\n  使用困難\n\npassでもreviewStatusを\napprovedに変更してはいけません。\nこの判定は人間承認の前段階です。\n\nJSONのみを返してください。\n\n形式:\n{\n  \"decision\": \"pass|hold|reject\",\n  \"topicAlignment\": \"pass|fail\",\n  \"answerSupport\": \"pass|fail\",\n  \"factScope\": \"pass|fail\",\n  \"sectionConsistency\": \"pass|fail\",\n  \"objectiveCoverage\": [\n    {\n      \"objectiveIndex\": 0,\n      \"status\": \"supported|partial|unsupported\"\n    }\n  ],\n  \"factAssessments\": [\n    {\n      \"factIndex\": 0,\n      \"relevance\": \"direct|useful_background|unrelated\"\n    }\n  ],\n  \"issues\": [\n    \"問題点\"\n  ],\n  \"recommendedFactIndexes\": [\n    0,\n    1\n  ]\n}\n\nKnowledge:\n{\n  \"id\": \"webdesign-ウェブデザイン検定模擬試験-q007-c01\",\n  \"section\": \"html_css\",\n  \"title\": \"CSSのhsl()における色相指定\",\n  \"sourceSummary\": \"CSSで色を指定するhsl()では、色相の値が角度として扱われることを理解する。\",\n  \"learningObjectives\": [\n    \"hsl()の色相指定が角度で表されることを判別できる\"\n  ],\n  \"sourceObservations\": [\n    \"CSSのhsl()関数では、色相を角度として指定する。\"\n  ],\n  \"verifiedFacts\": [\n    \"CSSのhsl()関数は色指定方式である。\",\n    \"hsl()の第1引数はhueを示す。\",\n    \"hsl()の第2引数はsaturationを示す。\",\n    \"hsl()の第3引数はlightnessを示す。\",\n    \"hueは0から360の角度で指定する。\",\n    \"saturationは0から100%で指定する。\",\n    \"lightnessは0から100%で指定する。\"\n  ],\n  \"answerExplanationSummary\": \"CSSのhsl()は、色相、彩度、明度をそれぞれ指定して色を表す関数である。\",\n  \"answerSection\": \"html_css\",\n  \"sectionMatch\": true,\n  \"sourceQuestionNumbers\": [\n    7\n  ]\n}",
+  "promptSha256": "3f35c5f8ab24fef2fb3d6297a9ee444ca99ee97dbf3abbbcd9e15065f2d997a2",
+  "review": {
+    "decision": "pass",
+    "topicAlignment": "pass",
+    "answerSupport": "pass",
+    "factScope": "pass",
+    "sectionConsistency": "pass",
+    "objectiveCoverage": [
+      {
+        "objectiveIndex": 0,
+        "status": "supported"
+      }
+    ],
+    "factAssessments": [
+      {
+        "factIndex": 0,
+        "relevance": "useful_background"
+      },
+      {
+        "factIndex": 1,
+        "relevance": "direct"
+      },
+      {
+        "factIndex": 2,
+        "relevance": "useful_background"
+      },
+      {
+        "factIndex": 3,
+        "relevance": "useful_background"
+      },
+      {
+        "factIndex": 4,
+        "relevance": "direct"
+      },
+      {
+        "factIndex": 5,
+        "relevance": "useful_background"
+      },
+      {
+        "factIndex": 6,
+        "relevance": "useful_background"
+      }
+    ],
+    "issues": [],
+    "recommendedFactIndexes": [
+      0,
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  "reviewSha256": "82ae8eba61ea17897f9a4026be77a6a4628f51ed8e09cb975b7675f4bf5949fd",
+  "reviewerCodeSha256": "cb295c94da6bc6f2e3bbe043ceb1c0a6471a9e93f3f00b94d554ca9ddb6f9a10"
+}
