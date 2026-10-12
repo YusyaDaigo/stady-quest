@@ -1,0 +1,24 @@
+{
+  "recordVersion": 1,
+  "knowledgeId": "webdesign-ウェブデザイン検定模擬試験-q007-c01",
+  "sourceDraftPath": "generated_materials/webdesign/knowledge_drafts/模擬試験_page002.json",
+  "sourceDraftSha256": "ba1a646f7157e6d915caa45db6d171628b27356d483c918cc53ead38a562d139",
+  "verifierPath": "tools/question_builder/webdesign_factual_verifier.py",
+  "verifierSha256": "2abc8313dd09e8e7282ae715a00b26b76ac781537821d88411845a2a77a4bf5f",
+  "sourceFactCount": 1,
+  "answerFactCount": 7,
+  "evidenceCount": 4,
+  "factualDecision": "verified",
+  "contextDecision": "supported",
+  "factualGate": "pass",
+  "reviewStatus": "pending",
+  "humanReviewStatus": "pending",
+  "legacyResultDescription": "First Q7 contextual verification, using three W3C evidence excerpts",
+  "rawSourcePolicy": "W3C HTML is not bundled. Retrieve sourceUrl and compare sha256.",
+  "artifactSha256": {
+    "knowledge_snapshot.json": "9c987ac882ce85b5d6ffa42340f2e81d8943a2a4e6d793821cbd627c62cffde1",
+    "evidence.json": "c67b7d246292e428db8dda7f35d27f74ebed8114363bc2d64b65f6a1c2630f8c",
+    "factual_result_legacy.json": "0aee2af8f549d707de6999aa00a47b5f7e8d2951b8d2c33686e97cba80c4c0f8",
+    "factual_context_result.json": "f81fe6d349b5759409fc56a617ef6234ee1709243153e83bc3f3ca0ef8b5b101"
+  }
+}

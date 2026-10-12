@@ -1,0 +1,136 @@
+{
+  "knowledgeId": "webdesign-ウェブデザイン検定模擬試験-q007-c01",
+  "model": "gpt-5.5",
+  "evidenceVersion": 2,
+  "verifiedAtUtc": "2026-10-12T13:03:38.022989+00:00",
+  "draftSha256": "ba1a646f7157e6d915caa45db6d171628b27356d483c918cc53ead38a562d139",
+  "evidenceSha256": "c67b7d246292e428db8dda7f35d27f74ebed8114363bc2d64b65f6a1c2630f8c",
+  "verifierSha256": "2abc8313dd09e8e7282ae715a00b26b76ac781537821d88411845a2a77a4bf5f",
+  "verification": {
+    "decision": "verified",
+    "factAssessments": [
+      {
+        "factIndex": 0,
+        "status": "verified",
+        "evidenceIndexes": [
+          0,
+          2
+        ]
+      },
+      {
+        "factIndex": 1,
+        "status": "verified",
+        "evidenceIndexes": [
+          1
+        ]
+      },
+      {
+        "factIndex": 2,
+        "status": "verified",
+        "evidenceIndexes": [
+          2
+        ]
+      },
+      {
+        "factIndex": 3,
+        "status": "verified",
+        "evidenceIndexes": [
+          2
+        ]
+      },
+      {
+        "factIndex": 4,
+        "status": "verified",
+        "evidenceIndexes": [
+          2
+        ]
+      },
+      {
+        "factIndex": 5,
+        "status": "verified",
+        "evidenceIndexes": [
+          0,
+          2
+        ]
+      },
+      {
+        "factIndex": 6,
+        "status": "verified",
+        "evidenceIndexes": [
+          2,
+          3
+        ]
+      },
+      {
+        "factIndex": 7,
+        "status": "verified",
+        "evidenceIndexes": [
+          2,
+          3
+        ]
+      }
+    ],
+    "contextAssessment": {
+      "status": "supported",
+      "evidenceIndexes": [
+        0,
+        1,
+        2,
+        3
+      ],
+      "reason": "Evidenceは、HSL colorsがhue, saturation, lightnessの三要素で指定され、hsl()の第1引数がhue angleであることを示している。また、saturationとlightnessが続く引数であり、S/Lの百分率参照範囲が0%から100%であることも示しているため、中心論点である「hsl()の色相指定が角度で表される」という説明文脈は支持される。"
+    },
+    "issues": [],
+    "factTargets": [
+      {
+        "factIndex": 0,
+        "origin": "source",
+        "originalIndex": 0,
+        "statement": "CSSのhsl()関数では、色相を角度として指定する。"
+      },
+      {
+        "factIndex": 1,
+        "origin": "answer",
+        "originalIndex": 0,
+        "statement": "CSSのhsl()関数は色指定方式である。"
+      },
+      {
+        "factIndex": 2,
+        "origin": "answer",
+        "originalIndex": 1,
+        "statement": "hsl()の第1引数はhueを示す。"
+      },
+      {
+        "factIndex": 3,
+        "origin": "answer",
+        "originalIndex": 2,
+        "statement": "hsl()の第2引数はsaturationを示す。"
+      },
+      {
+        "factIndex": 4,
+        "origin": "answer",
+        "originalIndex": 3,
+        "statement": "hsl()の第3引数はlightnessを示す。"
+      },
+      {
+        "factIndex": 5,
+        "origin": "answer",
+        "originalIndex": 4,
+        "statement": "hueは0から360の角度で指定する。"
+      },
+      {
+        "factIndex": 6,
+        "origin": "answer",
+        "originalIndex": 5,
+        "statement": "saturationは0から100%で指定する。"
+      },
+      {
+        "factIndex": 7,
+        "origin": "answer",
+        "originalIndex": 6,
+        "statement": "lightnessは0から100%で指定する。"
+      }
+    ],
+    "factualGate": "pass"
+  }
+}
