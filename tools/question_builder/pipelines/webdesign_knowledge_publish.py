@@ -376,6 +376,69 @@ def build_approved_knowledge(
     }
 
 
+def merge_published_knowledge(
+    approved_items: List[Dict[str, Any]],
+    output_path: Path,
+) -> List[Dict[str, Any]]:
+    output_path = Path(output_path)
+
+    if output_path.exists():
+        existing = json.loads(
+            output_path.read_text(
+                encoding="utf-8"
+            )
+        )
+
+        if not isinstance(existing, list):
+            raise ValueError(
+                "Published Knowledge must be an array"
+            )
+    else:
+        existing = []
+
+    merged = list(existing)
+    existing_by_id = {}
+
+    for item in existing:
+        validate_item(item)
+        knowledge_id = item["id"]
+
+        if knowledge_id in existing_by_id:
+            raise ValueError(
+                "Duplicate published Knowledge ID: "
+                f"{knowledge_id}"
+            )
+
+        existing_by_id[knowledge_id] = item
+
+    seen_incoming = set()
+
+    for item in approved_items:
+        validate_item(item)
+        knowledge_id = item["id"]
+
+        if knowledge_id in seen_incoming:
+            raise ValueError(
+                "Duplicate incoming Knowledge ID: "
+                f"{knowledge_id}"
+            )
+
+        seen_incoming.add(knowledge_id)
+
+        if knowledge_id in existing_by_id:
+            if existing_by_id[knowledge_id] != item:
+                raise ValueError(
+                    "Refusing to overwrite published "
+                    f"Knowledge: {knowledge_id}"
+                )
+
+            continue
+
+        merged.append(item)
+
+    return merged
+
+
 def write_knowledge(
     items: List[Dict[str, Any]],
     output_path: Path,
@@ -575,8 +638,13 @@ def main() -> None:
         args.output
     )
 
-    write_knowledge(
+    merged_items = merge_published_knowledge(
         result["items"],
+        output_path,
+    )
+
+    write_knowledge(
+        merged_items,
         output_path,
     )
 
