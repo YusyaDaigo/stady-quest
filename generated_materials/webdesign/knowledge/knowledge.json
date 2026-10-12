@@ -221,5 +221,119 @@
     "reviewStatus": "approved",
     "sourceDocument": "ウェブデザイン検定模擬試験",
     "reviewNote": "解答・解説資料と照合済み。"
+  },
+  {
+    "id": "webdesign-ウェブデザイン検定模擬試験-q007-c01",
+    "section": "html_css",
+    "title": "CSSのhsl()における色相指定",
+    "pages": [
+      2
+    ],
+    "keywords": [
+      "CSS",
+      "hsl()",
+      "色相",
+      "角度"
+    ],
+    "facts": [
+      "CSSのhsl()関数は色指定方式である。",
+      "hsl()の第1引数はhueを示す。",
+      "hsl()の第2引数はsaturationを示す。",
+      "hsl()の第3引数はlightnessを示す。",
+      "hueは0から360の角度で指定する。",
+      "saturationは0から100%で指定する。",
+      "lightnessは0から100%で指定する。"
+    ],
+    "candidateFacts": [
+      "CSSのhsl()関数では、色相を角度として指定する。"
+    ],
+    "sourceSummary": "CSSで色を指定するhsl()では、色相の値が角度として扱われることを理解する。",
+    "text": "CSSで色を指定するhsl()では、色相の値が角度として扱われることを理解する。\n確認済み事項: CSSのhsl()関数は色指定方式である。 / hsl()の第1引数はhueを示す。 / hsl()の第2引数はsaturationを示す。 / hsl()の第3引数はlightnessを示す。 / hueは0から360の角度で指定する。 / saturationは0から100%で指定する。 / lightnessは0から100%で指定する。\n解答解説要約: CSSのhsl()は、色相、彩度、明度をそれぞれ指定して色を表す関数である。\n学習目標: hsl()の色相指定が角度で表されることを判別できる",
+    "learningObjectives": [
+      "hsl()の色相指定が角度で表されることを判別できる"
+    ],
+    "knowledgeType": "exam_content",
+    "questionGenerationEligible": true,
+    "sourceQuestionNumbers": [
+      7
+    ],
+    "correctAnswer": 1,
+    "answerExplanationSummary": "CSSのhsl()は、色相、彩度、明度をそれぞれ指定して色を表す関数である。",
+    "answerSourcePages": [
+      2
+    ],
+    "answerSection": "html_css",
+    "sectionMatch": true,
+    "verificationStatus": "verified_from_answer",
+    "reviewStatus": "approved",
+    "sourceDocument": "ウェブデザイン検定模擬試験",
+    "knowledgeQa": {
+      "decision": "pass",
+      "topicAlignment": "pass",
+      "answerSupport": "pass",
+      "factScope": "pass",
+      "sectionConsistency": "pass",
+      "objectiveCoverage": [
+        {
+          "objectiveIndex": 0,
+          "status": "supported"
+        }
+      ],
+      "factAssessments": [
+        {
+          "factIndex": 0,
+          "relevance": "useful_background"
+        },
+        {
+          "factIndex": 1,
+          "relevance": "direct"
+        },
+        {
+          "factIndex": 2,
+          "relevance": "useful_background"
+        },
+        {
+          "factIndex": 3,
+          "relevance": "useful_background"
+        },
+        {
+          "factIndex": 4,
+          "relevance": "direct"
+        },
+        {
+          "factIndex": 5,
+          "relevance": "useful_background"
+        },
+        {
+          "factIndex": 6,
+          "relevance": "useful_background"
+        }
+      ],
+      "issues": [],
+      "recommendedFactIndexes": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ]
+    },
+    "knowledgeQaVersion": 1,
+    "humanReview": {
+      "status": "approved",
+      "approved": true,
+      "reviewer": "user",
+      "reviewedAtUtc": "2026-10-12T14:12:48.674148+00:00",
+      "notes": [
+        "元問題Q7の中心論点である、CSS hsl()の色相が角度で指定されることを承認。",
+        "色相の0〜360度は基本的な参照範囲であり、CSSの有効入力値の厳密な上限ではない。",
+        "負の角度や360度を超える角度も正規化して扱われる。",
+        "彩度・明度の0〜100%は参照範囲であり、範囲外を一律にCSS無効とする問題は生成しない。"
+      ]
+    },
+    "knowledgeQaRecord": "generated_materials/webdesign/qa_records/q007_v1.json",
+    "factualVerificationRecord": "generated_materials/webdesign/verification_records/mock_q007_v2"
   }
 ]

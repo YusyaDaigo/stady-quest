@@ -1,0 +1,662 @@
+{
+  "exam": "webdesign",
+  "materialType": "reconciled_knowledge_draft",
+  "documentId": "ウェブデザイン検定模擬試験",
+  "questionPage": 2,
+  "answerPage": null,
+  "answerPages": [
+    2,
+    3,
+    4
+  ],
+  "matchedCount": 7,
+  "matchedQuestionNumbers": [
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "unmatchedQuestionNumbers": [],
+  "skippedConceptCount": 0,
+  "ambiguousConceptCount": 0,
+  "sectionMismatchCount": 0,
+  "items": [
+    {
+      "id": "webdesign-ウェブデザイン検定模擬試験-q007-c01",
+      "section": "html_css",
+      "title": "CSSのhsl()における色相指定",
+      "pages": [
+        2
+      ],
+      "keywords": [
+        "CSS",
+        "hsl()",
+        "色相",
+        "角度"
+      ],
+      "facts": [
+        "CSSのhsl()関数は色指定方式である。",
+        "hsl()の第1引数はhueを示す。",
+        "hsl()の第2引数はsaturationを示す。",
+        "hsl()の第3引数はlightnessを示す。",
+        "hueは0から360の角度で指定する。",
+        "saturationは0から100%で指定する。",
+        "lightnessは0から100%で指定する。"
+      ],
+      "candidateFacts": [
+        "CSSのhsl()関数では、色相を角度として指定する。"
+      ],
+      "sourceSummary": "CSSで色を指定するhsl()では、色相の値が角度として扱われることを理解する。",
+      "text": "CSSで色を指定するhsl()では、色相の値が角度として扱われることを理解する。\n確認済み事項: CSSのhsl()関数は色指定方式である。 / hsl()の第1引数はhueを示す。 / hsl()の第2引数はsaturationを示す。 / hsl()の第3引数はlightnessを示す。 / hueは0から360の角度で指定する。 / saturationは0から100%で指定する。 / lightnessは0から100%で指定する。\n解答解説要約: CSSのhsl()は、色相、彩度、明度をそれぞれ指定して色を表す関数である。\n学習目標: hsl()の色相指定が角度で表されることを判別できる",
+      "learningObjectives": [
+        "hsl()の色相指定が角度で表されることを判別できる"
+      ],
+      "knowledgeType": "exam_content",
+      "questionGenerationEligible": true,
+      "sourceQuestionNumbers": [
+        7
+      ],
+      "correctAnswer": 1,
+      "answerExplanationSummary": "CSSのhsl()は、色相、彩度、明度をそれぞれ指定して色を表す関数である。",
+      "answerSourcePages": [
+        2
+      ],
+      "answerSection": "html_css",
+      "sectionMatch": true,
+      "verificationStatus": "verified_from_answer",
+      "reviewStatus": "approved",
+      "sourceDocument": "ウェブデザイン検定模擬試験",
+      "knowledgeQa": {
+        "decision": "pass",
+        "topicAlignment": "pass",
+        "answerSupport": "pass",
+        "factScope": "pass",
+        "sectionConsistency": "pass",
+        "objectiveCoverage": [
+          {
+            "objectiveIndex": 0,
+            "status": "supported"
+          }
+        ],
+        "factAssessments": [
+          {
+            "factIndex": 0,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 1,
+            "relevance": "direct"
+          },
+          {
+            "factIndex": 2,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 3,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 4,
+            "relevance": "direct"
+          },
+          {
+            "factIndex": 5,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 6,
+            "relevance": "useful_background"
+          }
+        ],
+        "issues": [],
+        "recommendedFactIndexes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      },
+      "knowledgeQaVersion": 1,
+      "humanReview": {
+        "status": "approved",
+        "approved": true,
+        "reviewer": "user",
+        "reviewedAtUtc": "2026-10-12T14:12:48.674148+00:00",
+        "notes": [
+          "元問題Q7の中心論点である、CSS hsl()の色相が角度で指定されることを承認。",
+          "色相の0〜360度は基本的な参照範囲であり、CSSの有効入力値の厳密な上限ではない。",
+          "負の角度や360度を超える角度も正規化して扱われる。",
+          "彩度・明度の0〜100%は参照範囲であり、範囲外を一律にCSS無効とする問題は生成しない。"
+        ]
+      },
+      "knowledgeQaRecord": "generated_materials/webdesign/qa_records/q007_v1.json",
+      "factualVerificationRecord": "generated_materials/webdesign/verification_records/mock_q007_v2"
+    },
+    {
+      "id": "webdesign-ウェブデザイン検定模擬試験-q008-c02",
+      "section": "operation",
+      "title": "著作権侵害と刑事罰",
+      "pages": [
+        2
+      ],
+      "keywords": [
+        "著作権",
+        "著作権侵害",
+        "民事責任",
+        "刑事罰"
+      ],
+      "facts": [
+        "著作権侵害には民事上の法的制裁が定められている。",
+        "著作権侵害には刑事罰も定められている。",
+        "著作者の許諾なく著作物を利用すると、例外規定を除き著作権侵害となる。",
+        "著作者は侵害者に対して行為の差止めを請求できる。",
+        "著作者は侵害者に対して損害賠償を請求できる。",
+        "著作権侵害の罰則には懲役刑、罰金刑、またはその併科がある。"
+      ],
+      "candidateFacts": [
+        "著作権侵害には、民事上の責任だけでなく刑事罰が関係する場合がある。"
+      ],
+      "sourceSummary": "著作権侵害に関する法的責任として、民事上の扱いだけでなく刑事罰の有無も理解する。",
+      "text": "著作権侵害に関する法的責任として、民事上の扱いだけでなく刑事罰の有無も理解する。\n確認済み事項: 著作権侵害には民事上の法的制裁が定められている。 / 著作権侵害には刑事罰も定められている。 / 著作者の許諾なく著作物を利用すると、例外規定を除き著作権侵害となる。 / 著作者は侵害者に対して行為の差止めを請求できる。 / 著作者は侵害者に対して損害賠償を請求できる。 / 著作権侵害の罰則には懲役刑、罰金刑、またはその併科がある。\n解答解説要約: 著作権侵害には民事上の請求や刑事罰があり、無断利用は例外を除いて侵害となる。\n学習目標: 著作権侵害に刑事罰が関係する場合があることを判別できる",
+      "learningObjectives": [
+        "著作権侵害に刑事罰が関係する場合があることを判別できる"
+      ],
+      "knowledgeType": "exam_content",
+      "questionGenerationEligible": true,
+      "sourceQuestionNumbers": [
+        8
+      ],
+      "correctAnswer": 2,
+      "answerExplanationSummary": "著作権侵害には民事上の請求や刑事罰があり、無断利用は例外を除いて侵害となる。",
+      "answerSourcePages": [
+        2
+      ],
+      "answerSection": "operation",
+      "sectionMatch": true,
+      "verificationStatus": "verified_from_answer",
+      "reviewStatus": "pending",
+      "sourceDocument": "ウェブデザイン検定模擬試験",
+      "knowledgeQa": {
+        "decision": "pass",
+        "topicAlignment": "pass",
+        "answerSupport": "pass",
+        "factScope": "pass",
+        "sectionConsistency": "pass",
+        "objectiveCoverage": [
+          {
+            "objectiveIndex": 0,
+            "status": "supported"
+          }
+        ],
+        "factAssessments": [
+          {
+            "factIndex": 0,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 1,
+            "relevance": "direct"
+          },
+          {
+            "factIndex": 2,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 3,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 4,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 5,
+            "relevance": "direct"
+          }
+        ],
+        "issues": [],
+        "recommendedFactIndexes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "knowledgeQaVersion": 1
+    },
+    {
+      "id": "webdesign-ウェブデザイン検定模擬試験-q009-c03",
+      "section": "operation",
+      "title": "録画番組のインターネット公開と著作権",
+      "pages": [
+        2
+      ],
+      "keywords": [
+        "著作権",
+        "テレビ番組",
+        "録画",
+        "インターネット公開"
+      ],
+      "facts": [
+        "著作物をインターネット上に公開する権利は公衆送信権である。",
+        "私的利用のための複製は著作権者の許諾なく行える。",
+        "著作物をインターネット上に公開することは著作権者の公衆送信権を侵す。"
+      ],
+      "candidateFacts": [
+        "私的に録画したテレビ番組であっても、インターネット上に公開すると違法となる場合がある。"
+      ],
+      "sourceSummary": "個人で録画した映像であっても、インターネットで公開する行為は著作権上問題になることを理解する。",
+      "text": "個人で録画した映像であっても、インターネットで公開する行為は著作権上問題になることを理解する。\n確認済み事項: 著作物をインターネット上に公開する権利は公衆送信権である。 / 私的利用のための複製は著作権者の許諾なく行える。 / 著作物をインターネット上に公開することは著作権者の公衆送信権を侵す。\n解答解説要約: 私的利用の複製は許容されるが、著作物をインターネットで公開する行為は公衆送信権に関わり、無断公開は違法となる。\n学習目標: 私的に録画したテレビ番組をネット公開する行為の適法性を判別できる",
+      "learningObjectives": [
+        "私的に録画したテレビ番組をネット公開する行為の適法性を判別できる"
+      ],
+      "knowledgeType": "exam_content",
+      "questionGenerationEligible": true,
+      "sourceQuestionNumbers": [
+        9
+      ],
+      "correctAnswer": 1,
+      "answerExplanationSummary": "私的利用の複製は許容されるが、著作物をインターネットで公開する行為は公衆送信権に関わり、無断公開は違法となる。",
+      "answerSourcePages": [
+        3
+      ],
+      "answerSection": "operation",
+      "sectionMatch": true,
+      "verificationStatus": "verified_from_answer",
+      "reviewStatus": "pending",
+      "sourceDocument": "ウェブデザイン検定模擬試験",
+      "knowledgeQa": {
+        "decision": "pass",
+        "topicAlignment": "pass",
+        "answerSupport": "pass",
+        "factScope": "pass",
+        "sectionConsistency": "pass",
+        "objectiveCoverage": [
+          {
+            "objectiveIndex": 0,
+            "status": "supported"
+          }
+        ],
+        "factAssessments": [
+          {
+            "factIndex": 0,
+            "relevance": "direct"
+          },
+          {
+            "factIndex": 1,
+            "relevance": "direct"
+          },
+          {
+            "factIndex": 2,
+            "relevance": "direct"
+          }
+        ],
+        "issues": [],
+        "recommendedFactIndexes": [
+          0,
+          1,
+          2
+        ]
+      },
+      "knowledgeQaVersion": 1
+    },
+    {
+      "id": "webdesign-ウェブデザイン検定模擬試験-q010-c04",
+      "section": "operation",
+      "title": "情報機器作業における連続作業時間",
+      "pages": [
+        2
+      ],
+      "keywords": [
+        "情報機器作業",
+        "VDT作業",
+        "労働衛生",
+        "連続作業時間"
+      ],
+      "facts": [
+        "情報機器作業における労働衛生管理のためのガイドラインでは作業時間の管理に関する目安が定められている。",
+        "作業時間の管理には一日の作業時間、作業休止時間、小休止、一連続作業時間が含まれる。",
+        "一連続作業時間は1時間を超えないようにすると明記されている。"
+      ],
+      "candidateFacts": [
+        "情報機器作業に関する労働衛生管理のガイドラインでは、連続作業時間に関する扱いが示されている。"
+      ],
+      "sourceSummary": "情報機器を用いた作業では、労働衛生管理の観点から連続作業時間が考慮されることを理解する。",
+      "text": "情報機器を用いた作業では、労働衛生管理の観点から連続作業時間が考慮されることを理解する。\n確認済み事項: 情報機器作業における労働衛生管理のためのガイドラインでは作業時間の管理に関する目安が定められている。 / 作業時間の管理には一日の作業時間、作業休止時間、小休止、一連続作業時間が含まれる。 / 一連続作業時間は1時間を超えないようにすると明記されている。\n解答解説要約: 厚生労働省のガイドラインでは情報機器作業の作業時間管理が定められており、一連続作業時間は1時間以内とされている。\n学習目標: 情報機器作業のガイドラインで連続作業時間が扱われることを判別できる",
+      "learningObjectives": [
+        "情報機器作業のガイドラインで連続作業時間が扱われることを判別できる"
+      ],
+      "knowledgeType": "exam_content",
+      "questionGenerationEligible": true,
+      "sourceQuestionNumbers": [
+        10
+      ],
+      "correctAnswer": 1,
+      "answerExplanationSummary": "厚生労働省のガイドラインでは情報機器作業の作業時間管理が定められており、一連続作業時間は1時間以内とされている。",
+      "answerSourcePages": [
+        3
+      ],
+      "answerSection": "operation",
+      "sectionMatch": true,
+      "verificationStatus": "verified_from_answer",
+      "reviewStatus": "pending",
+      "sourceDocument": "ウェブデザイン検定模擬試験",
+      "knowledgeQa": {
+        "decision": "pass",
+        "topicAlignment": "pass",
+        "answerSupport": "pass",
+        "factScope": "pass",
+        "sectionConsistency": "pass",
+        "objectiveCoverage": [
+          {
+            "objectiveIndex": 0,
+            "status": "supported"
+          }
+        ],
+        "factAssessments": [
+          {
+            "factIndex": 0,
+            "relevance": "direct"
+          },
+          {
+            "factIndex": 1,
+            "relevance": "direct"
+          },
+          {
+            "factIndex": 2,
+            "relevance": "direct"
+          }
+        ],
+        "issues": [],
+        "recommendedFactIndexes": [
+          0,
+          1,
+          2
+        ]
+      },
+      "knowledgeQaVersion": 1
+    },
+    {
+      "id": "webdesign-ウェブデザイン検定模擬試験-q011-c05",
+      "section": "internet",
+      "title": "IPv4のプライベートIPアドレス",
+      "pages": [
+        2
+      ],
+      "keywords": [
+        "IPv4",
+        "プライベートIPアドレス",
+        "192.168",
+        "IPアドレス"
+      ],
+      "facts": [
+        "IPv4のIPアドレスは0から255までの数字をピリオドで区切った4つの数字で構成される。",
+        "特定のIPアドレスはプライベートIPアドレスとして定められている。",
+        "プライベートIPアドレスはクラスA、クラスB、クラスCの3種類に分けられる。",
+        "クラスCは192.0.0.0から223.255.255.255に該当する。"
+      ],
+      "candidateFacts": [
+        "192.168.0.0から192.168.255.255までの範囲は、IPv4のプライベートアドレスとして用いられる。",
+        "IPv4アドレスの各区切りの数値は0から255の範囲で表される。"
+      ],
+      "sourceSummary": "IPv4アドレスのうち、プライベートIPアドレスとして適切な形式と範囲を判別する。",
+      "text": "IPv4アドレスのうち、プライベートIPアドレスとして適切な形式と範囲を判別する。\n確認済み事項: IPv4のIPアドレスは0から255までの数字をピリオドで区切った4つの数字で構成される。 / 特定のIPアドレスはプライベートIPアドレスとして定められている。 / プライベートIPアドレスはクラスA、クラスB、クラスCの3種類に分けられる。 / クラスCは192.0.0.0から223.255.255.255に該当する。\n解答解説要約: IPv4アドレスの形式とプライベートIPアドレスの分類を踏まえると、条件に合う選択肢は2である。\n学習目標: 192.168で始まる有効なIPv4アドレスをプライベートIPアドレスとして判別できる",
+      "learningObjectives": [
+        "192.168で始まる有効なIPv4アドレスをプライベートIPアドレスとして判別できる"
+      ],
+      "knowledgeType": "exam_content",
+      "questionGenerationEligible": true,
+      "sourceQuestionNumbers": [
+        11
+      ],
+      "correctAnswer": 2,
+      "answerExplanationSummary": "IPv4アドレスの形式とプライベートIPアドレスの分類を踏まえると、条件に合う選択肢は2である。",
+      "answerSourcePages": [
+        3
+      ],
+      "answerSection": "internet",
+      "sectionMatch": true,
+      "verificationStatus": "verified_from_answer",
+      "reviewStatus": "pending",
+      "sourceDocument": "ウェブデザイン検定模擬試験",
+      "knowledgeQa": {
+        "decision": "hold",
+        "topicAlignment": "fail",
+        "answerSupport": "fail",
+        "factScope": "pass",
+        "sectionConsistency": "pass",
+        "objectiveCoverage": [
+          {
+            "objectiveIndex": 0,
+            "status": "partial"
+          }
+        ],
+        "factAssessments": [
+          {
+            "factIndex": 0,
+            "relevance": "direct"
+          },
+          {
+            "factIndex": 1,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 2,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 3,
+            "relevance": "useful_background"
+          }
+        ],
+        "issues": [
+          "learningObjectiveは192.168で始まる有効なIPv4アドレスをプライベートIPアドレスとして判別することだが、verifiedFactsには192.168.0.0から192.168.255.255までがプライベートIPアドレスであるという直接根拠が含まれていない。",
+          "verifiedFactsはIPv4アドレス形式やプライベートIPアドレスの存在、クラス分類には触れているが、中心学習論点である192.168系アドレスのプライベート判定を十分に支えていない。"
+        ],
+        "recommendedFactIndexes": [
+          0,
+          1,
+          2,
+          3
+        ]
+      },
+      "knowledgeQaVersion": 1,
+      "humanReview": {
+        "status": "hold",
+        "reason": "元の解答資料では、プライベートIPアドレスの説明中にクラスC一般のアドレス範囲とプライベートアドレス範囲が混在しているように見えるため、教材記載内容をそのままKnowledge根拠として採用しない。正答番号2自体とは分離して扱い、外部の権威ある技術資料による事実確認が必要。",
+        "sourceIssueSuspected": true,
+        "approved": false
+      }
+    },
+    {
+      "id": "webdesign-ウェブデザイン検定模擬試験-q012-c06",
+      "section": "internet",
+      "title": "OSI参照モデルのトランスポート層とTCP",
+      "pages": [
+        2
+      ],
+      "keywords": [
+        "OSI参照モデル",
+        "トランスポート層",
+        "TCP",
+        "プロトコル"
+      ],
+      "facts": [
+        "OSI参照モデルにおいてTCPはトランスポート層に含まれる。",
+        "トランスポート層は第4層にあたる。",
+        "トランスポート層はネットワークの通信管理を行う。",
+        "UDPもトランスポート層に含まれる。",
+        "TCPやUDPはIETFのDARPAモデルでもトランスポート層に含まれる。"
+      ],
+      "candidateFacts": [
+        "TCPはOSI参照モデルのトランスポート層に対応するプロトコルである。"
+      ],
+      "sourceSummary": "OSI参照モデルにおいて、トランスポート層に該当する代表的なプロトコルを理解する。",
+      "text": "OSI参照モデルにおいて、トランスポート層に該当する代表的なプロトコルを理解する。\n確認済み事項: OSI参照モデルにおいてTCPはトランスポート層に含まれる。 / トランスポート層は第4層にあたる。 / トランスポート層はネットワークの通信管理を行う。 / UDPもトランスポート層に含まれる。 / TCPやUDPはIETFのDARPAモデルでもトランスポート層に含まれる。\n解答解説要約: TCPはOSI参照モデルの第4層であるトランスポート層に属し、UDPも同じ層に含まれる。\n学習目標: TCPがトランスポート層に対応することを判別できる",
+      "learningObjectives": [
+        "TCPがトランスポート層に対応することを判別できる"
+      ],
+      "knowledgeType": "exam_content",
+      "questionGenerationEligible": true,
+      "sourceQuestionNumbers": [
+        12
+      ],
+      "correctAnswer": 3,
+      "answerExplanationSummary": "TCPはOSI参照モデルの第4層であるトランスポート層に属し、UDPも同じ層に含まれる。",
+      "answerSourcePages": [
+        3
+      ],
+      "answerSection": "internet",
+      "sectionMatch": true,
+      "verificationStatus": "verified_from_answer",
+      "reviewStatus": "pending",
+      "sourceDocument": "ウェブデザイン検定模擬試験",
+      "knowledgeQa": {
+        "decision": "pass",
+        "topicAlignment": "pass",
+        "answerSupport": "pass",
+        "factScope": "pass",
+        "sectionConsistency": "pass",
+        "objectiveCoverage": [
+          {
+            "objectiveIndex": 0,
+            "status": "supported"
+          }
+        ],
+        "factAssessments": [
+          {
+            "factIndex": 0,
+            "relevance": "direct"
+          },
+          {
+            "factIndex": 1,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 2,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 3,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 4,
+            "relevance": "useful_background"
+          }
+        ],
+        "issues": [],
+        "recommendedFactIndexes": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ]
+      },
+      "knowledgeQaVersion": 1
+    },
+    {
+      "id": "webdesign-ウェブデザイン検定模擬試験-q013-c07",
+      "section": "html_css",
+      "title": "CSSの子セレクタ",
+      "pages": [
+        2
+      ],
+      "keywords": [
+        "CSS",
+        "セレクタ",
+        "子セレクタ",
+        "直下の子要素"
+      ],
+      "facts": [
+        "ある要素に対して、その中に含まれる要素を子要素という。",
+        "外側の要素を親要素という。",
+        "親要素の子となる要素のみに作用する子要素のセレクタでは、不等号を使用して親子関係を記述する。",
+        "隣り合う要素同士に作用する隣接セレクタでは、プラス記号を使用する。",
+        "アスタリスクは全称セレクタに使われる。",
+        "波括弧は宣言を囲むために使用される。"
+      ],
+      "candidateFacts": [
+        "CSSでは、記号「>」を使う子セレクタにより、直下の子要素だけを対象に指定できる。"
+      ],
+      "sourceSummary": "CSSセレクタで、特定の要素の直下にある子要素だけを指定する書き方を理解する。",
+      "text": "CSSセレクタで、特定の要素の直下にある子要素だけを指定する書き方を理解する。\n確認済み事項: ある要素に対して、その中に含まれる要素を子要素という。 / 外側の要素を親要素という。 / 親要素の子となる要素のみに作用する子要素のセレクタでは、不等号を使用して親子関係を記述する。 / 隣り合う要素同士に作用する隣接セレクタでは、プラス記号を使用する。 / アスタリスクは全称セレクタに使われる。 / 波括弧は宣言を囲むために使用される。\n解答解説要約: CSSでは要素間の親子関係や隣接関係に応じて使用するセレクタ記号が異なる。\n学習目標: 直下の子要素だけを対象にするCSSセレクタを判別できる",
+      "learningObjectives": [
+        "直下の子要素だけを対象にするCSSセレクタを判別できる"
+      ],
+      "knowledgeType": "exam_content",
+      "questionGenerationEligible": true,
+      "sourceQuestionNumbers": [
+        13
+      ],
+      "correctAnswer": 1,
+      "answerExplanationSummary": "CSSでは要素間の親子関係や隣接関係に応じて使用するセレクタ記号が異なる。",
+      "answerSourcePages": [
+        4
+      ],
+      "answerSection": "html_css",
+      "sectionMatch": true,
+      "verificationStatus": "verified_from_answer",
+      "reviewStatus": "pending",
+      "sourceDocument": "ウェブデザイン検定模擬試験",
+      "knowledgeQa": {
+        "decision": "pass",
+        "topicAlignment": "pass",
+        "answerSupport": "pass",
+        "factScope": "pass",
+        "sectionConsistency": "pass",
+        "objectiveCoverage": [
+          {
+            "objectiveIndex": 0,
+            "status": "supported"
+          }
+        ],
+        "factAssessments": [
+          {
+            "factIndex": 0,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 1,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 2,
+            "relevance": "direct"
+          },
+          {
+            "factIndex": 3,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 4,
+            "relevance": "useful_background"
+          },
+          {
+            "factIndex": 5,
+            "relevance": "useful_background"
+          }
+        ],
+        "issues": [],
+        "recommendedFactIndexes": [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5
+        ]
+      },
+      "knowledgeQaVersion": 1
+    }
+  ]
+}
