@@ -17,6 +17,9 @@ if str(ROOT_DIR) not in sys.path:
 from tools.question_builder.webdesign_verification_record import (
     inspect_verification_record,
 )
+from tools.question_builder.webdesign_knowledge_qa_record import (
+    inspect_qa_record,
+)
 
 
 DEFAULT_OUTPUT = (
@@ -211,6 +214,56 @@ def validate_new_knowledge_gate(
         raise ValueError(
             f"{knowledge_id}: Knowledge QA "
             "must pass before publication"
+        )
+
+    qa_ref = item.get("knowledgeQaRecord")
+
+    if (
+        not isinstance(qa_ref, str)
+        or not qa_ref.strip()
+    ):
+        raise ValueError(
+            f"{knowledge_id}: QA record reference "
+            "is required"
+        )
+
+    qa_relative = Path(qa_ref)
+
+    if qa_relative.is_absolute():
+        raise ValueError(
+            f"{knowledge_id}: absolute QA record "
+            "paths are not allowed"
+        )
+
+    qa_root = (
+        ROOT_DIR
+        / "generated_materials"
+        / "webdesign"
+        / "qa_records"
+    ).resolve()
+
+    qa_path = (
+        ROOT_DIR / qa_relative
+    ).resolve()
+
+    if (
+        qa_root not in qa_path.parents
+        or qa_path.suffix != ".json"
+    ):
+        raise ValueError(
+            f"{knowledge_id}: QA record must be "
+            "a JSON file inside the QA directory"
+        )
+
+    qa_result = inspect_qa_record(
+        knowledge=item,
+        record_path=qa_path,
+    )
+
+    if qa_result["decision"] != "pass":
+        raise ValueError(
+            f"{knowledge_id}: recorded Knowledge "
+            "QA must pass"
         )
 
     human = item.get("humanReview")

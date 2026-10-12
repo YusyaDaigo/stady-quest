@@ -18,6 +18,7 @@ MUTABLE_REVIEW_FIELDS = {
     "knowledgeQa",
     "factualGate",
     "factualVerificationRecord",
+    "knowledgeQaRecord",
     "verificationStatus",
 }
 
