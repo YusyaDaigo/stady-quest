@@ -14,6 +14,11 @@ if str(ROOT_DIR) not in sys.path:
     )
 
 
+from tools.question_builder.webdesign_verification_record import (
+    inspect_verification_record,
+)
+
+
 DEFAULT_OUTPUT = (
     ROOT_DIR
     / "generated_materials"
@@ -192,6 +197,84 @@ def validate_item(
         )
 
 
+def validate_new_knowledge_gate(
+    item: Dict[str, Any],
+) -> None:
+    knowledge_id = item["id"]
+
+    qa = item.get("knowledgeQa")
+
+    if (
+        not isinstance(qa, dict)
+        or qa.get("decision") != "pass"
+    ):
+        raise ValueError(
+            f"{knowledge_id}: Knowledge QA "
+            "must pass before publication"
+        )
+
+    human = item.get("humanReview")
+
+    if (
+        not isinstance(human, dict)
+        or human.get("status") != "approved"
+        or human.get("approved") is not True
+    ):
+        raise ValueError(
+            f"{knowledge_id}: human approval "
+            "is required"
+        )
+
+    record_ref = item.get(
+        "factualVerificationRecord"
+    )
+
+    if (
+        not isinstance(record_ref, str)
+        or not record_ref.strip()
+    ):
+        raise ValueError(
+            f"{knowledge_id}: verification "
+            "record reference is required"
+        )
+
+    relative_path = Path(record_ref)
+
+    if relative_path.is_absolute():
+        raise ValueError(
+            f"{knowledge_id}: absolute record "
+            "paths are not allowed"
+        )
+
+    record_root = (
+        ROOT_DIR
+        / "generated_materials"
+        / "webdesign"
+        / "verification_records"
+    ).resolve()
+
+    record_dir = (
+        ROOT_DIR / relative_path
+    ).resolve()
+
+    if record_root not in record_dir.parents:
+        raise ValueError(
+            f"{knowledge_id}: verification record "
+            "must be inside the approved directory"
+        )
+
+    result = inspect_verification_record(
+        knowledge=item,
+        record_dir=record_dir,
+    )
+
+    if result["factualGate"] != "pass":
+        raise ValueError(
+            f"{knowledge_id}: factual "
+            f"verification is {result['factualGate']}"
+        )
+
+
 def build_approved_knowledge(
     input_dir: Path,
 ) -> Dict[str, Any]:
@@ -254,6 +337,10 @@ def build_approved_knowledge(
                     "item must be generation eligible"
                 )
 
+            validate_new_knowledge_gate(
+                item
+            )
+
             knowledge_id = item[
                 "id"
             ]
@@ -296,6 +383,8 @@ def write_knowledge(
     output_path = Path(
         output_path
     )
+
+    existing_ids = set()
 
     if output_path.exists():
         existing = json.loads(
@@ -361,6 +450,44 @@ def write_knowledge(
                     "Refusing to modify published "
                     f"Knowledge: {knowledge_id}"
                 )
+
+    seen_incoming_ids = set()
+
+    for item in items:
+        validate_item(item)
+
+        knowledge_id = item["id"]
+
+        if knowledge_id in seen_incoming_ids:
+            raise ValueError(
+                "Duplicate incoming Knowledge ID: "
+                f"{knowledge_id}"
+            )
+
+        seen_incoming_ids.add(knowledge_id)
+
+        if knowledge_id in existing_ids:
+            continue
+
+        if item.get("reviewStatus") != "approved":
+            raise ValueError(
+                f"{knowledge_id}: new Knowledge "
+                "must be approved"
+            )
+
+        if item.get("knowledgeType") != "exam_content":
+            raise ValueError(
+                f"{knowledge_id}: new Knowledge "
+                "must be exam_content"
+            )
+
+        if item.get("questionGenerationEligible") is not True:
+            raise ValueError(
+                f"{knowledge_id}: new Knowledge "
+                "must be generation eligible"
+            )
+
+        validate_new_knowledge_gate(item)
 
     output_path.parent.mkdir(
         parents=True,
