@@ -297,6 +297,71 @@ def write_knowledge(
         output_path
     )
 
+    if output_path.exists():
+        existing = json.loads(
+            output_path.read_text(
+                encoding="utf-8"
+            )
+        )
+
+        if not isinstance(existing, list):
+            raise ValueError(
+                "Existing published Knowledge "
+                "must be an array"
+            )
+
+        incoming_by_id = {}
+
+        for item in items:
+            validate_item(item)
+            knowledge_id = item["id"]
+
+            if knowledge_id in incoming_by_id:
+                raise ValueError(
+                    "Duplicate incoming Knowledge ID: "
+                    f"{knowledge_id}"
+                )
+
+            incoming_by_id[knowledge_id] = item
+
+        existing_ids = set()
+
+        for original in existing:
+            if not isinstance(original, dict):
+                raise ValueError(
+                    "Invalid existing Knowledge item"
+                )
+
+            knowledge_id = original.get("id")
+
+            if (
+                not isinstance(knowledge_id, str)
+                or not knowledge_id.strip()
+            ):
+                raise ValueError(
+                    "Invalid existing Knowledge ID"
+                )
+
+            if knowledge_id in existing_ids:
+                raise ValueError(
+                    "Duplicate existing Knowledge ID: "
+                    f"{knowledge_id}"
+                )
+
+            existing_ids.add(knowledge_id)
+
+            if knowledge_id not in incoming_by_id:
+                raise ValueError(
+                    "Refusing to remove published "
+                    f"Knowledge: {knowledge_id}"
+                )
+
+            if incoming_by_id[knowledge_id] != original:
+                raise ValueError(
+                    "Refusing to modify published "
+                    f"Knowledge: {knowledge_id}"
+                )
+
     output_path.parent.mkdir(
         parents=True,
         exist_ok=True,
