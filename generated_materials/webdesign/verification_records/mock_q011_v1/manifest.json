@@ -1,0 +1,23 @@
+{
+  "recordVersion": 1,
+  "knowledgeId": "webdesign-ウェブデザイン検定模擬試験-q011-c05",
+  "sourceDraftPath": "generated_materials/webdesign/knowledge_drafts/模擬試験_page002.json",
+  "sourceDraftSha256": "ba1a646f7157e6d915caa45db6d171628b27356d483c918cc53ead38a562d139",
+  "verifierPath": "tools/question_builder/webdesign_factual_verifier.py",
+  "verifierSha256": "2abc8313dd09e8e7282ae715a00b26b76ac781537821d88411845a2a77a4bf5f",
+  "sourceFactCount": 2,
+  "answerFactCount": 4,
+  "evidenceCount": 4,
+  "factualDecision": "insufficient",
+  "contextDecision": "misleading",
+  "factualGate": "hold",
+  "reviewStatus": "pending",
+  "humanReviewStatus": "hold",
+  "rawRfcPolicy": "RFC full texts are not bundled. Retrieve them from sourceUrl and check each recorded sha256.",
+  "artifactSha256": {
+    "knowledge_snapshot.json": "0d072798c2f68b89c754aa362f631eb12c7b747ef59bbfa5486aa8681f192abd",
+    "evidence.json": "e946ef67fd762ffdb50de54f01b0910e49fd9b173e1edce4e249485a56648572",
+    "factual_result_legacy.json": "c4b3f4f1036be4b81d16c4ed489b75f6aadb593965ceef76ac649dd005404a89",
+    "factual_context_result.json": "5481098ceb503c74186d142d3dff7e23a4653e5a3a49d699ac7c251a27579899"
+  }
+}

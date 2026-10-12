@@ -1,0 +1,92 @@
+{
+  "id": "webdesign-ウェブデザイン検定模擬試験-q011-c05",
+  "section": "internet",
+  "title": "IPv4のプライベートIPアドレス",
+  "pages": [
+    2
+  ],
+  "keywords": [
+    "IPv4",
+    "プライベートIPアドレス",
+    "192.168",
+    "IPアドレス"
+  ],
+  "facts": [
+    "IPv4のIPアドレスは0から255までの数字をピリオドで区切った4つの数字で構成される。",
+    "特定のIPアドレスはプライベートIPアドレスとして定められている。",
+    "プライベートIPアドレスはクラスA、クラスB、クラスCの3種類に分けられる。",
+    "クラスCは192.0.0.0から223.255.255.255に該当する。"
+  ],
+  "candidateFacts": [
+    "192.168.0.0から192.168.255.255までの範囲は、IPv4のプライベートアドレスとして用いられる。",
+    "IPv4アドレスの各区切りの数値は0から255の範囲で表される。"
+  ],
+  "sourceSummary": "IPv4アドレスのうち、プライベートIPアドレスとして適切な形式と範囲を判別する。",
+  "text": "IPv4アドレスのうち、プライベートIPアドレスとして適切な形式と範囲を判別する。\n確認済み事項: IPv4のIPアドレスは0から255までの数字をピリオドで区切った4つの数字で構成される。 / 特定のIPアドレスはプライベートIPアドレスとして定められている。 / プライベートIPアドレスはクラスA、クラスB、クラスCの3種類に分けられる。 / クラスCは192.0.0.0から223.255.255.255に該当する。\n解答解説要約: IPv4アドレスの形式とプライベートIPアドレスの分類を踏まえると、条件に合う選択肢は2である。\n学習目標: 192.168で始まる有効なIPv4アドレスをプライベートIPアドレスとして判別できる",
+  "learningObjectives": [
+    "192.168で始まる有効なIPv4アドレスをプライベートIPアドレスとして判別できる"
+  ],
+  "knowledgeType": "exam_content",
+  "questionGenerationEligible": true,
+  "sourceQuestionNumbers": [
+    11
+  ],
+  "correctAnswer": 2,
+  "answerExplanationSummary": "IPv4アドレスの形式とプライベートIPアドレスの分類を踏まえると、条件に合う選択肢は2である。",
+  "answerSourcePages": [
+    3
+  ],
+  "answerSection": "internet",
+  "sectionMatch": true,
+  "verificationStatus": "verified_from_answer",
+  "reviewStatus": "pending",
+  "sourceDocument": "ウェブデザイン検定模擬試験",
+  "knowledgeQa": {
+    "decision": "hold",
+    "topicAlignment": "fail",
+    "answerSupport": "fail",
+    "factScope": "pass",
+    "sectionConsistency": "pass",
+    "objectiveCoverage": [
+      {
+        "objectiveIndex": 0,
+        "status": "partial"
+      }
+    ],
+    "factAssessments": [
+      {
+        "factIndex": 0,
+        "relevance": "direct"
+      },
+      {
+        "factIndex": 1,
+        "relevance": "useful_background"
+      },
+      {
+        "factIndex": 2,
+        "relevance": "useful_background"
+      },
+      {
+        "factIndex": 3,
+        "relevance": "useful_background"
+      }
+    ],
+    "issues": [
+      "learningObjectiveは192.168で始まる有効なIPv4アドレスをプライベートIPアドレスとして判別することだが、verifiedFactsには192.168.0.0から192.168.255.255までがプライベートIPアドレスであるという直接根拠が含まれていない。",
+      "verifiedFactsはIPv4アドレス形式やプライベートIPアドレスの存在、クラス分類には触れているが、中心学習論点である192.168系アドレスのプライベート判定を十分に支えていない。"
+    ],
+    "recommendedFactIndexes": [
+      0,
+      1,
+      2,
+      3
+    ]
+  },
+  "knowledgeQaVersion": 1,
+  "humanReview": {
+    "status": "hold",
+    "reason": "元の解答資料では、プライベートIPアドレスの説明中にクラスC一般のアドレス範囲とプライベートアドレス範囲が混在しているように見えるため、教材記載内容をそのままKnowledge根拠として採用しない。正答番号2自体とは分離して扱い、外部の権威ある技術資料による事実確認が必要。",
+    "sourceIssueSuspected": true,
+    "approved": false
+  }
+}

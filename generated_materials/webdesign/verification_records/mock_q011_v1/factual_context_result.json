@@ -1,0 +1,108 @@
+{
+  "knowledgeId": "webdesign-ウェブデザイン検定模擬試験-q011-c05",
+  "model": "gpt-5.5",
+  "verifiedAtUtc": "2026-10-12T03:44:02.107513+00:00",
+  "draftSha256": "ba1a646f7157e6d915caa45db6d171628b27356d483c918cc53ead38a562d139",
+  "evidenceSha256": "e946ef67fd762ffdb50de54f01b0910e49fd9b173e1edce4e249485a56648572",
+  "verifierSha256": "2abc8313dd09e8e7282ae715a00b26b76ac781537821d88411845a2a77a4bf5f",
+  "verification": {
+    "decision": "insufficient",
+    "factAssessments": [
+      {
+        "factIndex": 0,
+        "status": "verified",
+        "evidenceIndexes": [
+          0
+        ]
+      },
+      {
+        "factIndex": 1,
+        "status": "verified",
+        "evidenceIndexes": [
+          1,
+          3
+        ]
+      },
+      {
+        "factIndex": 2,
+        "status": "insufficient",
+        "evidenceIndexes": [
+          1,
+          3
+        ]
+      },
+      {
+        "factIndex": 3,
+        "status": "verified",
+        "evidenceIndexes": [
+          0
+        ]
+      },
+      {
+        "factIndex": 4,
+        "status": "verified",
+        "evidenceIndexes": [
+          0
+        ]
+      },
+      {
+        "factIndex": 5,
+        "status": "verified",
+        "evidenceIndexes": [
+          1
+        ]
+      }
+    ],
+    "contextAssessment": {
+      "status": "misleading",
+      "evidenceIndexes": [
+        0,
+        2
+      ],
+      "reason": "Evidence 0は、プライベートアドレスとして予約されている範囲を10.0.0.0/8、172.16.0.0/12、192.168.0.0/16の3ブロックと示しており、192.168.0.0から192.168.255.255までが対象であることを支持する。一方で、クラスA/B/Cに関する説明はEvidence 0でも「pre-CIDR notation」として述べられており、Evidence 2ではClass A/B/Cのアドレス割当方式はCIDRにより非推奨化されたとされている。そのため、解答側factsを並べることで「クラスC全体」やクラス分類をプライベートIP判定の主要根拠のように示すと、192.168/16という限定されたプライベート範囲との関係を誤解させる可能性がある。"
+    },
+    "issues": [
+      "factIndex 2について、EvidenceはIPv4アドレスが4オクテットであることや8-bit decimal octet valueには触れているが、ピリオドで区切った4つの数字という表記形式までは明示していない。",
+      "クラスA/B/Cの説明はEvidence上、pre-CIDR notationまたは非推奨化された方式として扱われており、プライベートIPアドレスの範囲判定の説明として用いる場合は誤解を招く可能性がある。"
+    ],
+    "factTargets": [
+      {
+        "factIndex": 0,
+        "origin": "source",
+        "originalIndex": 0,
+        "statement": "192.168.0.0から192.168.255.255までの範囲は、IPv4のプライベートアドレスとして用いられる。"
+      },
+      {
+        "factIndex": 1,
+        "origin": "source",
+        "originalIndex": 1,
+        "statement": "IPv4アドレスの各区切りの数値は0から255の範囲で表される。"
+      },
+      {
+        "factIndex": 2,
+        "origin": "answer",
+        "originalIndex": 0,
+        "statement": "IPv4のIPアドレスは0から255までの数字をピリオドで区切った4つの数字で構成される。"
+      },
+      {
+        "factIndex": 3,
+        "origin": "answer",
+        "originalIndex": 1,
+        "statement": "特定のIPアドレスはプライベートIPアドレスとして定められている。"
+      },
+      {
+        "factIndex": 4,
+        "origin": "answer",
+        "originalIndex": 2,
+        "statement": "プライベートIPアドレスはクラスA、クラスB、クラスCの3種類に分けられる。"
+      },
+      {
+        "factIndex": 5,
+        "origin": "answer",
+        "originalIndex": 3,
+        "statement": "クラスCは192.0.0.0から223.255.255.255に該当する。"
+      }
+    ],
+    "factualGate": "hold"
+  }
+}

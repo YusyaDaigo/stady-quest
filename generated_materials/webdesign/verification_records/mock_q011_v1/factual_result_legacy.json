@@ -1,0 +1,97 @@
+{
+  "knowledgeId": "webdesign-ウェブデザイン検定模擬試験-q011-c05",
+  "model": "gpt-5.5",
+  "verifiedAtUtc": "2026-10-12T02:49:44.305016+00:00",
+  "draftSha256": "ba1a646f7157e6d915caa45db6d171628b27356d483c918cc53ead38a562d139",
+  "evidenceSha256": "e946ef67fd762ffdb50de54f01b0910e49fd9b173e1edce4e249485a56648572",
+  "verification": {
+    "decision": "insufficient",
+    "factAssessments": [
+      {
+        "factIndex": 0,
+        "status": "verified",
+        "evidenceIndexes": [
+          0
+        ]
+      },
+      {
+        "factIndex": 1,
+        "status": "verified",
+        "evidenceIndexes": [
+          1,
+          3
+        ]
+      },
+      {
+        "factIndex": 2,
+        "status": "insufficient",
+        "evidenceIndexes": [
+          1,
+          3
+        ]
+      },
+      {
+        "factIndex": 3,
+        "status": "verified",
+        "evidenceIndexes": [
+          0
+        ]
+      },
+      {
+        "factIndex": 4,
+        "status": "verified",
+        "evidenceIndexes": [
+          0
+        ]
+      },
+      {
+        "factIndex": 5,
+        "status": "verified",
+        "evidenceIndexes": [
+          1
+        ]
+      }
+    ],
+    "issues": [
+      "EvidenceにはIPv4アドレスが4つのオクテットで構成されることや8-bit decimal octet valueであることは示されているが、ピリオドで区切った4つの数字という表記形式は明示されていない。"
+    ],
+    "factTargets": [
+      {
+        "factIndex": 0,
+        "origin": "source",
+        "originalIndex": 0,
+        "statement": "192.168.0.0から192.168.255.255までの範囲は、IPv4のプライベートアドレスとして用いられる。"
+      },
+      {
+        "factIndex": 1,
+        "origin": "source",
+        "originalIndex": 1,
+        "statement": "IPv4アドレスの各区切りの数値は0から255の範囲で表される。"
+      },
+      {
+        "factIndex": 2,
+        "origin": "answer",
+        "originalIndex": 0,
+        "statement": "IPv4のIPアドレスは0から255までの数字をピリオドで区切った4つの数字で構成される。"
+      },
+      {
+        "factIndex": 3,
+        "origin": "answer",
+        "originalIndex": 1,
+        "statement": "特定のIPアドレスはプライベートIPアドレスとして定められている。"
+      },
+      {
+        "factIndex": 4,
+        "origin": "answer",
+        "originalIndex": 2,
+        "statement": "プライベートIPアドレスはクラスA、クラスB、クラスCの3種類に分けられる。"
+      },
+      {
+        "factIndex": 5,
+        "origin": "answer",
+        "originalIndex": 3,
+        "statement": "クラスCは192.0.0.0から223.255.255.255に該当する。"
+      }
+    ]
+  }
+}

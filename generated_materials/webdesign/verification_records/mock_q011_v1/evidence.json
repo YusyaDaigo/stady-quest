@@ -1,0 +1,38 @@
+[
+  {
+    "sourceTitle": "RFC 1918 - Address Allocation for Private Internets",
+    "sourceUrl": "https://www.rfc-editor.org/rfc/rfc1918.txt",
+    "sourceType": "ietf_rfc",
+    "excerpt": "The Internet Assigned Numbers Authority (IANA) has reserved the\n   following three blocks of the IP address space for private internets:\n\n     10.0.0.0        -   10.255.255.255  (10/8 prefix)\n     172.16.0.0      -   172.31.255.255  (172.16/12 prefix)\n     192.168.0.0     -   192.168.255.255 (192.168/16 prefix)\n\n   We will refer to the first block as \"24-bit block\", the second as\n   \"20-bit block\", and to the third as \"16-bit\" block. Note that (in\n   pre-CIDR notation) the first block is nothing but a single class A\n   network number, while the second block is a set of 16 contiguous\n   class B network numbers, and third block is a set of 256 contiguous\n   class C network numbers.",
+    "section": "3. Private Address Space",
+    "sha256": "56c43465298772bc4d899923f1785b7b7bf8dd2c9f2f9a53422800ddc5cf9337",
+    "retrievedAtUtc": "2026-10-12T01:51:58.136965+00:00"
+  },
+  {
+    "sourceTitle": "RFC 791 - Internet Protocol",
+    "sourceUrl": "https://www.rfc-editor.org/rfc/rfc791.txt",
+    "sourceType": "ietf_rfc",
+    "excerpt": "Addresses are fixed length of four octets (32 bits).  An address\n    begins with a network number, followed by local address (called the\n    \"rest\" field).  There are three formats or classes of internet\n    addresses:  in class a, the high order bit is zero, the next 7 bits\n    are the network, and the last 24 bits are the local address; in\n    class b, the high order two bits are one-zero, the next 14 bits are\n    the network and the last 16 bits are the local address; in class c,\n    the high order three bits are one-one-zero, the next 21 bits are the\n    network and the last 8 bits are the local address.",
+    "section": "2.3. Function Description - Addressing",
+    "sha256": "6cfb387fcecfc1b72f2f69343c5b6951b5d263d708162e2b5c66ab8f394f6265",
+    "retrievedAtUtc": "2026-10-12T02:45:47.751899+00:00"
+  },
+  {
+    "sourceTitle": "RFC 4632 - CIDR Address Strategy",
+    "sourceUrl": "https://www.rfc-editor.org/rfc/rfc4632.txt",
+    "sourceType": "ietf_rfc",
+    "excerpt": "The solution that the community created was to deprecate the Class\n   A/B/C network address assignment system in favor of using\n   \"classless\", hierarchical blocks of IP addresses (referred to as\n   prefixes).  The assignment of prefixes is intended to roughly follow\n   the underlying Internet topology so that aggregation can be used to\n   facilitate scaling of the global routing system.  One implication of\n   this strategy is that prefix assignment and aggregation is generally\n   done according to provider-subscriber relationships, since that is\n   how the Internet topology is determined.",
+    "section": "3. Classless Addressing as a Solution",
+    "sha256": "13694a39f586eb2054407780edccdf7c39332e57f067c8008bba4326bfc24fa9",
+    "retrievedAtUtc": "2026-10-12T02:45:48.154723+00:00"
+  },
+  {
+    "sourceTitle": "RFC 4632 - CIDR Address Strategy",
+    "sourceUrl": "https://www.rfc-editor.org/rfc/rfc4632.txt",
+    "sourceType": "ietf_rfc",
+    "excerpt": "n is an 8-bit decimal octet value.  Point-to-point links are\n   discussed in more detail in [RFC3021].",
+    "section": "3.1. Basic Concept and Prefix Notation",
+    "sha256": "13694a39f586eb2054407780edccdf7c39332e57f067c8008bba4326bfc24fa9",
+    "retrievedAtUtc": "2026-10-12T02:45:48.154788+00:00"
+  }
+]
