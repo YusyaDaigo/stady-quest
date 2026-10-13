@@ -3,6 +3,8 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
+from tools.question_builder.api_policy import require_api_permission
+
 
 load_dotenv()
 
@@ -62,6 +64,8 @@ class OpenAITextClient:
                 "STUDY_QUEST_NO_API=1 のため"
                 "OpenAI APIを呼びません"
             )
+
+        require_api_permission()
 
         if (
             self.call_count
