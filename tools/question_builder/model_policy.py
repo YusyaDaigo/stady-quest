@@ -4,7 +4,7 @@ from typing import Optional
 
 MODEL_PROFILES = {
     "economy": {
-        "text": "gpt-5.6-luna",
+        "text": "gpt-6-luna",
         "vision": "gpt-5.4-mini",
     },
     "quality": {

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+from tools.question_builder.model_policy import get_model
 from typing import Any
 
 from tools.question_builder.exam_generation_profiles import (
@@ -40,7 +41,7 @@ class WebDesignQuestionGenerator(
 
     def __init__(self) -> None:
         super().__init__(
-            model="gpt-5.5",
+            model=get_model("text"),
             cache_dir=Path(
                 "generated_questions/cache/"
                 "webdesign_questions"
