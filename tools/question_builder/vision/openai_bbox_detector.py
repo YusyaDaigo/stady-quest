@@ -5,6 +5,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from openai import OpenAI
+from tools.question_builder.api_policy import require_api_permission
 
 from config import OPENAI_VISION_MODEL
 
@@ -129,6 +130,7 @@ def detect_question_bboxes(
             "bbox cacheがありません。"
             f"NO_APIモードのためOpenAIを呼びません: {cache_path}"
         )
+    require_api_permission()
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY が設定されていません")

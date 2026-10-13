@@ -6,6 +6,7 @@ from typing import Any, Dict
 
 from dotenv import load_dotenv
 from openai import OpenAI
+from tools.question_builder.api_policy import require_api_permission
 
 from tools.question_builder.config import OPENAI_VISION_MODEL
 
@@ -532,6 +533,7 @@ def analyze_webdesign_page(
             "STUDY_QUEST_NO_API=1 のため"
             "OpenAI APIを呼びません"
         )
+    require_api_permission()
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError(

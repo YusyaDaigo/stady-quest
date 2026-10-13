@@ -5,6 +5,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 from openai import OpenAI
+from tools.question_builder.api_policy import require_api_permission
 
 from config import OPENAI_VISION_MODEL, PHARMACY_FIELD_ALIASES
 
@@ -112,6 +113,7 @@ def detect_image_choice_count(
             "STUDY_QUEST_NO_API=1 のため"
             "OpenAI APIを呼びません"
         )
+    require_api_permission()
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY が設定されていません")
@@ -175,6 +177,7 @@ def analyze_page(
             "STUDY_QUEST_NO_API=1 のため"
             "OpenAI APIを呼びません"
         )
+    require_api_permission()
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY が設定されていません")
@@ -370,6 +373,7 @@ def analyze_question_across_pages(
             "STUDY_QUEST_NO_API=1 のため"
             "OpenAI APIを呼びません"
         )
+    require_api_permission()
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY が設定されていません")
@@ -549,6 +553,7 @@ def analyze_question_across_page_set(
             "STUDY_QUEST_NO_API=1 のため"
             "OpenAI APIを呼びません"
         )
+    require_api_permission()
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY が設定されていません")
@@ -764,6 +769,7 @@ def analyze_practical_case(
             "STUDY_QUEST_NO_API=1 のため"
             "OpenAI APIを呼びません"
         )
+    require_api_permission()
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError(

@@ -9,6 +9,7 @@ from typing import Any, Iterable
 
 from dotenv import load_dotenv
 from openai import OpenAI
+from tools.question_builder.api_policy import require_api_permission
 
 
 ROOT_DIR = Path(
@@ -389,6 +390,7 @@ def embed_texts(
             "STUDY_QUEST_NO_API=1 のため"
             "Embedding APIを呼びません"
         )
+    require_api_permission()
 
     if not os.getenv(
         "OPENAI_API_KEY"
