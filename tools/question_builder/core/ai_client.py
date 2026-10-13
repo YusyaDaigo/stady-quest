@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 
 from tools.question_builder.api_policy import require_api_permission
+from tools.question_builder.core.api_usage import record_api_usage
 
 
 load_dotenv()
@@ -35,6 +36,25 @@ class OpenAITextClient:
             max_calls_per_process
         )
         self.call_count = 0
+
+    def _record_usage_safely(
+        self,
+        *,
+        usage,
+        status: str,
+    ) -> None:
+        try:
+            record_api_usage(
+                model=self.model,
+                usage=usage,
+                status=status,
+            )
+        except Exception as exc:
+            print(
+                "[API USAGE WARNING] "
+                "ログ保存に失敗: "
+                f"{type(exc).__name__}"
+            )
 
     def generate(
         self,
@@ -92,14 +112,30 @@ class OpenAITextClient:
             f"model={self.model}"
         )
 
-        client = OpenAI()
+        response = None
 
-        response = client.responses.create(
-            model=self.model,
-            input=prompt,
+        try:
+            client = OpenAI()
+            response = client.responses.create(
+                model=self.model,
+                input=prompt,
+            )
+            response_text = response.output_text
+        except Exception:
+            self._record_usage_safely(
+                usage=getattr(response, "usage", None),
+                status="request_failed",
+            )
+            raise
+
+        self._record_usage_safely(
+            usage=getattr(response, "usage", None),
+            status=(
+                "completed"
+                if response_text
+                else "request_failed"
+            ),
         )
-
-        response_text = response.output_text
 
         if not response_text:
             raise ValueError(
