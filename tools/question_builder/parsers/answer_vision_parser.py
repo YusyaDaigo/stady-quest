@@ -307,6 +307,12 @@ def parse_answers_with_vision(
             category=category,
         )
 
+    if os.getenv("STUDY_QUEST_NO_API") == "1":
+        raise RuntimeError(
+            "STUDY_QUEST_NO_API=1 のため"
+            "OpenAI APIを呼びません"
+        )
+
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError(
             "OPENAI_API_KEY が設定されていません"

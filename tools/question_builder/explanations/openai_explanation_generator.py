@@ -11,6 +11,12 @@ EXPLANATION_MODEL = "gpt-5.5"
 
 
 def generate_explanation(question: dict) -> str:
+    if os.getenv("STUDY_QUEST_NO_API") == "1":
+        raise RuntimeError(
+            "STUDY_QUEST_NO_API=1 のため"
+            "OpenAI APIを呼びません"
+        )
+
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY が設定されていません")
 
