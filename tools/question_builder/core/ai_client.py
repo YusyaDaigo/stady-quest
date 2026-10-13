@@ -57,6 +57,12 @@ class OpenAITextClient:
                 "明示してください。"
             )
 
+        if os.getenv("STUDY_QUEST_NO_API") == "1":
+            raise RuntimeError(
+                "STUDY_QUEST_NO_API=1 のため"
+                "OpenAI APIを呼びません"
+            )
+
         if (
             self.call_count
             >= self.max_calls_per_process
