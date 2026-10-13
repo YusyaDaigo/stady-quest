@@ -1,5 +1,10 @@
 from pathlib import Path
 
+if __package__:
+    from .model_policy import get_model
+else:
+    from model_policy import get_model
+
 
 BASE_DIR = Path(__file__).resolve().parents[2]
 BACKUP_DIR = BASE_DIR / "backups"
@@ -21,7 +26,7 @@ INSERT_MARKER = "// AI_QUESTION_INSERT_HERE"
 
 SOURCE_MATERIALS_DIR = BASE_DIR / "source_materials"
 
-OPENAI_VISION_MODEL = "gpt-5.5"
+OPENAI_VISION_MODEL = get_model("vision")
 
 PHARMACY_FIELD_ALIASES = {
     "物理": "物理",
