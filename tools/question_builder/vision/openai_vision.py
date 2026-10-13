@@ -107,6 +107,12 @@ def detect_image_choice_count(
     image_path: Path,
     question_no: int,
 ) -> int:
+    if os.getenv("STUDY_QUEST_NO_API") == "1":
+        raise RuntimeError(
+            "STUDY_QUEST_NO_API=1 のため"
+            "OpenAI APIを呼びません"
+        )
+
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY が設定されていません")
 
@@ -164,6 +170,12 @@ def analyze_page(
     image_path,
     category: str = "required",
 ):
+    if os.getenv("STUDY_QUEST_NO_API") == "1":
+        raise RuntimeError(
+            "STUDY_QUEST_NO_API=1 のため"
+            "OpenAI APIを呼びません"
+        )
+
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY が設定されていません")
 
@@ -353,6 +365,12 @@ def analyze_question_across_pages(
         完成させたい対象問題番号
     """
 
+    if os.getenv("STUDY_QUEST_NO_API") == "1":
+        raise RuntimeError(
+            "STUDY_QUEST_NO_API=1 のため"
+            "OpenAI APIを呼びません"
+        )
+
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY が設定されていません")
 
@@ -525,6 +543,12 @@ def analyze_question_across_page_set(
     image_paths:
         問題開始ページから連続した最大3ページ程度を渡す。
     """
+
+    if os.getenv("STUDY_QUEST_NO_API") == "1":
+        raise RuntimeError(
+            "STUDY_QUEST_NO_API=1 のため"
+            "OpenAI APIを呼びません"
+        )
 
     if not os.getenv("OPENAI_API_KEY"):
         raise RuntimeError("OPENAI_API_KEY が設定されていません")
@@ -733,6 +757,12 @@ def analyze_practical_case(
             "caseは2問以上必要です: "
             f"{first_question_no}-"
             f"{second_question_no}"
+        )
+
+    if os.getenv("STUDY_QUEST_NO_API") == "1":
+        raise RuntimeError(
+            "STUDY_QUEST_NO_API=1 のため"
+            "OpenAI APIを呼びません"
         )
 
     if not os.getenv("OPENAI_API_KEY"):
