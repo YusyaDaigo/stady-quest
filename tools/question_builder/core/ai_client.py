@@ -8,6 +8,7 @@ from tools.question_builder.api_policy import (
     mark_api_usage_logging_failed,
 )
 from tools.question_builder.core.api_usage import record_api_usage
+from tools.question_builder.core.api_call_lock import serialized_api_call
 
 
 load_dotenv()
@@ -60,6 +61,7 @@ class OpenAITextClient:
                 f"{type(exc).__name__}"
             )
 
+    @serialized_api_call
     def generate(
         self,
         prompt: str,
