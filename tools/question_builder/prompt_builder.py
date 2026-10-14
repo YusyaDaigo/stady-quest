@@ -164,6 +164,68 @@ def build_rag_question_generation_prompt(
         )
     )
 
+    webdesign_advanced_rules = ""
+
+    if str(exam).strip().lower() == "webdesign":
+        approved_notes = []
+
+        for item in knowledge_items:
+            human = item.get("humanReview")
+            qa = item.get("knowledgeQa")
+
+            if not (
+                isinstance(human, dict)
+                and human.get("approved") is True
+                and human.get("status") == "approved"
+                and isinstance(qa, dict)
+                and qa.get("decision") == "pass"
+                and item.get("factualVerificationRecord")
+            ):
+                continue
+
+            notes = human.get("notes", [])
+
+            if isinstance(notes, list):
+                for note in notes:
+                    if isinstance(note, str) and note.strip():
+                        approved_notes.append(
+                            f"・[{item['id']}] {note.strip()}"
+                        )
+
+        if approved_notes:
+            knowledge_context += (
+                "\n\n【承認済みの追加留意事項】\n"
+                + "\n".join(approved_notes)
+            )
+
+        if difficulty == 4:
+            webdesign_advanced_rules = """
+【WebDesign上級作問基準：★4】
+・基礎用語や基本構文は習得済みとする
+・通常の検定問題より高度な応用力を問う
+・最低2種類の条件・判断要素を組み合わせる
+・具体的な状況、コード、設定値などを評価させる
+・単なる暗記、数値の置換、引数順序の確認は禁止
+・誤答選択肢にも正しい部分を含める
+・文章量や数値の大きさだけで難易度を上げない
+・根拠Knowledgeにない事実を創作しない
+・解説では判断の各段階を明示する
+""".strip()
+
+        elif difficulty == 5:
+            webdesign_advanced_rules = """
+【WebDesign上級作問基準：★5】
+・基礎知識を完全に習得済みとする
+・通常の検定問題より大幅に高度な応用力を問う
+・原則として複数Knowledgeを実質的に統合する
+・複数条件の照合と例外判断を必要とする
+・一部の条件だけでは正答を確定できない構造にする
+・すべての選択肢を精密に検討させる
+・単なる暗記、長文化、数値の複雑化は禁止
+・Knowledgeが不足する場合は根拠外の事実を創作しない
+・解説では判断手順と誤答の理由を明示する
+""".strip()
+
     source_knowledge_rule = ""
     source_knowledge_json = ""
 
@@ -298,6 +360,8 @@ section: {section}
 3: 複数の関連知識を整理して判断する
 4: 類似制度や条件の細かな違いを判断する
 5: 複数条件を正確に比較して判断する
+
+{webdesign_advanced_rules}
 
 【資格別生成ルール】
 {generation_rules}

@@ -161,6 +161,45 @@ def build_quality_review_prompt(
 - sourceKnowledgeIdsが根拠として使った全Knowledgeを示しているか
 """.strip()
 
+    webdesign_difficulty_rules = ""
+
+    review_items = (
+        knowledge
+        if isinstance(knowledge, list)
+        else [knowledge]
+    )
+
+    is_webdesign = (
+        bool(review_items)
+        and all(
+            isinstance(item, dict)
+            and str(item.get("id", "")).startswith(
+                "webdesign-"
+            )
+            for item in review_items
+        )
+    )
+
+    if is_webdesign and target_difficulty >= 4:
+        webdesign_difficulty_rules = """
+【WebDesign上級問題の追加審査】
+・基礎知識を前提にした応用判断が必要か
+・独立した複数の判断要素を使用しているか
+・単純暗記だけで正解できないか
+・難しさが長文や数字の大きさだけによるものではないか
+・根拠外の知識を持ち込んでいないか
+・誤答が不自然な値の置換だけになっていないか
+・目標難易度に達しなければ正答が正しくてもreviseとする
+・難易度不足ならdifficultyMatch=falseにする
+""".strip()
+
+        if target_difficulty == 5:
+            webdesign_difficulty_rules += """
+・★5では原則として複数Knowledgeの実質的統合が必要
+・条件を一部だけ確認しても正答できないか確認する
+・1件の単純な知識だけで解ける問題を★5にしない
+"""
+
     return f"""
 あなたはStudy QUESTの問題品質審査担当です。
 
@@ -189,6 +228,8 @@ difficultyEstimate が
 difficultyMatch=true にしてはいけません。
 
 {composite_rule}
+
+{webdesign_difficulty_rules}
 
 特に次を確認してください。
 
