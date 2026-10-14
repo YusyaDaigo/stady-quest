@@ -8,6 +8,10 @@ from tools.question_builder.api_policy import (
     mark_api_usage_logging_failed,
 )
 from tools.question_builder.core.api_usage import record_api_usage
+from tools.question_builder.core.api_pending import (
+    begin_api_request,
+    finish_api_request,
+)
 from tools.question_builder.core.api_call_lock import serialized_api_call
 
 
@@ -48,7 +52,7 @@ class OpenAITextClient:
         status: str,
     ) -> None:
         try:
-            record_api_usage(
+            record = record_api_usage(
                 model=self.model,
                 usage=usage,
                 status=status,
@@ -60,6 +64,17 @@ class OpenAITextClient:
                 "ログ保存に失敗: "
                 f"{type(exc).__name__}"
             )
+        else:
+            if record["estimatedCostUsd"] is not None:
+                try:
+                    finish_api_request()
+                except Exception as exc:
+                    mark_api_usage_logging_failed()
+                    print(
+                        "[API PENDING WARNING] "
+                        "未完了記録の解除に失敗: "
+                        f"{type(exc).__name__}"
+                    )
 
     @serialized_api_call
     def generate(
@@ -108,6 +123,10 @@ class OpenAITextClient:
             raise RuntimeError(
                 "OPENAI_API_KEY が設定されていません"
             )
+
+        begin_api_request(
+            model=self.model,
+        )
 
         self.call_count += 1
 

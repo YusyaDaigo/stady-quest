@@ -112,6 +112,22 @@ class TextClientUsageIntegrationTests(unittest.TestCase):
         self._guard_patch.start()
         self.addCleanup(self._guard_patch.stop)
 
+        self._pending_temp = tempfile.TemporaryDirectory()
+        self.addCleanup(self._pending_temp.cleanup)
+
+        self._pending_path = (
+            Path(self._pending_temp.name)
+            / "api_pending.json"
+        )
+
+        self._pending_patch = patch(
+            "tools.question_builder.core."
+            "api_pending.DEFAULT_PENDING_PATH",
+            self._pending_path,
+        )
+        self._pending_patch.start()
+        self.addCleanup(self._pending_patch.stop)
+
     def test_success_logs_tokens_and_cost(self):
         import os
         from unittest.mock import patch
@@ -233,6 +249,9 @@ class TextClientUsageIntegrationTests(unittest.TestCase):
                 entry["status"],
                 "request_failed",
             )
+            self.assertTrue(
+                self._pending_path.exists()
+            )
             self.assertIsNone(
                 entry["estimatedCostUsd"]
             )
@@ -318,6 +337,9 @@ class TextClientUsageIntegrationTests(unittest.TestCase):
             self.assertEqual(
                 result,
                 "VALID RESPONSE",
+            )
+            self.assertTrue(
+                self._pending_path.exists()
             )
 
             with self.assertRaisesRegex(
@@ -408,6 +430,131 @@ class TextClientUsageIntegrationTests(unittest.TestCase):
                 )
 
                 self.assertTrue(log.exists())
+
+
+    def test_pending_during_api_call(self):
+        import os
+        from types import SimpleNamespace
+        from unittest.mock import patch
+        from tools.question_builder.core.ai_client import (
+            OpenAITextClient,
+        )
+
+        def fake_response(**kwargs):
+            self.assertTrue(
+                self._pending_path.exists()
+            )
+            return SimpleNamespace(
+                output_text="QUESTION CREATED",
+                usage={
+                    "input_tokens": 100,
+                    "output_tokens": 50,
+                    "input_tokens_details": {
+                        "cached_tokens": 0,
+                    },
+                },
+            )
+
+        with tempfile.TemporaryDirectory() as temp:
+            log = Path(temp) / "usage.jsonl"
+
+            with (
+                patch.dict(
+                    os.environ,
+                    {
+                        "STUDY_QUEST_ALLOW_API": "1",
+                        "OPENAI_API_KEY": "dummy",
+                    },
+                    clear=True,
+                ),
+                patch(
+                    "tools.question_builder.core."
+                    "api_budget.inspect_api_budget",
+                    return_value={"allowed": True},
+                ),
+                patch(
+                    "tools.question_builder.core."
+                    "api_usage.DEFAULT_LOG",
+                    log,
+                ),
+                patch(
+                    "tools.question_builder.core."
+                    "ai_client.OpenAI",
+                ) as sdk,
+            ):
+                sdk.return_value.responses.create.side_effect = (
+                    fake_response
+                )
+
+                result = OpenAITextClient(
+                    model="gpt-6-luna",
+                ).generate(
+                    "test question",
+                    allow_api=True,
+                )
+
+                self.assertEqual(
+                    result,
+                    "QUESTION CREATED",
+                )
+
+            self.assertTrue(log.exists())
+            self.assertFalse(
+                self._pending_path.exists()
+            )
+
+    def test_existing_pending_blocks_api(self):
+        import os
+        from unittest.mock import patch
+        from tools.question_builder.core.api_pending import (
+            begin_api_request,
+        )
+        from tools.question_builder.core.ai_client import (
+            OpenAITextClient,
+        )
+
+        begin_api_request(
+            model="gpt-6-luna",
+            path=self._pending_path,
+        )
+
+        with (
+            patch.dict(
+                os.environ,
+                {
+                    "STUDY_QUEST_ALLOW_API": "1",
+                    "OPENAI_API_KEY": "dummy",
+                },
+                clear=True,
+            ),
+            patch(
+                "tools.question_builder.core."
+                "api_budget.inspect_api_budget",
+                return_value={"allowed": True},
+            ),
+            patch(
+                "tools.question_builder.core."
+                "ai_client.OpenAI",
+            ) as sdk,
+        ):
+            client = OpenAITextClient(
+                model="gpt-6-luna",
+            )
+
+            with self.assertRaisesRegex(
+                RuntimeError,
+                "未完了",
+            ):
+                client.generate(
+                    "test question",
+                    allow_api=True,
+                )
+
+            sdk.assert_not_called()
+            self.assertEqual(
+                client.call_count,
+                0,
+            )
 
 if __name__ == "__main__":
     unittest.main()
