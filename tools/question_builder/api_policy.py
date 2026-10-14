@@ -41,12 +41,12 @@ def require_api_permission(*, usage_tracked=False) -> None:
     from tools.question_builder.core.api_budget import inspect_api_budget
 
     budget = inspect_api_budget(
-        next_call_allowance_jpy=100,
+        next_call_allowance_usd=2,
     )
 
     if not budget["allowed"]:
         raise RuntimeError(
             "API予算チェックにより実行を停止しました。"
-            f"残額: {budget['remainingJpy']:.2f}円、"
+            f"推定残額: ${budget['remainingUsd']:.2f}、"
             f"料金不明の記録: {budget['unknownRecords']}件"
         )

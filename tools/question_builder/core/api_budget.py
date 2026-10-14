@@ -8,10 +8,9 @@ from tools.question_builder.core.api_usage import DEFAULT_LOG
 
 JST = timezone(timedelta(hours=9))
 
-MONTHLY_BUDGET_JPY = Decimal("5000")
-WARNING_JPY = Decimal("4000")
+MONTHLY_BUDGET_USD = Decimal("50")
+WARNING_USD = Decimal("40")
 
-ESTIMATE_YEN_PER_USD = Decimal("200")
 
 TRIAL_START = datetime(
     2026, 10, 13, tzinfo=JST
@@ -57,7 +56,7 @@ def inspect_api_budget(
     *,
     log_path=None,
     now=None,
-    next_call_allowance_jpy=100,
+    next_call_allowance_usd=2,
 ):
     path = (
         Path(log_path)
@@ -137,12 +136,8 @@ def inspect_api_budget(
 
                 spent_usd += amount
 
-    spent_jpy = (
-        spent_usd * ESTIMATE_YEN_PER_USD
-    )
-
     allowance = Decimal(
-        str(next_call_allowance_jpy)
+        str(next_call_allowance_usd)
     )
 
     if (
@@ -154,27 +149,27 @@ def inspect_api_budget(
         )
 
     remaining = (
-        MONTHLY_BUDGET_JPY - spent_jpy
+        MONTHLY_BUDGET_USD - spent_usd
     )
 
     allowed = (
         unknown_count == 0
-        and spent_jpy + allowance
-        <= MONTHLY_BUDGET_JPY
+        and spent_usd + allowance
+        <= MONTHLY_BUDGET_USD
     )
 
     return {
         "periodStartJst": start.isoformat(),
         "periodEndJst": end.isoformat(),
-        "monthlyBudgetJpy": float(
-            MONTHLY_BUDGET_JPY
+        "monthlyBudgetUsd": float(
+            MONTHLY_BUDGET_USD
         ),
-        "estimatedSpentJpy": float(
-            spent_jpy
+        "estimatedSpentUsd": float(
+            spent_usd
         ),
-        "remainingJpy": float(remaining),
+        "remainingUsd": float(remaining),
         "warning": (
-            spent_jpy >= WARNING_JPY
+            spent_usd >= WARNING_USD
         ),
         "unknownRecords": unknown_count,
         "recordCount": record_count,

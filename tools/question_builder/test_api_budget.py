@@ -24,8 +24,8 @@ class BudgetTests(unittest.TestCase):
 
             self.assertTrue(result["allowed"])
             self.assertEqual(
-                result["remainingJpy"],
-                5000,
+                result["remainingUsd"],
+                50,
             )
 
     def test_earlier_spending_excluded(self):
@@ -62,8 +62,8 @@ class BudgetTests(unittest.TestCase):
             )
 
             self.assertEqual(
-                result["estimatedSpentJpy"],
-                200,
+                result["estimatedSpentUsd"],
+                1,
             )
 
     def test_near_limit_blocks(self):
@@ -74,7 +74,7 @@ class BudgetTests(unittest.TestCase):
                 json.dumps({
                     "timestampUtc":
                         "2026-10-15T00:00:00+00:00",
-                    "estimatedCostUsd": 24.5,
+                    "estimatedCostUsd": 49.5,
                 }) + "\n",
                 encoding="utf-8",
             )
@@ -85,7 +85,7 @@ class BudgetTests(unittest.TestCase):
                     2026, 10, 16,
                     tzinfo=JST,
                 ),
-                next_call_allowance_jpy=200,
+                next_call_allowance_usd=2,
             )
 
             self.assertFalse(result["allowed"])
@@ -130,10 +130,68 @@ class BudgetTests(unittest.TestCase):
 
             self.assertTrue(result["allowed"])
             self.assertEqual(
-                result["remainingJpy"],
-                5000,
+                result["remainingUsd"],
+                50,
             )
 
+
+
+    def test_usd_exact_boundary(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "usage.jsonl"
+            timestamp = "2026-10-15T00:00:00+00:00"
+
+            def check(amount):
+                path.write_text(
+                    json.dumps({
+                        "timestampUtc": timestamp,
+                        "estimatedCostUsd": amount,
+                    }) + "\n",
+                    encoding="utf-8",
+                )
+                return inspect_api_budget(
+                    log_path=path,
+                    now=datetime(
+                        2026, 10, 16,
+                        tzinfo=JST,
+                    ),
+                    next_call_allowance_usd=2,
+                )
+
+            self.assertTrue(
+                check(48)["allowed"]
+            )
+            self.assertFalse(
+                check(48.01)["allowed"]
+            )
+
+    def test_usd_warning_threshold(self):
+        with tempfile.TemporaryDirectory() as temp:
+            path = Path(temp) / "usage.jsonl"
+
+            path.write_text(
+                json.dumps({
+                    "timestampUtc":
+                        "2026-10-15T00:00:00+00:00",
+                    "estimatedCostUsd": 40,
+                }) + "\n",
+                encoding="utf-8",
+            )
+
+            result = inspect_api_budget(
+                log_path=path,
+                now=datetime(
+                    2026, 10, 16,
+                    tzinfo=JST,
+                ),
+            )
+
+            self.assertTrue(result["warning"])
+            self.assertTrue(result["allowed"])
+            self.assertEqual(
+                result["monthlyBudgetUsd"],
+                50,
+            )
 
 if __name__ == "__main__":
     unittest.main()
