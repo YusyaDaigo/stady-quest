@@ -119,10 +119,14 @@ class OpenAITextClient:
         response = None
 
         try:
-            client = OpenAI()
+            client = OpenAI(
+                max_retries=0,
+                timeout=90.0,
+            )
             response = client.responses.create(
                 model=self.model,
                 input=prompt,
+                max_output_tokens=4096,
             )
             response_text = response.output_text
         except Exception:

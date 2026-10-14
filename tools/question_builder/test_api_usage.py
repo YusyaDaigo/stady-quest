@@ -334,5 +334,80 @@ class TextClientUsageIntegrationTests(unittest.TestCase):
             sdk.return_value.responses.create.assert_called_once()
 
 
+
+    def test_request_limits(self):
+        import os
+        from types import SimpleNamespace
+        from unittest.mock import patch
+
+        from tools.question_builder.core.ai_client import (
+            OpenAITextClient,
+        )
+
+        with tempfile.TemporaryDirectory() as temp:
+            log = Path(temp) / "usage.jsonl"
+
+            with (
+                patch.dict(
+                    os.environ,
+                    {
+                        "STUDY_QUEST_ALLOW_API": "1",
+                        "OPENAI_API_KEY": "dummy",
+                    },
+                    clear=True,
+                ),
+                patch(
+                    "tools.question_builder.core.api_budget."
+                    "inspect_api_budget",
+                    return_value={"allowed": True},
+                ),
+                patch(
+                    "tools.question_builder.core.api_usage."
+                    "DEFAULT_LOG",
+                    log,
+                ),
+                patch(
+                    "tools.question_builder.core.ai_client."
+                    "OpenAI",
+                ) as sdk,
+            ):
+                sdk.return_value.responses.create.return_value = (
+                    SimpleNamespace(
+                        output_text="ONE QUESTION",
+                        usage={
+                            "input_tokens": 100,
+                            "output_tokens": 50,
+                            "input_tokens_details": {
+                                "cached_tokens": 0,
+                            },
+                        },
+                    )
+                )
+
+                result = OpenAITextClient(
+                    model="gpt-6-luna",
+                ).generate(
+                    "single question test",
+                    allow_api=True,
+                )
+
+                self.assertEqual(
+                    result,
+                    "ONE QUESTION",
+                )
+
+                sdk.assert_called_once_with(
+                    max_retries=0,
+                    timeout=90.0,
+                )
+
+                sdk.return_value.responses.create.assert_called_once_with(
+                    model="gpt-6-luna",
+                    input="single question test",
+                    max_output_tokens=4096,
+                )
+
+                self.assertTrue(log.exists())
+
 if __name__ == "__main__":
     unittest.main()
