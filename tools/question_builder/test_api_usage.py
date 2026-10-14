@@ -101,6 +101,17 @@ class ApiUsageTests(unittest.TestCase):
 
 
 class TextClientUsageIntegrationTests(unittest.TestCase):
+
+    def setUp(self):
+        from unittest.mock import patch
+
+        self._guard_patch = patch(
+            "tools.question_builder.api_policy._usage_log_failed",
+            False,
+        )
+        self._guard_patch.start()
+        self.addCleanup(self._guard_patch.stop)
+
     def test_success_logs_tokens_and_cost(self):
         import os
         from unittest.mock import patch
@@ -308,6 +319,20 @@ class TextClientUsageIntegrationTests(unittest.TestCase):
                 result,
                 "VALID RESPONSE",
             )
+
+            with self.assertRaisesRegex(
+                RuntimeError,
+                "ログ保存に失敗",
+            ):
+                OpenAITextClient(
+                    model="gpt-6-luna",
+                ).generate(
+                    "second prompt",
+                    allow_api=True,
+                )
+
+            sdk.return_value.responses.create.assert_called_once()
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -3,7 +3,10 @@ import os
 from dotenv import load_dotenv
 from openai import OpenAI
 
-from tools.question_builder.api_policy import require_api_permission
+from tools.question_builder.api_policy import (
+    require_api_permission,
+    mark_api_usage_logging_failed,
+)
 from tools.question_builder.core.api_usage import record_api_usage
 
 
@@ -50,6 +53,7 @@ class OpenAITextClient:
                 status=status,
             )
         except Exception as exc:
+            mark_api_usage_logging_failed()
             print(
                 "[API USAGE WARNING] "
                 "ログ保存に失敗: "
@@ -85,7 +89,7 @@ class OpenAITextClient:
                 "OpenAI APIを呼びません"
             )
 
-        require_api_permission()
+        require_api_permission(usage_tracked=True)
 
         if (
             self.call_count
